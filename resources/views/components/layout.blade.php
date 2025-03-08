@@ -8,6 +8,7 @@
 </head>
 <body>
     {{-- Ajout navbar --}}
+    <x-navbar></x-navbar>
     
     {{ $slot }}
     
