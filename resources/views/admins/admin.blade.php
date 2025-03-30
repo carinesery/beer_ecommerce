@@ -21,7 +21,6 @@
                     <button class="w-24 py-1 text-white hover:bg-gray-500">NewsLetter</button>
                     <hr>
                     <button class="w-24 py-1 text-white hover:bg-gray-500">Stoke</button>
-
                 </div>
             </aside>
             <div>
@@ -45,20 +44,20 @@
                     </div>
                 </div>
                 <div class="flex flex-wrap gap-4 bg-gray-200 p-4 ">
-                    @foreach ($products as $product)
+                    @foreach ($variants as $variant)
                     <div class="flex flex-col justify-between gap-3 border rounded p-4">
                         <div class="w-80">
-                            <label for="{{ $product->id }}" class="border-r-1 border-gray-400 py-1 px-3 text-white hover:bg-gray-500">
-                                <input type="checkbox" name="{{ $product->id }}" id="{{ $product->id }}">
+                            <label for="{{ $variant->product->id }}" class="border-r-1 border-gray-400 py-1 px-3 text-white hover:bg-gray-500">
+                                <input type="checkbox" name="{{ $variant->product->id }}" id="{{ $variant->product->id }}">
                             </label>
-                            <span>Stock : </span>
-                            <img src="{{ $product->image }}" alt="{{ $product->name }}">
+                            <span>Stock : {{ $variant->stock_quantity }}</span>
+                            <img src="{{ $variant->product->image }}" alt="{{ $variant->product->name }}">
                             <span>Nom :</span>
-                            <span class="font-bold">{{ $product->name }}</span> <br>
-                            <span>cl</span>
-                            <span>{{ $product->alcohol_degree }} %</span> <br>
+                            <span class="font-bold">{{ $variant->product->name }}</span> <br>
+                            <span>{{ $variant->volume }}</span>
+                            <span>{{ $variant->product->alcohol_degree }} %</span> <br>
                             <span>Description :</span>
-                            <span>{{ $product->description }}</span> <br>
+                            <span>{{ $variant->product->description }}</span> <br>
                         </div>
                         <div class="flex gap-1">
                             <button class="border rounded bg-blue-700 py-1 px-3 text-white hover:bg-blue-500">🖊️ modifier</button>
