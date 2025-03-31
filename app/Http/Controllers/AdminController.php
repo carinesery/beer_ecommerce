@@ -10,12 +10,11 @@ class AdminController extends Controller
 {
     public function show(ProductVariant $variants)
     {
-       
-        // $products = Product::all();
-        // return view('admins.admin', [
-        //     'products' => $products,
-        // ]);
-        $variants = ProductVariant::with('product')->get();
+    
+        $query = ProductVariant::with('product');
+
+         // Ajout d'une pagination. 20 livres par pages
+         $variants = $query->paginate(20)->withQueryString();
 
         return view('admins.admin', [
                 'variants' => $variants,

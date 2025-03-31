@@ -47,10 +47,12 @@
                     @foreach ($variants as $variant)
                     <div class="flex flex-col justify-between gap-3 border rounded p-4">
                         <div class="w-80">
-                            <label for="{{ $variant->product->id }}" class="border-r-1 border-gray-400 py-1 px-3 text-white hover:bg-gray-500">
-                                <input type="checkbox" name="{{ $variant->product->id }}" id="{{ $variant->product->id }}">
-                            </label>
-                            <span>Stock : {{ $variant->stock_quantity }}</span>
+                            <div class="flex justify-between">
+                                <label for="{{ $variant->product->id }}" class="py-1">
+                                    <input type="checkbox" name="{{ $variant->product->id }}" id="{{ $variant->product->id }}">
+                                </label>
+                                <span>Stock : {{ $variant->stock_quantity }}</span>
+                            </div>
                             <img src="{{ $variant->product->image }}" alt="{{ $variant->product->name }}">
                             <span>Nom :</span>
                             <span class="font-bold">{{ $variant->product->name }}</span> <br>
@@ -65,6 +67,9 @@
                         </div>
                     </div>
                     @endforeach
+                </div>
+                <div class="mt-4">
+                    {{ $variants->links() }}
                 </div>
             </div>
         </div>
