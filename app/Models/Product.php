@@ -8,9 +8,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-
-
-
 class Product extends Model
 {
     /** @use HasFactory<\Database\Factories\ProductFactory> */
@@ -35,7 +32,7 @@ class Product extends Model
     {
         return $this->belongsTo(Brand::class);
     }
-
+  
     public function productVariants(): HasMany
     {
         return $this->hasMany(ProductVariant::class);
@@ -45,6 +42,7 @@ class Product extends Model
     {
         return $this->hasOne(ProductVariant::class)->where('available', true)->latest();
     }
+
 }
 
    
