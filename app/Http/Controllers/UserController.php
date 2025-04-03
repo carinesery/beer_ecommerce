@@ -13,7 +13,11 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        // Récupère les utilisateurs
+         // Ajout d'une pagination. 20 livres par pages
+         $users = User::paginate(10)->withQueryString();
+          
+        return view('users.index',['users'=> $users]);
     }
 
     /**
