@@ -58,7 +58,7 @@ class ProductStoreRequest extends FormRequest
             // Règles pour la validation des variantes
             'variants.*.slug' => ['required', 'string', 'unique:product_variants'. $this->route('id')], // Ok ????
             'variants.*.volume'=> ['required', 'string'], // Mettre un min et un max ?
-            'variants.*.stock_quantity' => ['required', 'integer'],
+            'variants.*.stock_quantity' => ['required', 'integer', 'min:0'],
             'variants.*.price_without_tax' => ['required', 'numeric'],
             'variants.*.tax_amount' => ['required', 'numeric'],
             'variants.*.available' => ['required', 'boolean'],
