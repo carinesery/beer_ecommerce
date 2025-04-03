@@ -4,18 +4,41 @@
         <span>NomAdmin</span>
     </div >
     <div class="border-y-1">
-        <button class="w-24 py-1 text-white hover:bg-gray-500">Produits</button>
-        <hr>
-        <button class="w-24 py-1 text-white hover:bg-gray-500">Clients</button>
-        <hr>
-        <button class="w-24 py-1 text-white hover:bg-gray-500">Vente</button>
-        <hr>
-        <button class="w-24 py-1 text-white hover:bg-gray-500">Livraison</button>
-        <hr>
-        <button class="w-24 py-1 text-white hover:bg-gray-500">Commande</button>
-        <hr>
-        <button class="w-24 py-1 text-white hover:bg-gray-500">NewsLetter</button>
-        <hr>
-        <button class="w-24 py-1 text-white hover:bg-gray-500">Stoke</button>
+        <a href="{{ route('admin.show') }}">
+            <div class="flex py-2 px-4 text-white hover:bg-gray-500">
+                <span>Produits</span>
+            </div>
+        </a>
+        <a href="{{ route('users') }}">
+            
+            <div class="flex py-2 px-4 text-white hover:bg-gray-500">
+                <span>Clients</span>
+            </div>
+        </a>
+        <a>
+            <div class="flex py-2 px-4 text-white hover:bg-gray-500">
+                <span>Vente</span>
+            </div>
+        </a>
+        <a>
+            <div class="flex py-2 px-4 text-white hover:bg-gray-500">
+                <span>Livraison</span>
+            </div>
+        </a>
+        <a>
+            <div class="flex py-2 px-4 text-white hover:bg-gray-500">
+                <span>Commande</span>
+            </div>
+        </a>
+        <a>
+            <div class="flex py-2 px-4 text-white hover:bg-gray-500">
+                <span>NewsLetter</span>
+            </div>
+        </a>
+        <a>
+            <div class="flex py-2 px-4 text-white hover:bg-gray-500">
+                <span>Stoke</span>
+            </div>
+        </a>
     </div>
 </aside>

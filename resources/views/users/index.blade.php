@@ -40,7 +40,12 @@
                         </div>
                         <div class="flex gap-1">
                             <button class="border rounded bg-blue-700 py-1 px-3 text-white hover:bg-blue-500">🖊️ modifier</button>
-                            <button class="border rounded bg-red-700 py-1 px-3 text-white hover:bg-red-500">🗑️</button>
+
+                            <form action="{{ route('users.destroy', $user) }}" method="POST" >
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="inline-block bg-red-500 rounded px-3 py-3 text-sm">🗑️</button>
+                            </form>
                         </div>
                     </div>
                     @endforeach

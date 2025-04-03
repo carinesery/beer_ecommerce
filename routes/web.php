@@ -14,5 +14,6 @@ Route::post('/logout', [\App\Http\Controllers\LoginController::class, 'logout'])
 Route::get('/admins/admin', [\App\Http\Controllers\AdminController::class, 'show'])->name('admin.show');
 
 Route::get('/users/registration', [\App\Http\Controllers\UserController::class, 'create'])->name('users.create');
-Route::get('/users', [\App\Http\Controllers\UserController::class, 'store'])->name('users.store');
+Route::post('/users', [\App\Http\Controllers\UserController::class, 'store'])->name('users.store');
 Route::get('/users/index', [\App\Http\Controllers\UserController::class, 'index'])->name('users');
+Route::delete('/users/{user}', [\App\Http\Controllers\UserController::class, 'destroy'])->name('users.destroy');
