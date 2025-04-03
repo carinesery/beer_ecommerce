@@ -39,12 +39,13 @@
                             <span>Date d'anniversaire : {{ $user->birthdate }}</span>
                         </div>
                         <div class="flex gap-1">
-                            <button class="border rounded bg-blue-700 py-1 px-3 text-white hover:bg-blue-500">🖊️ modifier</button>
+                            <a href="{{ route('users.show', $user) }}" class="flex items-center justify-center border rounded bg-blue-700 py-1 px-3 text-white hover:bg-blue-500">👁️ détail</a>
+                            <a href="#" class="flex items-center justify-center border rounded bg-black py-1 px-3 text-white hover:bg-gray-700">🖊️ modifier</a>
 
                             <form action="{{ route('users.destroy', $user) }}" method="POST" >
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="inline-block bg-red-500 rounded px-3 py-3 text-sm">🗑️</button>
+                                <button type="submit" class="inline-block bg-red-500 rounded px-3 py-3 text-sm hover:bg-red-700">🗑️</button>
                             </form>
                         </div>
                     </div>
