@@ -32,7 +32,7 @@ class Product extends Model
     {
         return $this->belongsTo(Brand::class);
     }
-  
+
     public function productVariants(): HasMany
     {
         return $this->hasMany(ProductVariant::class);
@@ -42,7 +42,6 @@ class Product extends Model
     {
         return $this->hasOne(ProductVariant::class)->where('available', true)->latest();
     }
-
 }
 
    

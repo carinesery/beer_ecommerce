@@ -18,9 +18,7 @@
         @foreach ($products as $product)
             <div class="grid text-center grid-cols-4 gap-4">
                 <div class="max-w-sm rounded overflow-hidden shadow-lg">
-                    <span>
-                        {{ $product->image }}
-                    </span><br>    
+                    <img src="{{ asset('storage/' . $product->image) }}" alt="Image du produit"><br>    
                     <h2>{{ $product->name }}</h2> 
                     <span>{{ $product->slug }}</span><br> <!-- Uniquement pour test -->
                     <span>
