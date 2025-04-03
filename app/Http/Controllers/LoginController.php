@@ -1,11 +1,9 @@
 <?php
 namespace App\Http\Controllers;
 
-use Illuminate\Container\Attributes\Auth as AttributesAuth;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
 
 // Ce code est le LoginController qui gère 
 // l'authentification des utilisateurs (connexion et déconnexion). Voici une explication détaillée :
@@ -62,5 +60,4 @@ class LoginController extends Controller
         // Redirige l'utilisateur vers la page d'accueil (/)
         return redirect('/');
     }
-
 }

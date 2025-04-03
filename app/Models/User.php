@@ -12,11 +12,15 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
+     // Définir une constante pour les rôles autorisés
+     public const ROLES = ['admin', 'costumer'];
+
     /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
      */
+    
     protected $fillable = [
         'firstname',
         'lastname',
