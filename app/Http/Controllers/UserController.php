@@ -59,7 +59,7 @@ class UserController extends Controller
     ]);
 
     // Redirection vers la liste des utilisateurs ou autre page souhaitée avec un message de succès
-    return redirect()->route('.login')->with('success', 'Utilisateur créé avec succès !');
+    return redirect()->route('login')->with('success', 'Utilisateur créé avec succès !');
 
     }
 
@@ -90,8 +90,9 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(User $user)
     {
-        //
+        $user->delete();
+        return redirect()->route('users');
     }
 }
