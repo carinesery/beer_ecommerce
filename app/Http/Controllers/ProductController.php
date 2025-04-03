@@ -59,6 +59,9 @@ class ProductController extends Controller
             return back()->withErrors(['brand_id' => 'Veuillez sélectionner une marque ou en ajouter une nouvelle.']);
         }
 
+        // Initialiser $imagePath avec une valeur par défaut
+        $imagePath = null;
+
         // Gestion de l'image (si un fichier est téléchargé)
         if ($request->hasFile('image')) {
             $validatedImage = $request->file('image')->isValid(); // Vérifie si l'upload est valide
@@ -83,7 +86,7 @@ class ProductController extends Controller
          $variantsData = []; 
          foreach ($request->variants as $variant) {
              $variantsData[] = [
-                'slug' => $variant['slug'],
+                'slug' => Str::of($variant['slug'])->slug('-'),
                 'volume' => $variant['volume'],
                 'stock_quantity' => $variant['stock_quantity'],
                 'price_without_tax' => $variant['price_without_tax'],
