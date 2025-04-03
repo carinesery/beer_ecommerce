@@ -17,7 +17,7 @@
             @enderror 
         </div>
         <div class="flex flex-col">
-            <label for="date">Date de naissance :</label>
+            <label for="birthdate">Date de naissance :</label>
             <input type="date" name="birthdate" id="birthdate" value="{{ old('birthdate') }}" class="border">
             @error('birthdate')            
             <p>Error birthdate</p>
