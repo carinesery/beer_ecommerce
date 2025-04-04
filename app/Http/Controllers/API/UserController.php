@@ -8,46 +8,35 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        // Récupère les utilisateurs
-         // Ajout d'une pagination. 20 livres par pages
-         $users = User::paginate(10)->withQueryString();
-          
-        return view('users.index',['users'=> $users]);
-    }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request){
 
-   // Validation des données
-    $request->validate([
-        'firstname' => 'required|string|max:255',
-        'lastname' => 'required|string|max:255',
-        'email' => 'required|string|email|max:255|unique:users',
-        'password' => 'required|string|max:255',
-        'role' => 'required|string|in:customer',
-        'birthdate' => 'required|date',
+        // Validation des données
+         $request->validate([
+             'firstname' => 'required|string|max:255',
+             'lastname' => 'required|string|max:255',
+             'email' => 'required|string|email|max:255|unique:users',
+             'password' => 'required|string|max:255',
+             'role' => 'required|string|in:customer',
+             'birthdate' => 'required|date',
 
-    ]);
-
-    // Création de l'utilisateur (en utilisant l'assignation de masse)
-   
-    $user = User::create([
-        'firstname' => $request->firstname,
-        'lastname' => $request->lastname,
-        'email' => $request->email,
-        'password' => Hash::make($request->password),
-        'role'=> $request->role,
-        'birthdate' => $request->birthdate,
-    ]);
-
-    return response()->json($user, 201);
+         ]);
+     
+         // Création de l'utilisateur (en utilisant l'assignation de masse)
+     
+         $user = User::create([
+             'firstname' => $request->firstname,
+             'lastname' => $request->lastname,
+             'email' => $request->email,
+             'password' => Hash::make($request->password),
+             'role'=> $request->role,
+             'birthdate' => $request->birthdate,
+         ]);
+     
+         return response()->json($user, 201);
 
     }
 
@@ -55,16 +44,6 @@ class UserController extends Controller
      * Display the specified resource.
      */
     public function show(User $user)
-    {
-        return view('users.show',[
-            'user' => $user,
-        ]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(User $user)
     {
         return $user;
     }
@@ -77,22 +56,15 @@ class UserController extends Controller
         $request->validate([
             'firstname' => 'required|string|max:255',
             'lastname' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255',
-            'role' => 'required|string|in:'. implode(',', \App\Models\User::ROLES),
-            'birthdate' => 'required|date',
     
         ]);
 
         $user->update([
             'firstname' => $request->firstname,
             'lastname' => $request->lastname,
-            'email' => $request->email,
-            'role'=> $request->role,
-            'birthdate' => $request->birthdate,
         ]);
-
-        $userJson = response()->json($user, 201);
-        return $userJson;
+        
+        return response()->json($user, 201);
     }
 
     /**
@@ -100,7 +72,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        $user->delete();
+        // $user->delete(); Utiliser un update et le solfDelete. On ne supprime pas les données totalement pour la gestion des comptes comptables
         return response()->json(null, 204);
     }
 }
