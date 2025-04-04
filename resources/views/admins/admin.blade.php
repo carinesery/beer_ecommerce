@@ -42,7 +42,7 @@
                             <span>{{ $variant->product->description }}</span> <br>
                         </div>
                         <div class="flex gap-1">
-                            <a href="{{ route(('products.edit'), ['product' => $product->id]) }}" class="border rounded bg-blue-700 py-1 px-3 text-white hover:bg-blue-500">🖊️ modifier</a>
+                            <button class="border rounded bg-blue-700 py-1 px-3 text-white hover:bg-blue-500">🖊️ modifier</button>
                             <button class="border rounded bg-red-700 py-1 px-3 text-white hover:bg-red-500">🗑️</button>
                         </div>
                     </div>
