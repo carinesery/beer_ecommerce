@@ -24,7 +24,34 @@
                     </div>
                 </div>
                 <div class="flex flex-wrap gap-4 bg-gray-200 p-4 ">
-                    @foreach ($variants as $variant)
+                @foreach ($products as $product)
+            <div class="grid text-center grid-cols-4 gap-4">
+                <div class="max-w-sm rounded overflow-hidden shadow-lg">
+                    <img src="{{ asset('storage/' . $product->image) }}" alt="Image du produit"><br>    
+                    <h2>{{ $product->name }}</h2> 
+                    <span>{{ $product->slug }}</span><br> <!-- Uniquement pour test -->
+                    <span>
+                        {{ $product->brand ? $product->brand->name : 'Aucune marque' }}
+                    </span><br>
+                    <span class="inline-block bg-amber-100 rounded-xl px-3 py-1 text-sm">
+                        {{ $product->category ? $product->category->name : 'Aucune catégorie'}}
+                    </span><br>
+                    <!-- @foreach ($product->productVariants as $variant)
+                        <span>A partir de {{ $variant->price_without_tax/100 }} €</span><br>
+                    @endforeach -->
+                    <span>
+                        A partir de {{ $variant->price_without_tax/100 }} €
+                    </span><br>
+                    <a href="{{ route('products.show', ['product' => $product->slug]) }}" class="inline-block bg-blue-100 rounded-xl px-3 py-1 text-sm">
+                        Voir le produit
+                    </a>
+                    <a href="{{ route('products.edit', ['product' => $product]) }}" class="inline-block bg-blue-100 rounded-xl px-3 py-1 text-sm">
+                        Modifier le produit
+                    </a>
+                </div>
+            </div>        
+        @endforeach
+                    <!-- @foreach ($products as $product)
                     <div class="flex flex-col justify-between gap-3 border rounded p-4">
                         <div class="w-80">
                             <div class="flex justify-between">
@@ -42,14 +69,14 @@
                             <span>{{ $variant->product->description }}</span> <br>
                         </div>
                         <div class="flex gap-1">
-                            <button class="border rounded bg-blue-700 py-1 px-3 text-white hover:bg-blue-500">🖊️ modifier</button>
+                        <a href="{{ route('products.edit', $product) }}" class="border rounded bg-blue-700 py-1 px-3 text-white hover:bg-blue-500">🖊️ modifier</a>
                             <button class="border rounded bg-red-700 py-1 px-3 text-white hover:bg-red-500">🗑️</button>
                         </div>
                     </div>
-                    @endforeach
+                    @endforeach -->
                 </div>
                 <div class="mt-4">
-                    {{ $variants->links() }}
+                    {{ $products->links() }}
                 </div>
             </div>
         </div>

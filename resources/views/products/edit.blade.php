@@ -210,5 +210,5 @@
         <button type="submit">Mettre à jour le produit</button>
     </form>
 
-    <a href="{{ route('admin.show') }}">Retour</a>
+    <a href="{{ route('admin.index') }}">Retour</a>
 </x-layout>

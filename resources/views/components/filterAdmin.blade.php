@@ -4,7 +4,7 @@
         <span>NomAdmin</span>
     </div >
     <div class="border-y-1">
-        <a href="{{ route('admin.show') }}">
+        <a href="{{ route('admin.index') }}">
             <div class="flex py-2 px-4 text-white hover:bg-gray-500">
                 <span>Produits</span>
             </div>

@@ -10,31 +10,42 @@ use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
-    public function show(ProductVariant $variants)
+    // public function show(ProductVariant $variants)
+    // {
+    
+    //     $query = ProductVariant::with('product');
+
+    //      // Ajout d'une pagination. 20 livres par pages
+    //      $variants = $query->paginate(20)->withQueryString();
+
+    //     return view('admins.admin', [
+    //             'variants' => $variants,
+    //         ]);
+    // }
+
+    public function index()
     {
     
-        $query = ProductVariant::with('product');
+        $query = Product::with('productVariants');
 
          // Ajout d'une pagination. 20 livres par pages
-         $variants = $query->paginate(20)->withQueryString();
+         $products = $query->paginate(25)->withQueryString(); // Conserve les filtres lors changement de page
 
-        return view('admins.admin', [
-                'variants' => $variants,
+        return view('admin.product.index', [
+                'products' => $products,
             ]);
     }
 
-    // Afficher le formulaire de modification du produit
-    // public function edit(Product $product)
-    // {
-    //     // Récupérer le produit à modifier
-    //     $product = Product::findOrFail($product->id);
+    public function edit(Product $product) 
+    {
+        // Cette méthode permet afficher la vue pour modifier un produit. 
+        // $categories = Category::all(); // Récupère les catégories
+        // $brands = Brand::all(); // Récupère les catégories
 
-    //     // Récupérer les catégories et les marques disponibles
-    //     $categories = Category::all();
-    //     $brands = Brand::all();
+        // return view('products.edit', compact('product', 'categories', 'brands'));
+        return view('products.edit', ['product' => $product]);
 
-    //     // Passer le produit, les catégories et les marques à la vue
-    //     return view('products.edit', compact('product', 'categories', 'brands'));
-    // }
+
+    }
 
 }

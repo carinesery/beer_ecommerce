@@ -16,7 +16,7 @@ Route::get('/login', [\App\Http\Controllers\LoginController::class, 'login'])->n
 Route::post('/login', [\App\Http\Controllers\LoginController::class, 'authenticate'])->name('login.authenticate');
 Route::post('/logout', [\App\Http\Controllers\LoginController::class, 'logout'])->name('logout');
 
-Route::get('/admins/admin', [\App\Http\Controllers\AdminController::class, 'show'])->name('admin.show');
+Route::get('/admin/product', [\App\Http\Controllers\AdminController::class, 'index'])->name('admin.index');
 
 Route::get('/users/registration', [\App\Http\Controllers\UserController::class, 'create'])->name('users.create');
 Route::post('/users', [\App\Http\Controllers\UserController::class, 'store'])->name('users.store');
