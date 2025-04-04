@@ -21,17 +21,6 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-         //Gére l'autorisation de créer
-        // Gate::authorize('createUser', User::class);
-
-        return view('users.registration');
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request){
@@ -49,7 +38,7 @@ class UserController extends Controller
 
     // Création de l'utilisateur (en utilisant l'assignation de masse)
    
-    User::create([
+    $user = User::create([
         'firstname' => $request->firstname,
         'lastname' => $request->lastname,
         'email' => $request->email,
@@ -58,8 +47,7 @@ class UserController extends Controller
         'birthdate' => $request->birthdate,
     ]);
 
-    // Redirection vers la liste des utilisateurs ou autre page souhaitée avec un message de succès
-    return redirect()->route('login')->with('success', 'Utilisateur créé avec succès !');
+    return response()->json($user, 201);
 
     }
 
@@ -78,9 +66,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return view('users.edit', [
-            'user' => $user,
-        ]);
+        return $user;
     }
 
     /**
@@ -92,7 +78,7 @@ class UserController extends Controller
             'firstname' => 'required|string|max:255',
             'lastname' => 'required|string|max:255',
             'email' => 'required|string|email|max:255',
-            'role' => 'required|string|in:customer,admin',
+            'role' => 'required|string|in:'. implode(',', \App\Models\User::ROLES),
             'birthdate' => 'required|date',
     
         ]);
@@ -105,7 +91,8 @@ class UserController extends Controller
             'birthdate' => $request->birthdate,
         ]);
 
-        return redirect()->route('users.show', ['user'=>$user]);
+        $userJson = response()->json($user, 201);
+        return $userJson;
     }
 
     /**
@@ -114,6 +101,6 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
-        return redirect()->route('users');
+        return response()->json(null, 204);
     }
 }
