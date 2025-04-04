@@ -92,7 +92,7 @@ class UserController extends Controller
             'firstname' => 'required|string|max:255',
             'lastname' => 'required|string|max:255',
             'email' => 'required|string|email|max:255',
-            'role' => 'required|string|in:'. implode(',', \App\Models\User::ROLES),
+            'role' => 'required|string|in:customer,admin',
             'birthdate' => 'required|date',
     
         ]);
