@@ -36,6 +36,9 @@
                     <a href="{{ route('products.show', ['product' => $product->slug]) }}" class="inline-block bg-blue-100 rounded-xl px-3 py-1 text-sm">
                         Voir le produit
                     </a>
+                    <a href="{{ route('products.edit', ['product' => $product]) }}" class="inline-block bg-blue-100 rounded-xl px-3 py-1 text-sm">
+                        Modifier le produit
+                    </a>
                 </div>
             </div>        
         @endforeach

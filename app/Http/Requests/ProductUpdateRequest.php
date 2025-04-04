@@ -3,8 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class ProductStoreRequest extends FormRequest
+class ProductUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,7 +24,7 @@ class ProductStoreRequest extends FormRequest
     {
         return [
             // Règles pour la validation du produit
-            'slug'=> ['required', 'string', 'unique:products'. $this->route('id')], // Ok ????
+            'slug'=> ['required', 'string',  Rule::unique('products')->ignore($this->route('product'))],
             'name'=> ['required', 'string', 'max:255'],
             'description'=> ['required', 'string'],
             'alcohol_degree' => ['required', 'numeric', 'min:0', 'max:100'],
@@ -56,7 +57,7 @@ class ProductStoreRequest extends FormRequest
             ],
 
             // Règles pour la validation des variantes
-            'variants.*.slug' => ['required', 'string'], // Ok ????
+            'variants.*.slug' => ['required', 'string'],
             'variants.*.volume'=> ['required', 'string'], // Mettre un min et un max ?
             'variants.*.stock_quantity' => ['required', 'integer', 'min:0'],
             'variants.*.price_without_tax' => ['required', 'numeric'],
