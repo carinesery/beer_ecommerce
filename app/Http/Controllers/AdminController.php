@@ -24,17 +24,17 @@ class AdminController extends Controller
     }
 
     // Afficher le formulaire de modification du produit
-    public function edit(Product $product)
-    {
-        // Récupérer le produit à modifier
-        $product = Product::findOrFail($product->id);
+    // public function edit(Product $product)
+    // {
+    //     // Récupérer le produit à modifier
+    //     $product = Product::findOrFail($product->id);
 
-        // Récupérer les catégories et les marques disponibles
-        $categories = Category::all();
-        $brands = Brand::all();
+    //     // Récupérer les catégories et les marques disponibles
+    //     $categories = Category::all();
+    //     $brands = Brand::all();
 
-        // Passer le produit, les catégories et les marques à la vue
-        return view('products.edit', compact('product', 'categories', 'brands'));
-    }
+    //     // Passer le produit, les catégories et les marques à la vue
+    //     return view('products.edit', compact('product', 'categories', 'brands'));
+    // }
 
 }
