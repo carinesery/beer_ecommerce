@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductStoreRequest;
+use App\Http\Requests\ProductUpdateRequest;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
@@ -102,6 +103,104 @@ class ProductController extends Controller
          // Rediriger avec un message de succès sur la page Admin show
          return redirect()->route('admin.show')->with('success', 'Produit et variantes créés avec succès!');
     }
+
+    public function edit(Product $product) 
+    {
+         // Cette méthode afficher la vue pour modifier un produit. 
+
+        $categories = Category::all(); // Récupère les catégories
+        $brands = Brand::all(); // Récupère les catégories
+
+        return view('products.edit', compact('product', 'categories', 'brands'));
+
+    }
+
+    public function update(ProductUpdateRequest $request, Product $product)
+    {
+        
+        // Récupérer le produit à mettre à jour
+        $product = Product::findOrFail($product->id);
+
+        // Vérifie si une nouvelle marque a été saisie
+        if (empty($request->brand_id) && $request->has('new_brand') && !empty($request->new_brand)) {
+        // Créer une nouvelle marque avec description et logo
+            $brandData = [
+                'name' => $request->new_brand,
+                'description' => $request->new_brand_description,
+            ];
+
+            // Gestion du logo (si un fichier est téléchargé)
+            if ($request->hasFile('new_brand_logo')) {
+                $logoPath = $request->file('new_brand_logo')->store('logos', 'public');
+                $brandData['logo'] = $logoPath;
+            }
+
+            // Créer la marque dans la base de données
+            $brand = Brand::create($brandData);
+
+            $brand_id = $brand->id;  // Récupère l'ID de la nouvelle marque
+        } else if (!empty($request->brand_id)) {
+            // Utiliser la marque existante
+            $brand_id = $request->brand_id;
+        } else {
+             // Si aucune marque n'est sélectionnée, lance une exception ou gère l'erreur
+            return back()->withErrors(['brand_id' => 'Veuillez sélectionner une marque ou en ajouter une nouvelle.']);
+        }
+
+        // Garde l'image actuelle par défaut
+        $imagePath = $product->image;
+
+        // Gestion de l'image (si un fichier est téléchargé)
+        if ($request->hasFile('image')) {
+            $validatedImage = $request->file('image')->isValid(); // Vérifie si l'upload est valide
+
+            if($validatedImage) {
+                // Supprimer l'ancienne image, si elle existe
+                if($product->image && file_exists(public_path('storage/' . $product->image))) {
+                    unlink(public_path('storage/' . $product->image));
+                }
+                // Stocke la nouvelle image dans le dossier 'public/products'
+                $imagePath = $request->file('image')->store('images', 'public');
+            }
+        }
+        
+         // Mise à jour du produit principal
+         $product->update([
+            'slug' => Str::of($request->slug)->slug('-'),
+            'name' => $request->name,
+            'description' => $request->description,
+            'alcohol_degree' => $request->alcohol_degree,
+            'category_id' => $request->category_id,
+            'brand_id' => $brand_id, // Utiliser l'id de la marque (existante ou nouvelle)
+            'image' => $imagePath,// Mettre à jour l'image
+        ]);
+
+         //Mise à jour des variantes associées au produit
+        if(isset($request->variants)) {
+            // Supprimer les anciennes variantes si nécessaire
+            $product->productVariants()->delete();
+
+            $variantsData = []; 
+            foreach ($request->variants as $variant) {
+             $variantsData[] = [
+                'slug' => Str::of($variant['slug'])->slug('-'),
+                'volume' => $variant['volume'],
+                'stock_quantity' => $variant['stock_quantity'],
+                'price_without_tax' => $variant['price_without_tax'],
+                'tax_amount' => $variant['tax_amount'],
+                'available' => $variant['available'],
+                'product_id' => $product->id,
+             ];
+            }
+
+            // Insérer ou mettre à jour les variantes
+            $product->productVariants()->createMany($variantsData);
+        }
+
+         // Rediriger avec un message de succès sur la page Admin show
+         return redirect()->route('products.show', $product)->with('success', 'Produit et variantes mis à jour avec succès!');
+    }
+
 
     public function show(Product $product) 
     {
