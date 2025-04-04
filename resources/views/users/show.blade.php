@@ -14,7 +14,7 @@
            <div class="font-light text-s">Rien pour le moment...</div>
         </div>
         <div class="flex gap-4 container mx-auto">
-            <a href="#" class="border rounded bg-black py-1 px-10 text-white hover:bg-gray-700"><span class="">Modifier</span></a>
+            <a href="{{ route('users.edit', $user) }}" class="border rounded bg-black py-1 px-10 text-white hover:bg-gray-700"><span class="">Modifier</span></a>
             <form action="{{ route('users.destroy', $user) }}" method="POST" >
                 @csrf
                 @method('DELETE')

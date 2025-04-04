@@ -1,9 +1,12 @@
 <x-layout title="Admin">
     <div class="flex flex-col gap-10 container mx-auto my-4">
-        <a href="{{ route('users') }}" class="w-35 border rounded bg-black py-1 px-10 text-white hover:bg-gray-700"><span>📋</span></a>
-        <a href="{{ route('users.show', $user) }}" class="w-35 border rounded bg-black py-1 px-10 text-white hover:bg-gray-700"><span>Retour</span></a>
+        <div>
+            <a href="{{ route('users') }}" class=" border rounded bg-black px-2 py-1 text-white hover:bg-gray-700"><span>📋</span></a>
+            <a href="{{ route('users.show', $user) }}" class=" border rounded bg-black py-1 px-10 text-white hover:bg-gray-700"><span>Retour</span></a>
+        </div>
+
         
-        <form action="{{ route('users.update', $user) }}" method="POST">        
+        <form action="{{ route('users.update', $user) }}" method="POST" class="w-100">        
             @csrf
             @method('PUT')       
             <div class="flex flex-col">
@@ -34,7 +37,9 @@
                 <p>Error email</p>
                 @enderror 
             </div>
-           <input type="text" name="role" value="{{ old('role') ?? 'custumer' }}">
+            <div class="flex flex-col">
+                <label for="role">Rôle :</label>
+                <input type="text" name="role" value="{{ old('role') ?? $user->role }}" class="border">
            @error('role')            
             <p>Error role</p>
             @enderror
@@ -43,7 +48,9 @@
                     <option value="{{ $role }}" {{ $user->role === $role ? 'selected' : '' }}>{{ ucfirst($role) }}</option>
                 @endforeach
             </select>  --}}
-            <button type="submit" class="border rounded bg-black py-1 px-10 text-white hover:bg-gray-700">Enregistrer</button>    
+            </div>
+           
+            <button type="submit" class="border rounded bg-black my-4 py-1 px-10 text-white hover:bg-gray-700">Enregistrer</button>    
         </form>
         <div class="container mx-auto">
             <span>Date de création de compte : {{ $user->created_at }} </span><br>
