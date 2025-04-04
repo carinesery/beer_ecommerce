@@ -41,9 +41,10 @@
        @error('role')            
         <p>Error role</p>
         @enderror 
-
-        <button type="submit" class="border bg-gray-300 w-25">Envoyer</button>
-
+        <div class="flex gap-1">
+            <button type="submit" class="border bg-gray-300 w-25">Envoyer</button>
+            <a href="{{ route('users') }}"><div class=" text-center block- border bg-gray-300 px-2 h-7 w-25">Annuler</div></a>
+        </div>
     </form>
 
 </x-layout>

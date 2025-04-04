@@ -15,7 +15,7 @@ class UserController extends Controller
     {
         // Récupère les utilisateurs
          // Ajout d'une pagination. 20 livres par pages
-         $users = User::paginate(10)->withQueryString();
+         $users = User::paginate(9)->withQueryString();
           
         return view('users.index',['users'=> $users]);
     }
