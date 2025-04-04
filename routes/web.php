@@ -25,4 +25,7 @@ Route::get('/users/{user}', [\App\Http\Controllers\UserController::class, 'show'
 Route::get('/users/edit/{user}', [\App\Http\Controllers\UserController::class, 'edit'])->name('users.edit');
 Route::put('/users/{user}', [\App\Http\Controllers\UserController::class, 'update'])->name('users.update');
 
+Route::get('/cart', [\App\Http\Controllers\CartController::class, 'index'])->name('cart');
+
+
 
