@@ -7,8 +7,7 @@
 
         
         <form action="{{ route('users.update', $user) }}" method="POST" class="w-100">        
-            @csrf
-            @method('PUT')       
+            @csrf      
             <div class="flex flex-col">
                 <label for="firstname">Prénom :</label>
                 <input type="text" name="firstname" id="firstname" value="{{ old('firstname') ?? $user->firstname}}" class="border">
