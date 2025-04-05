@@ -205,7 +205,7 @@ class ProductController extends Controller
 
     public function show(Product $product, ProductVariant $productVariant) 
 {
-        $productVariants = ProductVariant::all();
+        $productVariants = ProductVariant::where('product_id', $product->id)->get();
     
         foreach ($productVariants as $variant) {
             $productVariant = $variant;

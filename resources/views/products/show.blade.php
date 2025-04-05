@@ -5,7 +5,7 @@
         </div>
         <div>
             <h1 style="font-size: 2rem; font-weight:bold; text-transform: capitalize">
-                {{ $product->name }} {{ $productVariant->volume}} Cl
+                {{ $product->name }} {{ $productVariant->slug}} Cl
             </h1>
            
             <h2>{{ $product->alcohol_degree }} %</h2>
