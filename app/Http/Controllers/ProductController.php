@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Brand;
+use App\Models\ProductVariant;
 use Illuminate\Support\Str;
 
 class ProductController extends Controller
@@ -202,12 +203,19 @@ class ProductController extends Controller
     }
 
 
-    public function show(Product $product) 
-    {
-        // // Cette méthode récupère l'objet Product pour l'afficher. On peut faire un dd($product); pour la tester 
-
-        return view('products.show', [
-            'product' => $product,
-        ]);
-    }
+    public function show(Product $product, ProductVariant $productVariant) 
+{
+        $productVariants = ProductVariant::all();
+    
+        foreach ($productVariants as $variant) {
+            $productVariant = $variant;
+            // dd($productVariant);
+        }
+        // dd($test);
+    
+    return view('products.show', [
+        'product' => $product,
+        'productVariant' => $productVariant,
+    ]);
+}
 }
