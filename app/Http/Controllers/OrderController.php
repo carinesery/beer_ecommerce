@@ -30,10 +30,10 @@ class OrderController extends Controller
     {
         // Validation des données
     $request->validate([
-        'user_id' => 'required',
-        'total_price_without_tax' => 'required',
-        'total_price_with_tax' => 'required|number|int',
-        'tax_amount' => 'required|number|int',
+        'user_id' => 'required|numeric|exists:users,id',
+        'total_price_without_tax' => 'required|numeric',
+        'total_price_with_tax' => 'required|numeric',
+        'tax_amount' => 'required|numeric',
         'status' => 'required|string|in:cart',
     ]);
 
@@ -48,7 +48,7 @@ class OrderController extends Controller
     ]);
 
     // Redirection vers la liste des utilisateurs ou autre page souhaitée avec un message de succès
-    return redirect()->route('/')->with('success', 'Utilisateur créé avec succès !');
+    return redirect()->route('login')->with('success', 'Utilisateur créé avec succès !');
     }
 
     /**

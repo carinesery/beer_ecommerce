@@ -207,10 +207,11 @@ class ProductController extends Controller
 {
         $productVariants = ProductVariant::where('product_id', $product->id)->get();
         // $brands = Brand::where('product_id', $product->id)->get();
+        // dd($productVariants);
     
         foreach ($productVariants as $variant) {
             $productVariant = $variant;
-            // dd($productVariant);
+             //dd($productVariant);
         }
         // dd($test);
     

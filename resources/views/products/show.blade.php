@@ -17,7 +17,7 @@
                 <p>{{ $product->brand->description }}</p>
                 <p>{{ $product->description }}</p>
             </div>
-            <form action="{{ route('order.store') }}" method="post" class="flex flex-col flex-wrap gap-4 py-4 container mx-auto border">
+            <form action="{{ route('order.store') }}" method="POST" class="flex flex-col flex-wrap gap-4 py-4 container mx-auto border">
                 @csrf
                 @method('Post') 
                 {{-- <input type="hidden" name="user_id" value="1">
@@ -30,7 +30,7 @@
                     <button type="submit" class="border px-3">Ajouter au panier !</button>
                 </div> --}}
 
-                <input type="number" name="user_id" value="1">
+                <input type="number" name="user_id" value="{{ auth()->user()->id }}">
                 @error('user_id')                
                     <p>Error user_id</p>
                 @enderror
