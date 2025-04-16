@@ -26,7 +26,10 @@ Route::get('/users/{user}', [\App\Http\Controllers\UserController::class, 'show'
 Route::get('/users/edit/{user}', [\App\Http\Controllers\UserController::class, 'edit'])->name('users.edit');
 Route::put('/users/{user}', [\App\Http\Controllers\UserController::class, 'update'])->name('users.update');
 
-Route::get('/products/show', [\App\Http\Controllers\OrderController::class, 'create'])->name('order.create');
-Route::post('/products', [\App\Http\Controllers\OrderController::class, 'store'])->name('order.store');
+Route::get('/products/show', [\App\Http\Controllers\OrderItemsController::class, 'create'])->name('orderItems.create');
+Route::post('/products', [\App\Http\Controllers\OrderItemsController::class, 'store'])->name('orderItems.store');
+
+// Route::get('/products/show', [\App\Http\Controllers\OrderController::class, 'create'])->name('order.create');
+// Route::post('/products', [\App\Http\Controllers\OrderController::class, 'store'])->name('order.store');
 
 

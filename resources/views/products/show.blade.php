@@ -17,41 +17,27 @@
                 <p>{{ $product->brand->description }}</p>
                 <p>{{ $product->description }}</p>
             </div>
-            <form action="{{ route('order.store') }}" method="POST" class="flex flex-col flex-wrap gap-4 py-4 container mx-auto border">
+            <form action="{{ route('orderItems.store') }}" method="POST" class="flex flex-col flex-wrap gap-4 py-4 container mx-auto border">
                 @csrf
-                @method('Post') 
-                {{-- <input type="hidden" name="user_id" value="1">
-                <input type="hidden" name="total_price_without_tax" value="{{ $productVariant->price_without_tax }}">
-                <input type="hidden" name="total_price_with_tax" value="{{ ($productVariant->price_without_tax)*($productVariant->tax_amount+100)/100 }}">
-                <input type="hidden" name="tax_amount" value="{{ ($productVariant->tax_amount) }}">
-                <input type="hidden" name="status" value="cart">
-                <div>
-                    <input type="number" name="" id="" min="0" max="{{ $productVariant->stock_quantity}}" value="0" class="px-2 border">
-                    <button type="submit" class="border px-3">Ajouter au panier !</button>
-                </div> --}}
-
-                <input type="number" name="user_id" value="{{ auth()->user()->id }}">
-                @error('user_id')                
-                    <p>Error user_id</p>
+                @method('Post')
+                <input type="number" name="product_variant_id" value="{{ $productVariant->id}}">
+                @error('product_variant_id')                
+                    <p>product_variant_id </p>
                 @enderror
-                <input type="number" name="total_price_without_tax" value="100">
+                <input type="number" name="price_without_tax" value="{{ $productVariant->price_without_tax }}">
                 @error('total_price_without_tax')                
-                    <p>total_price_without_tax</p>
+                    <p>price_without_tax</p>
                 @enderror
-                <input type="number" name="total_price_with_tax" value="120">
+                <input type="number" name="price_with_tax" value="{{ ($productVariant->price_without_tax)*($productVariant->tax_amount+100)/100 }}">
                 @error('total_price_with_tax')                
-                    <p>Error total_price_with_tax</p>
+                    <p>price_with_tax</p>
                 @enderror
-                <input type="number" name="tax_amount" value="20">
+                <input type="number" name="tax_amount" value="{{ ($productVariant->tax_amount) }}">
                 @error('tax_amount')                
                     <p>Error tax amout</p>
                 @enderror
-                <input type="text" name="status" value="cart">
-                @error('cart')                
-                    <p>Error cart</p>
-                @enderror
                 <div>
-                    {{-- <input type="number" name="" id="" min="0" max="{{ $productVariant->stock_quantity}}" value="0" class="px-2 border"> --}}
+                    <input type="number" name="quantity" id="quantity" min="0" max="{{ $productVariant->stock_quantity}}" value="0" class="px-2 border">
                     <button type="submit" class="border px-3">Ajouter au panier !</button>
                 </div>
             </form>

@@ -20,7 +20,7 @@ class OrderController extends Controller
      */
     public function create()
     {
-        return view('products.show');
+        // return view('products.show');
     }
 
     /**
@@ -29,26 +29,28 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         // Validation des données
-    $request->validate([
-        'user_id' => 'required|numeric|exists:users,id',
-        'total_price_without_tax' => 'required|numeric',
-        'total_price_with_tax' => 'required|numeric',
-        'tax_amount' => 'required|numeric',
-        'status' => 'required|string|in:cart',
-    ]);
+    // $request->validate([
+    //     'user_id' => 'required|numeric|exists:users,id',
+    //     'total_price_without_tax' => 'required|numeric',
+    //     'total_price_with_tax' => 'required|numeric',
+    //     'tax_amount' => 'required|numeric',
+    //     'status' => 'required|string|in:cart',
+    //     'counter' => 'required|integer|min:1',
+
+    // ]);
 
     // Création de l'utilisateur (en utilisant l'assignation de masse)
    
-    Order::create([
-        'user_id' => $request->user_id,
-        'total_price_without_tax' => $request->total_price_without_tax,
-        'total_price_with_tax' =>$request-> total_price_with_tax,
-        'tax_amount' => $request->tax_amount,
-        'status' =>$request->status,
-    ]);
+    // Order::create([
+    //     'user_id' => $request->user_id,
+    //     'total_price_without_tax' => $request->total_price_without_tax,
+    //     'total_price_with_tax' =>$request-> total_price_with_tax,
+    //     'tax_amount' => $request->tax_amount,
+    //     'status' =>$request->status,
+    // ]);
 
     // Redirection vers la liste des utilisateurs ou autre page souhaitée avec un message de succès
-    return redirect()->route('login')->with('success', 'Utilisateur créé avec succès !');
+    // return redirect()->route('login')->with('success', 'Utilisateur créé avec succès !');
     }
 
     /**
