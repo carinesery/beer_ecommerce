@@ -42,6 +42,7 @@ class OrderItemsController extends Controller
     if (!auth()->check()) {
         return redirect()->route('login')->with('error', 'Vous devez être connecté pour passer une commande.');
     }
+    
     $order = Order::create([
         'user_id' => auth()->user()->id,
         'status' => 'cart',
