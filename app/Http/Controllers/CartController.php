@@ -23,21 +23,25 @@ class CartController extends Controller
         }
         $user = User::findOrFail($userId);
         // dd($user);
-        $orders = $user->orders;
-        // Vérifiez si l'utilisateur a des commandes
-        if ($orders->isEmpty()) {
-            return redirect()->route('products.index')->with('error', 'Votre panier est vide.');
-        }
-        // dd($orders);
 
-        $orderItems = OrderItem::whereHas('order', function ($query) use ($userId) {
+
+        // $orders = $user->orders;
+        // // Vérifiez si l'utilisateur a des commandes
+        // if ($orders->isEmpty()) {
+        //     return redirect()->route('products.index')->with('error', 'Votre panier est vide.');
+        // }
+        // // dd($orders);
+
+        $orderItems = OrderItem::with(['order', 'productVariant.product']) // chargement des relations imbriquées
+        ->whereHas('order', function ($query) use ($userId) {
             $query->where('user_id', $userId);
-        })->get();
+        })
+        ->get();
         
         dd($orderItems);
-        
+
         return view('cart/index',[
-            'orders' => $orders,
+            // 'orders' => $orders,
             'orderItems' => $orderItems,
             'user' => $user,
         ]);

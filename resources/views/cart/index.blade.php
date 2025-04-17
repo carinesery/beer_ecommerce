@@ -1,6 +1,6 @@
 <x-layout>
     <h1>page panier</h1>
-    @foreach ($orders as $order)
+    @foreach ($orderItems as $item)
 
         <div class="grid items-center grid-cols-[_100px_repeat(5,_minmax(100px,_1fr))] gap-1 bg-gray-200 ">
             <div class="p-4">
@@ -11,17 +11,19 @@
             </div>
             <div class="p-4">
                 <span>Nom variant</span>
-                <span>{{ $order->total_price_with_tax }}</span>
-s
-                
-
+                <span>{{ $item->product_variant_id }}</span>
+                <br>
+                <span>{{ $item->order_id }}</span>
+                <br>
+                <span>{{ $item->id }}</span>
+                <br>
+                <span>{{ $item->productVariant->product->name ?? 'Produit inconnu' }}</span>
                 
             </div>
+            <hr>
         
     @endforeach
-    @foreach ($orderItems as $item)
-        <span>{{ $item->order_id }}</span>
-    @endforeach
+    
 
     <?php dd($user->id); ?>
     <div class="grid items-center grid-cols-[_100px_repeat(5,_minmax(100px,_1fr))] gap-1 bg-gray-200 ">
