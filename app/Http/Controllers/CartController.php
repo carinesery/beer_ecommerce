@@ -38,7 +38,7 @@ class CartController extends Controller
         })
         ->get();
         
-        dd($orderItems);
+        // dd($orderItems);
 
         return view('cart/index',[
             // 'orders' => $orders,
