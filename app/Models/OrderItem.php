@@ -10,6 +10,20 @@ class OrderItem extends Model
     /** @use HasFactory<\Database\Factories\OrderItemFactory> */
     use HasFactory;
 
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
+    }
+    public function productVariant()
+    {
+        return $this->belongsTo(ProductVariant::class);
+    }
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var list<string>
+     */
+
     protected $fillable = [
         'order_id',
         'product_variant_id',

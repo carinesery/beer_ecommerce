@@ -15,11 +15,19 @@ class User extends Authenticatable
      // Définir une constante pour les rôles autorisés
      public const ROLES = ['admin', 'costumer'];
 
+     public function orders()
+    {
+        return $this->hasMany(\App\Models\Order::class);
+    }
+    
+
     /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
      */
+    
+
     
     protected $fillable = [
         'firstname',

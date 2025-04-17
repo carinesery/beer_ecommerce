@@ -31,5 +31,7 @@ Route::post('/products', [\App\Http\Controllers\OrderItemsController::class, 'st
 
 // Route::get('/products/show', [\App\Http\Controllers\OrderController::class, 'create'])->name('order.create');
 // Route::post('/products', [\App\Http\Controllers\OrderController::class, 'store'])->name('order.store');
+Route::get('/cart', [\App\Http\Controllers\CartController::class, 'index'])->name('cart');
+
 
 
