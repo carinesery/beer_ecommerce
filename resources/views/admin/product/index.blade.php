@@ -23,58 +23,47 @@
                         <button class="border-r-1 border-gray-400 py-1 px-3 text-white hover:bg-gray-500">🗑️ Corbeille</button>
                     </div>
                 </div>
-                <div class="flex flex-wrap gap-4 bg-gray-200 p-4 ">
-                @foreach ($products as $product)
-            <div class="grid text-center grid-cols-4 gap-4">
-                <div class="max-w-sm rounded overflow-hidden shadow-lg">
-                    <img src="{{ asset('storage/' . $product->image) }}" alt="Image du produit"><br>    
-                    <h2>{{ $product->name }}</h2> 
-                    <span>{{ $product->slug }}</span><br> <!-- Uniquement pour test -->
-                    <span>
-                        {{ $product->brand ? $product->brand->name : 'Aucune marque' }}
-                    </span><br>
-                    <span class="inline-block bg-amber-100 rounded-xl px-3 py-1 text-sm">
-                        {{ $product->category ? $product->category->name : 'Aucune catégorie'}}
-                    </span><br>
-                    <!-- @foreach ($product->productVariants as $variant)
-                        <span>A partir de {{ $variant->price_without_tax/100 }} €</span><br>
-                    @endforeach -->
-                    <span>
-                        A partir de {{ $variant->price_without_tax/100 }} €
-                    </span><br>
-                    <a href="{{ route('products.show', ['product' => $product->slug]) }}" class="inline-block bg-blue-100 rounded-xl px-3 py-1 text-sm">
-                        Voir le produit
-                    </a>
-                    <a href="{{ route('products.edit', ['product' => $product]) }}" class="inline-block bg-blue-100 rounded-xl px-3 py-1 text-sm">
-                        Modifier le produit
-                    </a>
-                </div>
-            </div>        
-        @endforeach
-                    <!-- @foreach ($products as $product)
-                    <div class="flex flex-col justify-between gap-3 border rounded p-4">
-                        <div class="w-80">
-                            <div class="flex justify-between">
-                                <label for="{{ $variant->product->id }}" class="py-1">
-                                    <input type="checkbox" name="{{ $variant->product->id }}" id="{{ $variant->product->id }}">
-                                </label>
-                                <span>Stock : {{ $variant->stock_quantity }}</span>
+                <div class="flex flex-row flex-wrap justify-between gap-3 border rounded p-4">
+                    @foreach ($products as $product)
+                        <div class="flex flex-col justify-between gap-3 border rounded p-4">
+                            <div class="w-80">
+                                <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"><br>    
+                                <h2 class="font-bold">{{ $product->name }}</h2> 
+                                <span>
+                                    {{ $product->brand ? $product->brand->name : 'Aucune marque' }}
+                                </span><br>
+                                <span class="inline-block bg-amber-100 rounded-xl px-3 py-1 text-sm">
+                                    {{ $product->category ? $product->category->name : 'Aucune catégorie'}}
+                                </span><br>
+                                <div class="mt-4">
+                                    <h3 class="font-medium text-lg">Variantes :</h3>
+                                    @if ($product->productVariants->isEmpty())
+                                        <p class="text-gray-500">Aucune variante.</p>
+                                    @else
+                                        <ul class="list-disc ml-5 mt-2">
+                                            @foreach ($product->productVariants as $variant)
+                                                <li>
+                                                    Contenance : {{ $variant->volume }} – Stock : {{ $variant->stock_quantity }}
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    @endif
+                                </div>
+                               
+                                <div class="flex gap-1">
+                                    <a href="{{ route('products.show', ['product' => $product->slug]) }}" class="border rounded bg-blue-700 py-1 px-3 text-white hover:bg-blue-500">
+                                        👁️ Voir le produit
+                                    </a>
+                                    <a href="{{ route('products.edit', ['product' => $product]) }}" class="border rounded bg-blue-700 py-1 px-3 text-white hover:bg-blue-500">
+                                        🖊️ Modifier le produit
+                                    </a>
+                                    <button class="border rounded bg-red-700 py-1 px-3 text-white hover:bg-red-500">🗑️ Supprimer</button>
+                                </div>
                             </div>
-                            <img src="{{ $variant->product->image }}" alt="{{ $variant->product->name }}">
-                            <span>Nom :</span>
-                            <span class="font-bold">{{ $variant->product->name }}</span> <br>
-                            <span>{{ $variant->volume }}</span>
-                            <span>{{ $variant->product->alcohol_degree }} %</span> <br>
-                            <span>Description :</span>
-                            <span>{{ $variant->product->description }}</span> <br>
-                        </div>
-                        <div class="flex gap-1">
-                        <a href="{{ route('products.edit', $product) }}" class="border rounded bg-blue-700 py-1 px-3 text-white hover:bg-blue-500">🖊️ modifier</a>
-                            <button class="border rounded bg-red-700 py-1 px-3 text-white hover:bg-red-500">🗑️</button>
-                        </div>
-                    </div>
-                    @endforeach -->
+                        </div>        
+                    @endforeach
                 </div>
+                    
                 <div class="mt-4">
                     {{ $products->links() }}
                 </div>
