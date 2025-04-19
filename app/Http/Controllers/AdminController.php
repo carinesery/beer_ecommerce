@@ -25,14 +25,10 @@ class AdminController extends Controller
 
     public function index()
     {
-    
-        $query = Product::with('productVariants');
-
-         // Ajout d'une pagination. 20 livres par pages
-         $products = $query->paginate(25)->withQueryString(); // Conserve les filtres lors changement de page
+        $products = Product::with('productVariants')->paginate(25)->withQueryString(); // Conserve les filtres lors changement de page
 
         return view('admin.product.index', [
-                'products' => $products,
+                'products' => $products
             ]);
     }
 
