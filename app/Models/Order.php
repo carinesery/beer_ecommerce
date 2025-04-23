@@ -26,7 +26,13 @@ class Order extends Model
         'total_price_with_tax',
         'tax_amount',
         'status',
+        'address',
     ];
+
+    protected $casts = [
+        'address' => 'array',
+    ];
+
  //Quand le formulaire sera enregistré cacher les champs
     //  /**
     //  * The attributes that should be hidden for serialization.

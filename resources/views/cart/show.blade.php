@@ -1,3 +1,16 @@
+<style>
+    .to-checkout {
+        display: flex;
+        width: fit-content;
+        justify-self: flex-end;
+        padding: .5rem 1rem;
+        background-color: orangered;
+        color: white;
+        margin: 2rem;
+        border-radius: .5rem;
+    }
+</style>
+
 <x-layout>
     <h1>page panier</h1>
     @foreach ($orderItems as $item)
@@ -52,5 +65,6 @@
         <span>{{ $totalPriceWithTax + $shippingPrice }}</span>
     </div> --}}
 
-   
+   <a class="to-checkout" href="{{ route('cart.checkout') }}">Commander</a>
+
 </x-layout>

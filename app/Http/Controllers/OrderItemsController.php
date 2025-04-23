@@ -43,22 +43,67 @@ class OrderItemsController extends Controller
         return redirect()->route('login')->with('error', 'Vous devez être connecté pour passer une commande.');
     }
     
-    $order = Order::create([
-        'user_id' => auth()->user()->id,
-        'status' => 'cart',
-        'total_price_without_tax' => $validated['price_without_tax']*$validated['quantity'],
-        'total_price_with_tax' => $validated['price_with_tax']*$validated['quantity'],
-        'tax_amount' => $validated['tax_amount'],
+    /** 2 pbs ici : 
+     * - on crée automatiquement un order sans vérifier qu'il y en a déjà un 
+     * - les champs avec les prix sont complétés avec les champs de l'article 
+     * ajouté au panier, ce qui suppose qu'on n'ajoute qu'un seul article au 
+     * panier ... ici ils ne représentent pas la somme */
+    // $order = Order::create([
+    //     'user_id' => auth()->user()->id,
+    //     'status' => 'cart',
+    //     'total_price_without_tax' => $validated['price_without_tax']*$validated['quantity'],
+    //     'total_price_with_tax' => $validated['price_with_tax']*$validated['quantity'],
+    //     'tax_amount' => $validated['tax_amount'],
         
+    // ]);
+
+    // Étape 1 : Récupérer ou créer une commande existante
+    $order = Order::firstOrCreate(
+        [
+        'user_id' => auth()->user()->id,
+        'status' => 'cart'
+        ],
+        [ // valeurs par défaut SI AUCUN Order n'existe
+        'total_price_without_tax' => 0,
+        'total_price_with_tax' => 0,
+        'tax_amount' => 10,
+        ]);
+
+    // Etape 2 : Vérifier si l'artcile existe déjà dans la commande 
+    $orderItem = $order->items()->where('product_variant_id', $validated['product_variant_id'])->first();
+    // Étape 3 : Ajouter l'article à la commande
+    if($orderItem) {
+        // Mettre à jour la quantité du produit 
+        $orderItem->quantity += $validated['quantity'];
+        $orderItem->price_without_tax = $validated['price_without_tax'];
+        $orderItem->price_with_tax = $validated['price_with_tax'];
+        $orderItem->tax_amount = $validated['tax_amount'];
+        $orderItem->save();
+    } else {
+        // Créer un nouvel article
+        $orderItem = $order->items()->create([
+            'product_variant_id' => $validated['product_variant_id'],
+            'quantity' => $validated['quantity'],
+            'price_without_tax' => $validated['price_without_tax'],
+            'price_with_tax' => $validated['price_with_tax'],
+            'tax_amount' => $validated['tax_amount'],
+    ]);
+    }
+
+    // Etape 4 : Recalculer les totaux de la commande
+    $totalWithoutTax = $order->items->sum(function($item) {
+        return $item->price_without_tax * $item->quantity;
+    }); 
+
+    $totalWithTax = $order->items->sum(function($item) {
+        return $item->price_with_tax * $item->quantity;
+    });
+
+    $order->update([
+        'total_price_without_tax' => $totalWithoutTax,
+        'total_price_with_tax' => $totalWithTax,
     ]);
 
-    $order->items()->create([
-        'product_variant_id' => $validated['product_variant_id'],
-        'quantity' => $validated['quantity'],
-        'price_without_tax' => $validated['price_without_tax'],
-        'price_with_tax' => $validated['price_with_tax'],
-        'tax_amount' => $validated['tax_amount'],
-    ]);
     return back()->with('success', 'Produit ajouté au panier !');
 
     }

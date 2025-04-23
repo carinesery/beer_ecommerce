@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\StripeController;
 
 Route::get('/',\App\Http\Controllers\HomeController::class)->name('homepage');
 
@@ -31,7 +34,21 @@ Route::post('/products', [\App\Http\Controllers\OrderItemsController::class, 'st
 
 // Route::get('/products/show', [\App\Http\Controllers\OrderController::class, 'create'])->name('order.create');
 // Route::post('/products', [\App\Http\Controllers\OrderController::class, 'store'])->name('order.store');
-Route::get('/cart', [\App\Http\Controllers\CartController::class, 'index'])->name('cart');
+Route::get('/cart/show', [\App\Http\Controllers\CartController::class, 'show'])->name('cart');
+Route::get('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 
+/** Création d'une route temporaire pour accéder à la vue du formualire de validation de commande */
+Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
+Route::get('/orders/confirmation/{order}', [OrderController::class, 'confirmation'])->name('orders.confirmation');
 
+/** Routes pour le paiement Stripe */
+Route::post('/checkout', [\App\Http\Controllers\StripeController::class, 'checkout'])->name('stripe.checkout');
+Route::get('/checkout/success', [\App\Http\Controllers\StripeController::class, 'success'])->name('stripe.success');
+Route::get('/checkout/cancel', [\App\Http\Controllers\StripeController::class, 'cancel'])->name('stripe.cancel');
+
+// Route intermédiaire en GET pour rediriger vers Stripe via un POST automatique
+Route::get('/orders/redirect/{order}', function (\App\Models\Order $order) {
+    return view('orders.redirect', compact('order'));
+})->name('orders.redirect');
 
