@@ -1,5 +1,11 @@
 <x-layout>
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
     <div class="flex flex-wrap gap-4 py-4 container mx-auto">
+        <!-- Message d'ajout au panier -->
         <div> 
             <img src="{{ asset('storage/app/public/images/' . $product->image) }}" alt="Image du produit" class="w-100 h-100 border border-gray-400">
         </div>

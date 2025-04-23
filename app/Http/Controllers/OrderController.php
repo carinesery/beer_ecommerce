@@ -4,15 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index() // Voir l'ensemble des commandes passées
     {
-        
+        $orders = Order::with('items')
+        ->where('user_id', Auth::id())
+        ->get();
+
+
+        return view('orders.index', compact('orders'));
     }
 
     /**
@@ -20,7 +26,13 @@ class OrderController extends Controller
      */
     public function create()
     {
-        // return view('products.show');
+        // $user = Auth::user();
+
+        // $cart = $user->cart;
+
+        // dd($cart);
+
+        // return view('orders.checkout', compact('user', 'cart'));
     }
 
     /**
@@ -28,35 +40,97 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        // Validation des données
-    // $request->validate([
-    //     'user_id' => 'required|numeric|exists:users,id',
-    //     'total_price_without_tax' => 'required|numeric',
-    //     'total_price_with_tax' => 'required|numeric',
-    //     'tax_amount' => 'required|numeric',
-    //     'status' => 'required|string|in:cart',
-    //     'counter' => 'required|integer|min:1',
 
-    // ]);
+        // 1. Validation
+        $request->validate([
+        // 'civility' => 'required|in:M.,Mme',
+        // 'email' => 'required|email',
+        'phone' => 'nullable|string|max:20',
+        'address' => 'required|string|max:255',
+        'zipcode' => 'required|digits_between:4,10',
+        'city' => 'required|string|max:255',
+        'privacy-policy' => 'accepted',
+        'terms-of-sale' => 'accepted',
+        ]);
 
-    // Création de l'utilisateur (en utilisant l'assignation de masse)
-   
-    // Order::create([
-    //     'user_id' => $request->user_id,
-    //     'total_price_without_tax' => $request->total_price_without_tax,
-    //     'total_price_with_tax' =>$request-> total_price_with_tax,
-    //     'tax_amount' => $request->tax_amount,
-    //     'status' =>$request->status,
-    // ]);
+        // 2. Récupérer l'utilisateur
+        $user = Auth::user();
 
-    // Redirection vers la liste des utilisateurs ou autre page souhaitée avec un message de succès
-    // return redirect()->route('login')->with('success', 'Utilisateur créé avec succès !');
+        // 3. Récupérer la commande existante avec statut "cart"
+        $order = Order::where('user_id', $user->id)
+        ->where('status', 'cart')
+        ->with('items')
+        ->first();
+
+        if (!$order || $order->items->isEmpty()) {
+        return redirect()->route('cart')->with('error', 'Votre panier est vide.');
+        }
+
+        // 4. Mise à jour des infos de la commande
+        $order->update([
+            'status' => 'pending',
+            'address' => json_encode([
+                // 'civility' => $request->civility,
+                'phone' => $request->phone,
+                'address' => $request->address,
+                'zipcode' => $request->zipcode,
+                'city' => $request->city,
+            ]),
+        ]);
+
+        // 5. Rediriger vers la page de confirmation ou de paiement
+        return redirect()->route('orders.redirect', ['order' => $order->id]);
+        // return redirect()->route('orders.confirmation', ['order' => $order->id]);
+
+
+        // // Validation
+        // $request->validate([
+        //     'civility' => 'required|in:M.,Mme',
+        //     // 'firstname' => 'required|string|max:255',
+        //     // 'lastname' => 'required|string|max:255',
+        //     'email' => 'required|email',
+        //     'phone' => 'nullable|string|max:20',
+        //     'address' => 'required|string|max:255',
+        //     'zipcode' => 'required|digits_between:4,10',
+        //     'city' => 'required|string|max:255',
+        //     'privacy-policy' => 'accepted',
+        //     'terms-of-sale' => 'accepted',
+        // ]);
+
+        // // Création 
+        // $user = Auth::user();
+
+        // $order = Order::create([
+        //     'user_id' => $user->id,
+        //     'status' => 'pending',
+        //     'total_price_with_tax' => 120,
+        //     'total_price_without_tax' => 100,
+        //     'tax_amount' => 20,
+        //     'address' => [
+        //         'civility' => $request->civility,
+        //         // 'firstname' => $request->firstname,
+        //         // 'lastname' => $request->lastname,
+        //         'phone' => $request->phone,
+        //         'address' => $request->address,
+        //         'zipcode' => $request->zipcode,
+        //         'city' => $request->city,
+        //     ]
+        // ]);
+
+        // // Redirection
+        // return redirect()->route('orders.confirmation', ['order' => $order->id]);
+
+    }
+
+    public function confirmation(Order $order)
+    {
+        return view('orders.confirmation', compact('order'));
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $id) // Voir une commande passée 
     {
         //
     }
