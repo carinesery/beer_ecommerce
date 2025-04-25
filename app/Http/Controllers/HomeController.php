@@ -28,6 +28,10 @@ class HomeController extends Controller
             $query->where('category_id', $request->query('category'));
         }
 
+        if ($request->has('brand')) {
+            $query->where('brand_id', $request->query('brand'));
+        }
+
         $products = $query->paginate(25)->withQueryString();
 
         return view('index', [
