@@ -11,8 +11,9 @@ Route::get('/user', function (Request $request) {
 
 Route::get('/products', [ProductController::class, 'index']);
 // http://127.0.0.1:8000/api/products
-// Route::get('/products/{id}', [ProductController::class, 'show'])->middleware('auth:sanctum');
+Route::get('/products/{id}', [ProductController::class, 'show']);
 // // http://127.0.0.1:8000/api/products/{id}
+
 // Route::post('/products', [ProductController::class, 'store'])->middleware('auth:sanctum');
 // // http://127.0.0.1:8000/api/products
 // Route::put('/products/{id}', [ProductController::class, 'update'])->middleware('auth:sanctum');

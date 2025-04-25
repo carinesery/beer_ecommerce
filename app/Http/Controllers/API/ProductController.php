@@ -56,7 +56,15 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $product = Product::with('productVariants')->findOrFail($id); // Charge les variants avec le produit
+        $categories = Category::all(); // Récupère les catégories
+        $brands = Brand::all(); // Récupère les catégories
+
+        return response()->json([
+            'product' => $product, 
+            'categories' => $categories, 
+            'brands' => $brands
+        ], 200);
     }
 
     /**
