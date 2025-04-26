@@ -4,10 +4,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
-use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\StripeController;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use App\Http\Controllers\UserAccountController;
+use App\Http\Controllers\UserController;
 
 Route::get('/',\App\Http\Controllers\HomeController::class)->name('homepage');
 
@@ -54,9 +55,11 @@ Route::get('/orders/redirect/{order}', function (\App\Models\Order $order) {
     return view('orders.redirect', compact('order'));
 })->name('orders.redirect');
 
-Route::get('/auth/register', [RegisteredUserController::class, 'create'])->name('register.create');
-Route::post('/auth/register', [RegisteredUserController::class, 'store'])->name('register.store');
-Route::delete('auth/delete', [RegisteredUserController::class, 'destroy'])->middleware('auth')->name('register.destroy');
+Route::get('/auth/register', [userAccountController::class, 'create'])->name('register.create');
+Route::post('/auth/register', [UserAccountController::class, 'store'])->name('register.store');
+Route::get('auth/show', [UserAccountController::class, 'show'])->name('account.show');
+Route::get('auth/delete', [UserAccountController::class, 'todestroy'])->middleware('auth')->name('register.todestroy');
+Route::delete('auth/delete', [UserAccountController::class, 'destroy'])->middleware('auth')->name('register.destroy');
 
 // Route pour vérification de l'email 
 Route::get('/email/verify', function () {
