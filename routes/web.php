@@ -4,7 +4,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\StripeController;
+use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 Route::get('/',\App\Http\Controllers\HomeController::class)->name('homepage');
 
@@ -37,7 +40,6 @@ Route::post('/products', [\App\Http\Controllers\OrderItemsController::class, 'st
 Route::get('/cart/show', [\App\Http\Controllers\CartController::class, 'show'])->name('cart');
 Route::get('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 
-/** Création d'une route temporaire pour accéder à la vue du formualire de validation de commande */
 Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
 Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
 Route::get('/orders/confirmation/{order}', [OrderController::class, 'confirmation'])->name('orders.confirmation');
@@ -52,3 +54,25 @@ Route::get('/orders/redirect/{order}', function (\App\Models\Order $order) {
     return view('orders.redirect', compact('order'));
 })->name('orders.redirect');
 
+Route::get('/auth/register', [RegisteredUserController::class, 'create'])->name('register.create');
+Route::post('/auth/register', [RegisteredUserController::class, 'store'])->name('register.store');
+Route::delete('auth/delete', [RegisteredUserController::class, 'destroy'])->middleware('auth')->name('register.destroy');
+
+// Route pour vérification de l'email 
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware('auth')->name('verification.notice');
+
+// 2. Gère la validation du lien dans l'email
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill(); // Marque l'utilisateur comme "email_verified_at" rempli.
+
+    return redirect('/');
+})->middleware(['auth', 'signed'])->name('verification.verify');
+
+// 3. Renvoie un nouveau lien de vérification
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+
+    return back()->with('message', 'Un nouveau lien de vérification a été envoyé sur votre adresse email.');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');

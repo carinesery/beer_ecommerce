@@ -7,7 +7,7 @@
                 <div class="flex justify-between gap-0 bg-gray-700">
                     <div class="flex gap-0">
                         <button class="border-r-1 border-gray-400 py-1 px-3 text-white hover:bg-gray-500">Admin</button>
-                        <button class="border-r-1 border-gray-400 py-1 px-3 text-white hover:bg-gray-500">Costumer</button>
+                        <button class="border-r-1 border-gray-400 py-1 px-3 text-white hover:bg-gray-500">Customer</button>
                         <button class="border-r-1 border-gray-400 py-1 px-3 text-white hover:bg-gray-500">Prénom</button>
                         <button class="border-r-1 border-gray-400 py-1 px-3 text-white hover:bg-gray-500">Nom</button>
                         <button class="border-r-1 border-gray-400 py-1 px-3 text-white hover:bg-gray-500">Email</button>
