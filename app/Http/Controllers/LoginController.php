@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+
 
 // Ce code est le LoginController qui gère 
 // l'authentification des utilisateurs (connexion et déconnexion). Voici une explication détaillée :
@@ -34,6 +36,15 @@ class LoginController extends Controller
                 // L'utilisateur est redirigé vers la page dashboard ou vers la dernière page qu'il voulait visiter (intended()).
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
+
+            // Vérifie si l'utilisateur a vérifié son email
+            $user = Auth::user();
+
+            if (is_null($user->email_verified_at)) { // Normalement la méthode hasVerifiedEmail aurait dû fonctionner mais non ... cela la remplace
+                // Redirige l'utilisateur s'il n'a pas vérifié son email Auth::logout();
+                
+                return redirect()->route('verification.notice')->with('message', 'Veuillez vérifier votre email pour vous connecter.');
+            }
  
             return redirect()->intended('/');
         }
@@ -43,7 +54,7 @@ class LoginController extends Controller
         //     Un message d’erreur s'affiche.
         //     Le champ email est pré-rempli avec l’entrée précédente (onlyInput('email')).
         return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
+            'email' => 'Les informations d\'identification sont incorrectes.',
         ])->onlyInput('email');
     }
 

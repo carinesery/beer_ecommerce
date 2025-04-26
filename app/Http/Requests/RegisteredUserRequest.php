@@ -22,10 +22,10 @@ class RegisteredUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'firstname' => ['required'],
-            'lastname' => ['required'],
+            'firstname' => ['required', 'string', 'max:255'],
+            'lastname' => ['required', 'string', 'max:255'],
             'birthdate' => ['required', 'date', 'before:-18 years'],
-            'email' => ['required', 'email'],
+            'email' => ['required', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'string', 'min:8', 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z\d]).+$/', 'confirmed'],
             'password_confirmation' => ['required'],
             'privacy_policy' => ['accepted']
@@ -36,6 +36,7 @@ class RegisteredUserRequest extends FormRequest
     {
         return [
             'birthdate.before' => 'Vous devez avoir au moins 18 ans pour vous inscrire.',
+            'email.unique' => 'Cet email est déjà utilisé, merci d’en choisir un autre.',
             'password.min' => 'Le mot de passe doit contenir au moins :min caractères.',
             'password' => ['regex' => 'Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial parmi les caractères spéciaux !@#$%^&*()',],
             'password.confirmed' => 'La confirmation du mot de passe ne correspond pas.',
