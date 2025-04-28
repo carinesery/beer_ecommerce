@@ -57,7 +57,7 @@
                                     <a href="{{ route('products.edit', ['product' => $product]) }}" class="border rounded bg-blue-700 py-1 px-3 text-white hover:bg-blue-500">
                                         🖊️ Modifier le produit
                                     </a>
-                                    <button class="border rounded bg-red-700 py-1 px-3 text-white hover:bg-red-500">🗑️ Supprimer</button>
+                                    <a href="{{ route('products.delete', $product) }}" class="border rounded bg-red-700 py-1 px-3 text-white hover:bg-red-500">🗑️ Supprimer</a>
                                 </div>
                             </div>
                         </div>        

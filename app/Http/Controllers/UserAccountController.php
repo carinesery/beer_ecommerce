@@ -45,12 +45,12 @@ class UserAccountController extends Controller
 
     public function edit()
     {
-
+        // Priorité donnée à fonctionnalité "Mot de passe oublié" si temps nécessaire
     }
 
     public function update()
     {
-        
+        // Priorité donnée à fonctionnalité "Mot de passe oublié" si temps nécessaire
     }
 
     public function todestroy() {
