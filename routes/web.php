@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\StripeController;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -17,6 +18,8 @@ Route::post('/products', [\App\Http\Controllers\ProductController::class, 'store
 Route::get('/products/{product:slug}', [\App\Http\Controllers\ProductController::class, 'show'])->name('products.show');
 Route::get('/products/edit/{product}', [\App\Http\Controllers\ProductController::class, 'edit'])->name('products.edit');
 Route::put('/products/{product}', [\App\Http\Controllers\ProductController::class, 'update'])->name('products.update');
+Route::get('/products/delete/{product:slug}', [ProductController::class, 'todelete'])->name('products.todelete');
+Route::delete('products/delete/{product:slug}', [ProductController::class, 'delete'])->name('products.delete');
 
 
 Route::get('/login', [\App\Http\Controllers\LoginController::class, 'login'])->name('login');
