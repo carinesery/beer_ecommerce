@@ -57,14 +57,26 @@ class ProductController extends Controller
     public function show(string $id)
     {
         $product = Product::with('productVariants')->findOrFail($id); // Charge les variants avec le produit
-        $categories = Category::all(); // Récupère les catégories
-        $brands = Brand::all(); // Récupère les catégories
 
-        return response()->json([
-            'product' => $product, 
-            'categories' => $categories, 
-            'brands' => $brands
-        ], 200);
+    // Filtrer les catégories associées au produit
+    $categories = Category::whereHas('products', function ($query) use ($id) {
+        $query->where('id', $id);
+    })->get();
+
+    // Filtrer les marques associées au produit
+    $brands = Brand::whereHas('products', function ($query) use ($id) {
+        $query->where('id', $id);
+    })->get();
+
+    // Filtrer les variantes associées au produit
+    $productVariants = ProductVariant::where('product_id', $id)->get();
+
+    return response()->json([
+        'product' => $product,
+        'categories' => $categories,
+        'brands' => $brands,
+        'productVariants' => $productVariants
+    ], 200);
     }
 
     /**
