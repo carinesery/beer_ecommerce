@@ -204,7 +204,7 @@ class ProductController extends Controller
 
 
     public function show(Product $product, ProductVariant $productVariant) 
-{
+    {   
         $productVariants = ProductVariant::where('product_id', $product->id)->get();
         // $brands = Brand::where('product_id', $product->id)->get();
         // dd($productVariants);
@@ -215,9 +215,22 @@ class ProductController extends Controller
         }
         // dd($test);
     
-    return view('products.show', [
+        return view('products.show', [
         'product' => $product,
         'productVariant' => $productVariant,
-    ]);
-}
+        ]);
+    }
+
+    public function todelete(Product $product)
+    {
+        return view('products/delete', compact('product'));
+    }
+
+    public function delete(Product $product) 
+    {
+        $product->delete();
+        
+        return redirect()->route('admin.index')->with('success', 'Le produit a bien été supprimé');
+    }
+
 }
