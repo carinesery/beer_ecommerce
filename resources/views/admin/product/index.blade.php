@@ -1,3 +1,8 @@
+<style>
+    .add-product {
+       padding: .5rem 1rem;
+    }
+</style>
 <x-layout title="Admin">
     <div class="container mx-auto">
         <h1>Tableau de bord administrateur</h1>
@@ -29,6 +34,9 @@
                         </label>
                         <button class="border-r-1 border-gray-400 py-1 px-3 text-white hover:bg-gray-500">🗑️ Corbeille</button>
                     </div>
+                </div>
+                <div class="add-product">
+                    <a href="{{ route('products.create') }}" class="border rounded bg-blue-700 py-1 px-3 text-white hover:bg-blue-500">Créer un nouveau produit</a>
                 </div>
                 <div class="flex flex-wrap justify-between gap-3 border rounded p-4"> <!-- flex-row  -->
                     @foreach ($products as $product)
