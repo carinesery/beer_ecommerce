@@ -1,6 +1,13 @@
 <x-layout title="Admin">
     <div class="container mx-auto">
         <h1>Tableau de bord administrateur</h1>
+        <!-- Affichage du message de succès -->
+        @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+        @endif
+
         <div class="grid grid-cols-[10%_90%] ">
             <x-filterAdmin></x-filterAdmin>
             <div>
@@ -23,10 +30,10 @@
                         <button class="border-r-1 border-gray-400 py-1 px-3 text-white hover:bg-gray-500">🗑️ Corbeille</button>
                     </div>
                 </div>
-                <div class="flex flex-row flex-wrap justify-between gap-3 border rounded p-4">
+                <div class="flex flex-wrap justify-between gap-3 border rounded p-4"> <!-- flex-row  -->
                     @foreach ($products as $product)
-                        <div class="flex flex-col justify-between gap-3 border rounded p-4">
-                            <div class="w-80">
+                        <div class="flex flex-col  w-full justify-between gap-3 border rounded p-4">
+                            <div> <!-- class="w-80" -->
                                 <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"><br>    
                                 <h2 class="font-bold">{{ $product->name }}</h2> 
                                 <span>
@@ -40,13 +47,40 @@
                                     @if ($product->productVariants->isEmpty())
                                         <p class="text-gray-500">Aucune variante.</p>
                                     @else
-                                        <ul class="list-disc ml-5 mt-2">
-                                            @foreach ($product->productVariants as $variant)
-                                                <li>
-                                                    Contenance : {{ $variant->volume }} – Stock : {{ $variant->stock_quantity }}
-                                                </li>
-                                            @endforeach
-                                        </ul>
+                                        <table class="w-full">
+                                            <thead>
+                                                <tr>
+                                                    <th>Contenance</th>
+                                                    <th>Stock</th>
+                                                    <th>Prix HT</th>
+                                                    <th>Taxe</th>
+                                                    <th>Prix TTC</th>
+                                                    <th>Actions</th>
+                                                </tr>    
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($product->productVariants as $productvariant)
+                                                <tr>
+                                                    <td>{{ $productvariant->volume }}</td>
+                                                    <td>{{ $productvariant->stock_quantity }}</td>
+                                                    <td>{{ $productvariant->price_without_tax }}</td>
+                                                    <td>{{ $productvariant->tax_amount }}</td>
+                                                    <td>{{ 'A créer' }}</td>
+                                                    <td><!-- Actions -->
+                                                        <a href="{{ route('productvariants.edit', $productvariant) }}">Modifier la variante</a>
+                                                        <a href="{{ route('productvariants.todestroy', $productvariant) }}">Supprimer la variante</a>
+                                                    </td>
+                                                        <!-- <p>Contenance : {{ $productvariant->volume }} – Stock : {{ $productvariant->stock_quantity }}</p>
+                                                    </li> -->
+                                                </tr>
+                                                @endforeach
+                                            </tbody>  
+                                            <tfoot>
+                                                <th>
+                                                    <a href="{{ route('productvariants.create', $product) }}">Ajouter une variante</a>
+                                                </th>
+                                            </tfoot> 
+                                        </table>
                                     @endif
                                 </div>
                                

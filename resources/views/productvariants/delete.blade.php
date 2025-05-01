@@ -10,7 +10,7 @@
         margin: 0;
     }
     
-    .destroy-account,
+    .destroy-variant,
     .cancel-destroy {
         padding: .75rem 1.5rem;
         border: 2px solid red;
@@ -33,20 +33,20 @@
         color: black;
     }
 
-    .destroy-account:hover {
+    .destroy-variant:hover {
         cursor: pointer;
     }
 
 </style>
-<x-layout title="Suppression du compte">
-    <h1>Supression du compte</h1>
-    <p>Etes-vous sûr(e) de vouloir supprimer votre compte ? <b>Cette action est définitive<b>.</p>
+<x-layout title="Suppression de la variante">
+    <h1>Supression de la variante {{ $productvariant->product->name }} {{ $productvariant->slug }}</h1>
+    <p>Etes-vous sûr(e) de vouloir supprimer cette variante du produit {{ $productvariant->product->name }} ? <b>Cette action est définitive<b>.</p>
     <div class="cancel-or-destroy">
-        <a class="cancel-destroy" href="{{ route('account.show') }}">Annuler</a>
-        <form action="{{ route('productvariants.destroy') }}" method='POST'>
+        <a class="cancel-destroy" href="{{ route('admin.index') }}">Annuler</a>
+        <form action="{{ route('productvariants.destroy', $productvariant) }}" method='POST'>
             @csrf 
             @method('DELETE')
-            <button class="destroy-account" type=submit>Supprimer mon compte</button>
+            <button class="destroy-variant" type=submit>Supprimer la variante</button>
         </form>
     </div>
     

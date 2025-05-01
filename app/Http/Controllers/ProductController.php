@@ -227,10 +227,11 @@ class ProductController extends Controller
     }
 
     public function delete(Product $product) 
-    {
+    {   
+        $product->productVariants->delete();
         $product->delete();
         
-        return redirect()->route('admin.index')->with('success', 'Le produit a bien été supprimé');
+        return redirect()->route('admin.index')->with('success', 'Le produit et ses variantes ont bien été supprimés.');
     }
 
 }

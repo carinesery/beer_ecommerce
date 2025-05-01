@@ -5,11 +5,13 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductVariantController;
 use App\Http\Controllers\StripeController;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\UserAccountController;
 use App\Http\Controllers\UserController;
+
 
 Route::get('/',\App\Http\Controllers\HomeController::class)->name('homepage');
 
@@ -20,6 +22,16 @@ Route::get('/products/edit/{product}', [\App\Http\Controllers\ProductController:
 Route::put('/products/{product}', [\App\Http\Controllers\ProductController::class, 'update'])->name('products.update');
 Route::get('/products/delete/{product:slug}', [ProductController::class, 'todelete'])->name('products.todelete');
 Route::delete('products/delete/{product:slug}', [ProductController::class, 'delete'])->name('products.delete');
+
+// CRUD des ProductVariants
+Route::controller(ProductVariantController::class)->group(function() {
+    Route::get('products/{product}/productvariants/create', 'create')->name('productvariants.create');
+    Route::post('products/{product}/productvariants','store')->name('productvariants.store');
+    Route::get('/products/{productvariant}/edit', 'edit')->name('productvariants.edit');
+    Route::patch('/products/{productvariant}', 'update')->name('productvariants.update');
+    Route::get('/products/{productvariant}/delete', 'todestroy')->name('productvariants.todestroy');
+    Route::delete('/products/{productvariant}/delete', 'destroy')->name('productvariants.destroy');
+});
 
 
 Route::get('/login', [\App\Http\Controllers\LoginController::class, 'login'])->name('login');
