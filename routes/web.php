@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\OrderItemsController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductVariantController;
 use App\Http\Controllers\StripeController;
@@ -15,13 +16,17 @@ use App\Http\Controllers\UserController;
 
 Route::get('/',\App\Http\Controllers\HomeController::class)->name('homepage');
 
-Route::get('/products/create', [\App\Http\Controllers\ProductController::class, 'create'])->name('products.create');
-Route::post('/products', [\App\Http\Controllers\ProductController::class, 'store'])->name('products.store');
-Route::get('/products/{product:slug}', [\App\Http\Controllers\ProductController::class, 'show'])->name('products.show');
-Route::get('/products/edit/{product}', [\App\Http\Controllers\ProductController::class, 'edit'])->name('products.edit');
-Route::put('/products/{product}', [\App\Http\Controllers\ProductController::class, 'update'])->name('products.update');
-Route::get('/products/delete/{product:slug}', [ProductController::class, 'todelete'])->name('products.todelete');
-Route::delete('products/delete/{product:slug}', [ProductController::class, 'delete'])->name('products.delete');
+// CRUD des Products
+Route::controller(ProductController::class)->group(function() {
+    Route::get('/products/create', 'create')->name('products.create');
+    Route::post('/products', 'store')->name('products.store');
+    Route::get('/products/{product:slug}', 'show')->name('products.show');
+    Route::get('/products/edit/{product}', 'edit')->name('products.edit');
+    Route::put('/products/{product}', 'update')->name('products.update');
+    Route::get('/products/delete/{product:slug}', 'todelete')->name('products.todelete');
+    Route::delete('products/delete/{product:slug}', 'delete')->name('products.delete');
+});
+
 
 // CRUD des ProductVariants
 Route::controller(ProductVariantController::class)->group(function() {
@@ -48,8 +53,11 @@ Route::get('/users/{user}', [\App\Http\Controllers\UserController::class, 'show'
 Route::get('/users/edit/{user}', [\App\Http\Controllers\UserController::class, 'edit'])->name('users.edit');
 Route::put('/users/{user}', [\App\Http\Controllers\UserController::class, 'update'])->name('users.update');
 
-Route::get('/products/show', [\App\Http\Controllers\OrderItemsController::class, 'create'])->name('orderItems.create');
-Route::post('/products', [\App\Http\Controllers\OrderItemsController::class, 'store'])->name('orderItems.store');
+// CRUD des OrderItems
+Route::controller(OrderItemsController::class)->group(function() {
+    Route::get('/order-items/show', 'create')->name('orderItems.create');
+    Route::post('/order-items', 'store')->name('orderItems.store');
+});
 
 // Route::get('/products/show', [\App\Http\Controllers\OrderController::class, 'create'])->name('order.create');
 // Route::post('/products', [\App\Http\Controllers\OrderController::class, 'store'])->name('order.store');
@@ -75,6 +83,7 @@ Route::post('/auth/register', [UserAccountController::class, 'store'])->name('re
 Route::get('auth/show', [UserAccountController::class, 'show'])->name('account.show');
 Route::get('auth/delete', [UserAccountController::class, 'todestroy'])->middleware('auth')->name('register.todestroy');
 Route::delete('auth/delete', [UserAccountController::class, 'destroy'])->middleware('auth')->name('register.destroy');
+
 
 // Route pour vérification de l'email 
 Route::get('/email/verify', function () {
