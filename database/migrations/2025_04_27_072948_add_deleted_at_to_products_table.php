@@ -25,7 +25,7 @@ return new class extends Migration
     {
         Schema::table('products', function (Blueprint $table) {
             
-            $table->dropSoftDeletes();  // Supprime la colonne 'deleted_at' si la migration est annulée
+            $table->dropSoftDeletes();  
 
         });
     }
