@@ -11,7 +11,9 @@ Route::get('/user', function (Request $request) {
 // http://127.0.0.1:8000/api/users
 
 Route::post('/authenticate', [LoginController::class, 'authenticate']);
-// http://127.0.0.1:8000/api/login
+// http://127.0.0.1:8000/api/authenticate
+Route::middleware('auth:sanctum')->post('logout', [LoginController::class, 'logout']);
+// http://127.0.0.1:8000/api/logOUT
 
 Route::get('/products', [ProductController::class, 'index']);
 // http://127.0.0.1:8000/api/products
