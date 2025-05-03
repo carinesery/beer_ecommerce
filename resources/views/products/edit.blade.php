@@ -180,7 +180,7 @@
                 </div>
 
                 <div>
-                    <label for="variant_price_without_tax">Prix HT</label>
+                    <label for="variant_price_without_tax">Prix HT (en centimes)</label>
                     <input type="number" name="variants[{{ $index }}][price_without_tax]" id="variant_price_without_tax" value="{{ old('variants.' . $index . '.price_without_tax', $variant->price_without_tax) }}" required>
                     @error('variants.0.price_without_tax')
                         <p style="color: red;">{{ $message }}</p>

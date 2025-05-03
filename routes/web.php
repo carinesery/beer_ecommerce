@@ -57,6 +57,7 @@ Route::put('/users/{user}', [\App\Http\Controllers\UserController::class, 'updat
 Route::controller(OrderItemsController::class)->group(function() {
     Route::get('/order-items/show', 'create')->name('orderItems.create');
     Route::post('/order-items', 'store')->name('orderItems.store');
+    Route::patch('/order-items/{order_item}', 'update')->name('order-items.update');
 });
 
 // Route::get('/products/show', [\App\Http\Controllers\OrderController::class, 'create'])->name('order.create');

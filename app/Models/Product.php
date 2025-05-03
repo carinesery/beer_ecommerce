@@ -44,6 +44,7 @@ class Product extends Model
     {
         return $this->hasOne(ProductVariant::class)->where('available', true)->latest();
     }
+
 }
 
    

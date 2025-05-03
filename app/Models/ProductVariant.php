@@ -26,4 +26,8 @@ class ProductVariant extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
+    public function productVariantPriceWithTax() { 
+        return $this->price_without_tax + ($this->price_without_tax * $this->tax_amount)/100;
+    }
 }
