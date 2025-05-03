@@ -78,11 +78,23 @@ Route::get('/orders/redirect/{order}', function (\App\Models\Order $order) {
     return view('orders.redirect', compact('order'));
 })->name('orders.redirect');
 
-Route::get('/auth/register', [userAccountController::class, 'create'])->name('register.create');
-Route::post('/auth/register', [UserAccountController::class, 'store'])->name('register.store');
-Route::get('auth/show', [UserAccountController::class, 'show'])->name('account.show');
-Route::get('auth/delete', [UserAccountController::class, 'todestroy'])->middleware('auth')->name('register.todestroy');
-Route::delete('auth/delete', [UserAccountController::class, 'destroy'])->middleware('auth')->name('register.destroy');
+Route::controller(UserAccountController::class)->group(function() {
+    Route::get('/auth/register', 'create')->name('register.create');
+    Route::post('/auth/register', 'store')->name('register.store');
+    Route::get('/auth/show', 'show')->name('account.show');
+    Route::get('/auth/edit', 'edit')->name('account.edit');
+    Route::patch('/auth', 'update')->name('account.update');
+    Route::get('/auth/delete', 'todestroy')->name('account.todestroy');
+    Route::delete('/auth/delete', 'destroy')->name('account.destroy');
+});
+
+// A faire : 
+Route::controller(PasswordController::class)->group(function() {
+    Route::get('password/edit', 'edit')->name('password.edit');
+    Route::put('password/change', 'update')->name('password.update');
+
+});
+
 
 
 // Route pour vérification de l'email 

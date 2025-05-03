@@ -43,7 +43,7 @@
     <p>Etes-vous sûr(e) de vouloir supprimer votre compte ? <b>Cette action est définitive<b>.</p>
     <div class="cancel-or-destroy">
         <a class="cancel-destroy" href="{{ route('account.show') }}">Annuler</a>
-        <form action="{{ route('productvariants.destroy') }}" method='POST'>
+        <form action="{{ route('account.destroy') }}" method='POST'>
             @csrf 
             @method('DELETE')
             <button class="destroy-account" type=submit>Supprimer mon compte</button>
