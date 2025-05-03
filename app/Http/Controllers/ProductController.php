@@ -228,7 +228,10 @@ class ProductController extends Controller
 
     public function delete(Product $product) 
     {   
-        $product->productVariants->delete();
+        foreach ($product->productVariants as $variant) {
+            $variant->delete(); // suppression individuelle car delete ne supprimer pas des collections mais des objets un par un
+        }
+
         $product->delete();
         
         return redirect()->route('admin.index')->with('success', 'Le produit et ses variantes ont bien été supprimés.');

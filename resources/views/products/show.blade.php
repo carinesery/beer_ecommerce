@@ -13,7 +13,7 @@
             <div>
                 <span>Stock : {{ $productVariant->stock_quantity}}</span>
                 <h1 class="font-bold text-3xl"><img src="{{ $product->brand->logo}}" alt="{{ $product->brand->name}}" class="w-20 h-20 border border-gray-400" > <span class="text-lg font-bold">{{ $product->brand->name}}</span></h1>
-                <h2 class="font-bold text-3xl">{{ $product->name }} <span>{{ ($productVariant->price_without_tax/100)*($productVariant->tax_amount+100)/100}} €</span></h2>
+                <h2 class="font-bold text-3xl">{{ $product->name }} <span>{{ number_format($productVariant->productVariantPriceWithTax()/100, 2, ',', '') }} €</span></h2>
                 <span>{{ $productVariant->volume}}</span> <br> 
                 <span>Degré d'alcool : {{ $product->alcohol_degree }} °C</span> <br>
                 <span>Type de bière : {{ $product->category->name }}</span> <br>

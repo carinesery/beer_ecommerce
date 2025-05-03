@@ -123,11 +123,11 @@
                 @foreach($order->items as $item)
                     <li>
                         Bière {{ $item->productVariant->product->name }}, contenance de  
-                        {{ $item->productVariant->volume }}. Quantité : {{ $item->quantity }} / Prix unitaire TTC : {{ $item->price_with_tax }} €
+                        {{ $item->productVariant->volume }}. Quantité : {{ $item->quantity }} / Prix TTC : {{ number_format($item->priceWithTax()/100, 2, ',', '') }} €
                     </li>
                 @endforeach
                 </ul>
-                <p>Total TTC : {{ $order->total_price_with_tax }} €</p>
+                <p>Total TTC : {{ number_format($order->total_price_with_tax/100, 2, ',', '') }} €</p>
         <form action="{{ route('orders.store') }}" method="POST">
         @csrf
             <!-- Prénom, nom, mail, adresse, code postal, ville, numéro de téléphone, checkbox conditions générales -->

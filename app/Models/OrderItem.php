@@ -33,4 +33,8 @@ class OrderItem extends Model
         'price_with_tax',
         'tax_amount',
     ];
+
+    public function priceWithTax() {
+        return $this->price_without_tax + ($this->price_without_tax * $this->tax_amount)/100;
+    }
 }
