@@ -3,6 +3,7 @@
         display: block;
     }
 
+    .account-to-modify,
     .account-to-destroy {
         display: inline-block;
         width: fit-content;
@@ -14,6 +15,7 @@
         font-weight: 500;
     }
 
+    .account-to-modify:visited,
     .account-to-destroy:visited {
         color: red;
     }
@@ -26,5 +28,6 @@
     <span class="infos-account">Email : {{ $user->email }}</span>
 
     <!-- Lien vers suppression de compte -->
-     <a class="account-to-destroy" href="{{ route('register.todestroy') }}">Supprimer mon compte</a>
+    <a class="account-to-modify" href="{{ route('account.edit') }}">Modifier mon compte</a>
+    <a class="account-to-destroy" href="{{ route('account.todestroy') }}">Supprimer mon compte</a>
 </x-layout>
