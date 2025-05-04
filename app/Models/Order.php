@@ -31,6 +31,10 @@ class Order extends Model
 
     protected $casts = [
         'address' => 'array',
+        'validated_at' => 'datetime',
+        'paid_at' => 'datetime',
+        'shipped_at' => 'datetime',
+        'cancelled_at' => 'datetime',
     ];
     /**Le cast permet à Laravel de :
         - Enregistrer automatiquement le champ address en JSON lors du save()/update()
