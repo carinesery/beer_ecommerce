@@ -28,7 +28,7 @@
                         @endif
                     </span>
                 </div>
-                <a href="">Voir la commande</a>
+                <a href="{{ route('orders.show', $order) }}">Voir la commande</a>
             </div>
         </li>
         @endforeach

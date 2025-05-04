@@ -67,9 +67,11 @@ Route::controller(OrderItemsController::class)->group(function() {
 Route::get('/cart/show', [\App\Http\Controllers\CartController::class, 'show'])->name('cart');
 Route::get('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 
+
 Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
 Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
 Route::get('/orders/confirmation/{order}', [OrderController::class, 'confirmation'])->name('orders.confirmation');
+Route::get('orders/{order}', [OrderController::class, 'show'])->name('orders.show');
 
 // Route intermédiaire en GET pour rediriger vers Stripe via un POST automatique
 Route::get('/orders/redirect/{order}', function (\App\Models\Order $order) {

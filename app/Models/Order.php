@@ -32,6 +32,10 @@ class Order extends Model
     protected $casts = [
         'address' => 'array',
     ];
+    /**Le cast permet à Laravel de :
+        - Enregistrer automatiquement le champ address en JSON lors du save()/update()
+        - Et le récupérer comme un tableau associatif PHP
+    */
 
     public function recalculateTotals()
     {   
