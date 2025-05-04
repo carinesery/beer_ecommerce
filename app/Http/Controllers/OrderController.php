@@ -80,55 +80,9 @@ class OrderController extends Controller
 
         // 5. Rediriger vers la page de confirmation ou de paiement
         return redirect()->route('orders.redirect', ['order' => $order->id]);
-        
-
-        // // Validation
-        // $request->validate([
-        //     'civility' => 'required|in:M.,Mme',
-        //     // 'firstname' => 'required|string|max:255',
-        //     // 'lastname' => 'required|string|max:255',
-        //     'email' => 'required|email',
-        //     'phone' => 'nullable|string|max:20',
-        //     'address' => 'required|string|max:255',
-        //     'zipcode' => 'required|digits_between:4,10',
-        //     'city' => 'required|string|max:255',
-        //     'privacy-policy' => 'accepted',
-        //     'terms-of-sale' => 'accepted',
-        // ]);
-
-        // // Création 
-        // $user = Auth::user();
-
-        // $order = Order::create([
-        //     'user_id' => $user->id,
-        //     'status' => 'pending',
-        //     'total_price_with_tax' => 120,
-        //     'total_price_without_tax' => 100,
-        //     'tax_amount' => 20,
-        //     'address' => [
-        //         'civility' => $request->civility,
-        //         // 'firstname' => $request->firstname,
-        //         // 'lastname' => $request->lastname,
-        //         'phone' => $request->phone,
-        //         'address' => $request->address,
-        //         'zipcode' => $request->zipcode,
-        //         'city' => $request->city,
-        //     ]
-        // ]);
-
-        // // Redirection
-        // return redirect()->route('orders.confirmation', ['order' => $order->id]);
 
     }
 
-    public function confirmation(Order $order)
-    {
-        return view('orders.confirmation', compact('order'));
-    }
-
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id) // Voir une commande passée 
     {
         //
@@ -155,6 +109,10 @@ class OrderController extends Controller
      */
     public function destroy(string $id)
     {
+        //
+    }
+
+    public function cancelled() {
         //
     }
 }

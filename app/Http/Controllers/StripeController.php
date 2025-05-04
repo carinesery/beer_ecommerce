@@ -27,7 +27,7 @@ class StripeController extends Controller
                     'product_data' => [
                         'name' => $item->productVariant->product->name . ' - ' . $item->productVariant->volume,
                     ],
-                    'unit_amount' => $item->productVariant->productVariantPriceWithTax(),
+                    'unit_amount' => intval($item->productVariant->productVariantPriceWithTax()),
                 ],
                 'quantity' => $item->quantity,
             ];
@@ -39,22 +39,29 @@ class StripeController extends Controller
             'payment_method_types' => ['card'],
             'line_items' => $lineItems,
             'mode' => 'payment',
-            'success_url' => route('stripe.success'),
-            'cancel_url' => route('stripe.cancel'),
+            'success_url' => route('stripe.success', ['order_id' => $order->id]),
+            'cancel_url' => route('stripe.cancel', ['order_id' => $order->id]),
         ]);
 
         return redirect($session->url);
     }
 
-    public function success()
+    public function success(Request $request)
     {
+        // Récupère la commande
+        $order = Order::where('user_id', auth()->id())
+                        ->where('id', $request->order_id)
+                        ->where('status', 'pending')
+                        ->firstOrFail();
+        
+        
         // Met à jour le statut de la commande ici
-        $order = Order::where('user_id', auth()->id())->where('status', 'pending')->first();
         if ($order) {
             $order->status = 'completed';
             $order->save();
         }
 
+        $order->address = json_decode($order->address, true);
         return view('orders.confirmation', ['order' => $order]);
     }
 

@@ -29,7 +29,7 @@
                     Adresse non renseignée
                 @endif
             </li>
-            <li>Total TTC : {{ $order->total_price_with_tax }} €</li>
+            <li>Total TTC : {{ number_format($order->total_price_with_tax/100, 2, ',', '') }} €</li>
         </ul>
 
     </main>

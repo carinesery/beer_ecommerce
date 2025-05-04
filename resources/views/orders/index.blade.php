@@ -15,7 +15,7 @@
         <li><span>Commande du {{ $order->created_at->format('d/m/Y') }}</span>
             <div>
                 <div class="resume">
-                    <span>Montant total : {{ $order->total_price_with_tax }} €</span>
+                    <span>Montant total : {{ number_format($order->total_price_with_tax/100, 2, ',', '') }} €</span>
                     <span>Statut :
                         @if($order->status === 'pending')
                         Validée
