@@ -9,7 +9,7 @@
 </style>
 
 <x-layout title="Toutes les commandes">
-    <h1>Toutes des commandes</h1>
+    <h1>Toutes les commandes</h1>
     <ul>
         @foreach($orders as $order)
         <li><span>Commande du {{ $order->created_at->format('d/m/Y') }}</span>
@@ -28,7 +28,7 @@
                         @endif
                     </span>
                 </div>
-                <a href="">Voir la commande</a>
+                <a href="{{ route('orders.show', $order) }}">Voir la commande</a>
             </div>
         </li>
         @endforeach

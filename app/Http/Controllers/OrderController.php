@@ -69,13 +69,13 @@ class OrderController extends Controller
         // 4. Mise à jour des infos de la commande
         $order->update([
             'status' => 'pending',
-            'address' => json_encode([
+            'address' => [
                 // 'civility' => $request->civility,
                 'phone' => $request->phone,
                 'address' => $request->address,
                 'zipcode' => $request->zipcode,
                 'city' => $request->city,
-            ]),
+            ],
         ]);
 
         // 5. Rediriger vers la page de confirmation ou de paiement
@@ -83,9 +83,13 @@ class OrderController extends Controller
 
     }
 
-    public function show(string $id) // Voir une commande passée 
+    public function show($orderId) // Voir une commande passée 
     {
-        //
+        $order = Order::where('id', $orderId)
+                ->with('items.productVariant.product', 'user')
+                ->findOrFail($orderId);
+       
+        return view('orders.show', compact('order'));
     }
 
     /**
@@ -112,7 +116,4 @@ class OrderController extends Controller
         //
     }
 
-    public function cancelled() {
-        //
-    }
 }

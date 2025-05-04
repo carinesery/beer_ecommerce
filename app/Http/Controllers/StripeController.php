@@ -61,7 +61,6 @@ class StripeController extends Controller
             $order->save();
         }
 
-        $order->address = json_decode($order->address, true);
         return view('orders.confirmation', ['order' => $order]);
     }
 
