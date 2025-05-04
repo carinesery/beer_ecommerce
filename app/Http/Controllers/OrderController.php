@@ -14,8 +14,9 @@ class OrderController extends Controller
     public function index() // Voir l'ensemble des commandes passées
     {
         $orders = Order::with('items')
-        ->where('user_id', Auth::id())
-        ->get();
+                ->where('user_id', Auth::id())
+                ->whereIn('status', ['pending', 'completed', 'delivered', 'cancelled'])
+                ->get();
 
 
         return view('orders.index', compact('orders'));
@@ -90,30 +91,6 @@ class OrderController extends Controller
                 ->findOrFail($orderId);
        
         return view('orders.show', compact('order'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 
 }

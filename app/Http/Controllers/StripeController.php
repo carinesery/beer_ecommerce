@@ -58,6 +58,7 @@ class StripeController extends Controller
         // Met à jour le statut de la commande ici
         if ($order) {
             $order->status = 'completed';
+            $order->paid_at = now(); // ⬅️ Date/heure actuelle du paiement
             $order->save();
         }
 
