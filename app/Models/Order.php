@@ -44,4 +44,10 @@ class Order extends Model
         $this->save();
     }
 
+    /** Encapsulation propre pour la traduction des statuts des commandes */
+    public function getStatusLabel(): string
+    {
+        return __('orders.status.' . $this->status);
+    }
+
 }

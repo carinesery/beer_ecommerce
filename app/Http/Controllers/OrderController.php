@@ -116,16 +116,4 @@ class OrderController extends Controller
         //
     }
 
-    public function cancel($orderId) 
-    {
-        $order = Order::where('id', $orderId)
-        ->where('user_id', auth()->id())
-        ->whereIn('status', ['pending', 'completed']) // Annuler que certaines commandes
-        ->firstOrFail();
-
-        $order->status = 'cancelled';
-        $order->save();
-
-        return redirect()->route('orders.index')->with('success', 'Commande annulée avec succès.');
-    }
 }

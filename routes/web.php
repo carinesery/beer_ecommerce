@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminOrderController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CartController;
@@ -46,6 +47,12 @@ Route::post('/logout', [\App\Http\Controllers\LoginController::class, 'logout'])
 
 Route::get('/admin/product', [\App\Http\Controllers\AdminController::class, 'index'])->name('admin.index');
 
+// CRUD partiel des AdminOrders
+Route::controller(AdminOrderController::class)->group(function() {
+    Route::get('/admin-orders', 'index')->name('admin-orders.index');
+    Route::patch('/admin-orders/{order}/cancel', 'cancel')->name('admin-orders.cancel');
+});
+
 Route::get('/users/registration', [\App\Http\Controllers\UserController::class, 'create'])->name('users.create');
 Route::post('/users', [\App\Http\Controllers\UserController::class, 'store'])->name('users.store');
 Route::get('/admin/users', [\App\Http\Controllers\UserController::class, 'index'])->name('users');
@@ -74,7 +81,7 @@ Route::controller(OrderController::class)->group(function() {
     Route::post('/orders', 'store')->name('orders.store');
     Route::get('/orders/confirmation/{order}', 'confirmation')->name('orders.confirmation');
     Route::get('orders/{order}', 'show')->name('orders.show');
-    Route::patch('orders/{order}/cancel', 'cancel')->name('orders.cancel');
+    // Route::patch('orders/{order}/cancel', 'cancel')->name('orders.cancel');
 });
 
 
