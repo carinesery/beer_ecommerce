@@ -10,12 +10,6 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    
-    public function login(){
-        // dd('ok');
-
-        // return view('auth.login');
-    }
 
     // Cette fonction gère l'authentification de l'utilisateur lorsqu'il soumet le formulaire de connexion.
     public function authenticate(Request $request)
