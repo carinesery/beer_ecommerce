@@ -7,7 +7,8 @@
             <li>{{ $item->productVariant->product->name }} - Quantité : {{ $item->quantity }} - Montant : {{ number_format($item->priceWithTax()/100, 2, ',', '') }} €</li>  
         @endforeach
             <li>Total HC : {{ number_format($order->total_price_without_tax/100, 2, ',', '') }} €</li>
-            <li>Total TTC : {{ number_format($order->total_price_with_tax/100, 2, ',', '') }} €</li>
+            <li>Total taxe : {{ number_format($order->tax_amount/100, 2, ',', '') }} €</li>
+            <li><b>Total TTC : {{ number_format($order->total_price_with_tax/100, 2, ',', '') }} €</b></li>
         </ul>
         <ul>Informations de livraison :
             <li>{{ $order->address['address'] }}</li>
