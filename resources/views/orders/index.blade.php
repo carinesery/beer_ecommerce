@@ -18,9 +18,9 @@
                     <span>Montant total : {{ number_format($order->total_price_with_tax/100, 2, ',', '') }} €</span>
                     <span>Statut :
                         @if($order->status === 'pending')
-                        Validée
+                        Validée (en attente de paiement)
                         @elseif($order->status === 'completed')
-                        Payée
+                        Payée le {{ $order->paid_at ?? 'indéterminé' }}
                         @elseif($order->status === 'delivered')
                         Livrée
                         @elseif($order->status === 'cancelled')
