@@ -45,6 +45,7 @@ class Order extends Model
     {   
         $this->total_price_without_tax = $this->items->sum(fn($item) => $item->price_without_tax);
         $this->total_price_with_tax = $this->items->sum(fn($item) => $item->priceWithTax());
+        $this->tax_amount = $this->items->sum(fn($item) => $item->priceWithTax() - $item->price_without_tax);
         $this->save();
     }
 

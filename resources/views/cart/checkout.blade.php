@@ -127,6 +127,8 @@
                     </li>
                 @endforeach
                 </ul>
+                <p>Total HT : {{ number_format($order->total_price_without_tax/100, 2, ',', '') }} €</p>
+                <p>Total taxe : {{ number_format($order->tax_amount/100, 2, ',', '') }} €</p>
                 <p>Total TTC : {{ number_format($order->total_price_with_tax/100, 2, ',', '') }} €</p>
         <form action="{{ route('orders.store') }}" method="POST">
         @csrf

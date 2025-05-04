@@ -62,8 +62,8 @@
         <span>Prix HT (hors livraison)</span>
         <span>{{ number_format($order->total_price_without_tax/100, 2, ',', '') }} €</span>
     </div><div class="p-4">
-        <span>(Taxe de</span>
-        <span>{{ $order->items->pluck('tax_amount')->min() }} à {{ $order->items->pluck('tax_amount')->max() }} % selon les produits.)</span>
+        <span>Montant de la taxe </span>
+        <span>{{ number_format($order->tax_amount/100, 2, ',', '') }} €</span>
     </div>
     <div class="p-4">
         <span>Prix TTC (hors livraison)</span>
