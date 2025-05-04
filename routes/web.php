@@ -14,7 +14,7 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\UserAccountController;
 use App\Http\Controllers\UserController;
 
-
+// Homepage
 Route::get('/',\App\Http\Controllers\HomeController::class)->name('homepage');
 
 // CRUD des Products
@@ -62,16 +62,21 @@ Route::controller(OrderItemsController::class)->group(function() {
     Route::delete('order-items/{order_item}', 'destroy')->name('order-items.destroy');
 });
 
-// Route::get('/products/show', [\App\Http\Controllers\OrderController::class, 'create'])->name('order.create');
-// Route::post('/products', [\App\Http\Controllers\OrderController::class, 'store'])->name('order.store');
-Route::get('/cart/show', [\App\Http\Controllers\CartController::class, 'show'])->name('cart');
-Route::get('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+// CRUD partiel du Cart
+Route::controller(CartController::class)->group(function() {
+    Route::get('/cart/show', 'show')->name('cart');
+    Route::get('/cart/checkout', 'checkout')->name('cart.checkout');
+});
 
+// CRUD des Orders
+Route::controller(OrderController::class)->group(function() {
+    Route::get('/orders', 'index')->name('orders.index');
+    Route::post('/orders', 'store')->name('orders.store');
+    Route::get('/orders/confirmation/{order}', 'confirmation')->name('orders.confirmation');
+    Route::get('orders/{order}', 'show')->name('orders.show');
+    Route::patch('orders/{order}/cancel', 'cancel')->name('orders.cancel');
+});
 
-Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
-Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
-Route::get('/orders/confirmation/{order}', [OrderController::class, 'confirmation'])->name('orders.confirmation');
-Route::get('orders/{order}', [OrderController::class, 'show'])->name('orders.show');
 
 // Route intermédiaire en GET pour rediriger vers Stripe via un POST automatique
 Route::get('/orders/redirect/{order}', function (\App\Models\Order $order) {
@@ -81,18 +86,12 @@ Route::get('/orders/redirect/{order}', function (\App\Models\Order $order) {
 /** Routes pour le paiement Stripe */
 Route::controller(StripeController::class)->group(function() {
     Route::post('/checkout', 'checkout')->name('stripe.checkout');
-    // Route::post('checkout', function() {
-    //     return 'OK POST checkout reçu';
-    // });
     Route::get('/checkout/success', 'success')->name('stripe.success');
     Route::get('/checkout/cancel', 'cancel')->name('stripe.cancel');
 });
 
-// Route pour test Stripe
-Route::get('/test-checkout', function() {
-    return view('test-checkout', ['orderId' => 4]);
-});
 
+// CRUD du UserAccount
 Route::controller(UserAccountController::class)->group(function() {
     Route::get('/auth/register', 'create')->name('register.create');
     Route::post('/auth/register', 'store')->name('register.store');
@@ -112,7 +111,7 @@ Route::controller(PasswordController::class)->group(function() {
 
 
 
-// Route pour vérification de l'email 
+// 1. Route pour vérification de l'email 
 Route::get('/email/verify', function () {
     return view('auth.verify-email');
 })->middleware('auth')->name('verification.notice');

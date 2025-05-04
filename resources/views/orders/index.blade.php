@@ -9,7 +9,7 @@
 </style>
 
 <x-layout title="Toutes les commandes">
-    <h1>Toutes des commandes</h1>
+    <h1>Toutes les commandes</h1>
     <ul>
         @foreach($orders as $order)
         <li><span>Commande du {{ $order->created_at->format('d/m/Y') }}</span>
