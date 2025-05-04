@@ -61,7 +61,7 @@
                                                     <th>Contenance</th>
                                                     <th>Stock</th>
                                                     <th>Prix HT</th>
-                                                    <th>Taxe</th>
+                                                    <th>Taxe (%)</th>
                                                     <th>Prix TTC</th>
                                                     <th>Actions</th>
                                                 </tr>    
@@ -71,9 +71,9 @@
                                                 <tr>
                                                     <td>{{ $productvariant->volume }}</td>
                                                     <td>{{ $productvariant->stock_quantity }}</td>
-                                                    <td>{{ $productvariant->price_without_tax }}</td>
+                                                    <td>{{ number_format($productvariant->price_without_tax/100, 2, ',', '') }}</td>
                                                     <td>{{ $productvariant->tax_amount }}</td>
-                                                    <td>{{ 'A créer' }}</td>
+                                                    <td>{{ number_format($productvariant->productVariantPriceWithTax()/100, 2, ',','') }}</td>
                                                     <td><!-- Actions -->
                                                         <a href="{{ route('productvariants.edit', $productvariant) }}">Modifier la variante</a>
                                                         <a href="{{ route('productvariants.todestroy', $productvariant) }}">Supprimer la variante</a>

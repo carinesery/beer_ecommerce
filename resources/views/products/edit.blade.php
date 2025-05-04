@@ -151,7 +151,7 @@
         </div>
 
         <!-- Variantes -->
-        <h2>Variante(s)</h2>
+        <!-- <h2>Variante(s)</h2>
         <div id="variants">
             @foreach($product->productVariants as $index => $variant)
             <div class="variant">
@@ -206,7 +206,7 @@
             @endforeach
         </div>
         
-        <button type="button" id="add_variant">Ajouter une variante</button>
+        <button type="button" id="add_variant">Ajouter une variante</button> -->
         <button type="submit">Mettre à jour le produit</button>
     </form>
 
