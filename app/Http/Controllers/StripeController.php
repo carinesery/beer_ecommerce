@@ -61,6 +61,12 @@ class StripeController extends Controller
             $order->save();
         }
 
+        foreach ($order->items as $item) {
+            $variant = $item->productVariant;
+            $variant->stock_quantity = max(0, $variant->stock_quantity - $item->quantity); // évite négatif
+            $variant->save();
+        }
+
         return view('orders.confirmation', ['order' => $order]);
     }
 
