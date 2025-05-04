@@ -20,6 +20,7 @@ class AdminOrderController extends Controller
 
         if (in_array($order->status, ['pending', 'completed'])) {
             $order->status = 'cancelled';
+            $order->cancelled_at = now();
             $order->save();
         }
 
