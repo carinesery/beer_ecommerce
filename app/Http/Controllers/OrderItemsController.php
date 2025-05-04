@@ -9,17 +9,7 @@ use Illuminate\Http\Request;
 
 class OrderItemsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
+    
     public function create()
     {
         return view('products.show');
@@ -98,25 +88,7 @@ class OrderItemsController extends Controller
 
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, OrderItem $orderItem)
     {
 
@@ -155,8 +127,19 @@ class OrderItemsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(OrderItem $orderItem)
     {
-        //
+        $order = $orderItem->order;
+        if($order->user_id !== auth()->id() || $order->status !== 'cart') {
+            abort(403, 'Action non autorisée');
+        }
+
+        // Supprime l'item
+        $orderItem->delete();
+
+        // Recalcul les totaux
+        $order->recalculateTotals();
+
+        return redirect()->route('cart')->with('success', 'Article enlevé du panier');
     }
 }

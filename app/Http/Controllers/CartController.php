@@ -29,7 +29,6 @@ class CartController extends Controller
             return redirect()->route('homepage')->with('error', 'Votre panier est vide.');
         }
 
-        // dd($order->items);
 
         return view('cart/show',[
             'order' => $order,
@@ -58,25 +57,5 @@ class CartController extends Controller
         return view('cart/checkout', ['order' => $order, 'user' => $user]);
     }
 
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 
 }

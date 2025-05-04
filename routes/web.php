@@ -58,6 +58,7 @@ Route::controller(OrderItemsController::class)->group(function() {
     Route::get('/order-items/show', 'create')->name('orderItems.create');
     Route::post('/order-items', 'store')->name('orderItems.store');
     Route::patch('/order-items/{order_item}', 'update')->name('order-items.update');
+    Route::delete('order-items/{order_item}', 'destroy')->name('order-items.destroy');
 });
 
 // Route::get('/products/show', [\App\Http\Controllers\OrderController::class, 'create'])->name('order.create');

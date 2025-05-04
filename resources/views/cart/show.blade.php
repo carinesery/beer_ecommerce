@@ -50,6 +50,11 @@
             @enderror
             <button type="submit">Mettre à jour</button>
         </form>
+        <form action="{{ route('order-items.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Confirmer la suppression de cet article ?')">
+            @csrf 
+            @method('DELETE')
+            <button type="submit">Enlever du panier</button>
+        </form>
     </div>
         <hr>
     @endforeach
