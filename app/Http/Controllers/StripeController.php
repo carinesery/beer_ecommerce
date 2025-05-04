@@ -11,8 +11,13 @@ class StripeController extends Controller
 {
     public function checkout(Request $request)
     {
-        $order = Order::where('user_id', auth()->id())->where('status', 'cart')->with('items.productVariant.product')->firstOrFail();
 
+        $order = Order::where('user_id', auth()->id())
+                        ->where('id', $request->order_id)
+                        ->where('status', 'pending')
+                        ->with('items.productVariant.product')
+                        ->firstOrFail();
+             
         Stripe::setApiKey(config('services.stripe.secret'));
 
         $lineItems = $order->items->map(function ($item) {
@@ -22,11 +27,13 @@ class StripeController extends Controller
                     'product_data' => [
                         'name' => $item->productVariant->product->name . ' - ' . $item->productVariant->volume,
                     ],
-                    'unit_amount' => intval($item->price_with_tax * 100), // en centimes
+                    'unit_amount' => $item->productVariant->productVariantPriceWithTax(),
                 ],
                 'quantity' => $item->quantity,
             ];
         })->toArray();
+
+        // dd($lineItems); // <-- ici pour vérifier les montants en centimes
 
         $session = Session::create([
             'payment_method_types' => ['card'],

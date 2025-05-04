@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderItemsController;
+use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductVariantController;
 use App\Http\Controllers\StripeController;
@@ -70,15 +71,25 @@ Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
 Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
 Route::get('/orders/confirmation/{order}', [OrderController::class, 'confirmation'])->name('orders.confirmation');
 
-/** Routes pour le paiement Stripe */
-Route::post('/checkout', [\App\Http\Controllers\StripeController::class, 'checkout'])->name('stripe.checkout');
-Route::get('/checkout/success', [\App\Http\Controllers\StripeController::class, 'success'])->name('stripe.success');
-Route::get('/checkout/cancel', [\App\Http\Controllers\StripeController::class, 'cancel'])->name('stripe.cancel');
-
 // Route intermédiaire en GET pour rediriger vers Stripe via un POST automatique
 Route::get('/orders/redirect/{order}', function (\App\Models\Order $order) {
     return view('orders.redirect', compact('order'));
 })->name('orders.redirect');
+
+/** Routes pour le paiement Stripe */
+Route::controller(StripeController::class)->group(function() {
+    Route::post('/checkout', 'checkout')->name('stripe.checkout');
+    // Route::post('checkout', function() {
+    //     return 'OK POST checkout reçu';
+    // });
+    Route::get('/checkout/success', 'success')->name('stripe.success');
+    Route::get('/checkout/cancel', 'cancel')->name('stripe.cancel');
+});
+
+// Route pour test Stripe
+Route::get('/test-checkout', function() {
+    return view('test-checkout', ['orderId' => 4]);
+});
 
 Route::controller(UserAccountController::class)->group(function() {
     Route::get('/auth/register', 'create')->name('register.create');

@@ -80,8 +80,7 @@ class OrderController extends Controller
 
         // 5. Rediriger vers la page de confirmation ou de paiement
         return redirect()->route('orders.redirect', ['order' => $order->id]);
-        // return redirect()->route('orders.confirmation', ['order' => $order->id]);
-
+        
 
         // // Validation
         // $request->validate([
