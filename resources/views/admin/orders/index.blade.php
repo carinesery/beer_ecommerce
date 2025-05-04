@@ -56,7 +56,7 @@
                                             <button type="submit">Annuler la commande</button>
                                         </form>
                                         @else
-                                            Annulée
+                                            Annulée le {{ $order->cancelled_at ? $order->cancelled_at->format('d-m-Y à H:i') : '(date inconnue)' }}
                                         @endif
                                     </td>
                                 </tr>

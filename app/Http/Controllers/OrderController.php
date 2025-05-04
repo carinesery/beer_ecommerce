@@ -68,16 +68,17 @@ class OrderController extends Controller
         }
 
         // 4. Mise à jour des infos de la commande
-        $order->update([
-            'status' => 'pending',
-            'address' => [
-                // 'civility' => $request->civility,
-                'phone' => $request->phone,
-                'address' => $request->address,
-                'zipcode' => $request->zipcode,
-                'city' => $request->city,
-            ],
-        ]);
+        $order->status = 'pending';
+        $order->validated_at = now();
+
+        $order->address = [
+            'phone' => $request->phone,
+            'address' => $request->address,
+            'zipcode' => $request->zipcode,
+            'city' => $request->city,
+        ];
+        
+        $order->save();
 
         // 5. Rediriger vers la page de confirmation ou de paiement
         return redirect()->route('orders.redirect', ['order' => $order->id]);

@@ -15,7 +15,7 @@
         <li><span>Commande</span>
             <span>
                     @if($order->status === 'pending')
-                    validée le {{ $order->validated_at ? $order->validated_at>format('d-m-Y à H:i') : '(date inconnue)' }}(en attente de paiement)
+                    validée le {{ $order->validated_at ? $order->validated_at->format('d-m-Y à H:i') : '(date inconnue)' }} (en attente de paiement)
                     @elseif($order->status === 'completed')
                     payée le {{ $order->paid_at ? $order->paid_at->format('d-m-Y à H:i') : '(date inconnue)' }}
                     @elseif($order->status === 'delivered')
