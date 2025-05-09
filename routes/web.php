@@ -14,6 +14,9 @@ use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\UserAccountController;
 use App\Http\Controllers\UserController;
+use App\Mail\OrderConfirmationMail;
+use Illuminate\Support\Facades\Mail;
+
 
 // Homepage
 Route::get('/',\App\Http\Controllers\HomeController::class)->name('homepage');
@@ -97,7 +100,6 @@ Route::controller(StripeController::class)->group(function() {
     Route::get('/checkout/success', 'success')->name('stripe.success');
     Route::get('/checkout/cancel', 'cancel')->name('stripe.cancel');
 });
-
 
 // CRUD du UserAccount
 Route::controller(UserAccountController::class)->group(function() {
