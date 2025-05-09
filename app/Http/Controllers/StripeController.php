@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\OrderConfirmationMail;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use Stripe\Stripe;
 use Stripe\Checkout\Session;
@@ -67,6 +69,8 @@ class StripeController extends Controller
             $variant->stock_quantity = max(0, $variant->stock_quantity - $item->quantity); // évite négatif
             $variant->save();
         }
+
+        Mail::to($order->user->email)->send(new OrderConfirmationMail($order));
 
         return view('orders.confirmation', ['order' => $order]);
     }
