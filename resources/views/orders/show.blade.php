@@ -16,5 +16,10 @@
             <li>{{ $order->address['city'] }}</li>
             <li>{{ $order->address['phone'] ?? 'Numéro de téléphone non communiqué ' }}</li>  
         </ul>
+        @if($order->status === 'pending')
+            <a href="{{ route('orders.resumePayment', $order->id) }}" class="btn btn-primary">
+                Reprendre le paiement
+            </a>
+        @endif
     </main>
 </x-layout>
