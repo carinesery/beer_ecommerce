@@ -22,23 +22,7 @@ class OrderController extends Controller
         return view('orders.index', compact('orders'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        // $user = Auth::user();
-
-        // $cart = $user->cart;
-
-        // dd($cart);
-
-        // return view('orders.checkout', compact('user', 'cart'));
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
+    
     public function store(Request $request)
     {
 
@@ -92,6 +76,21 @@ class OrderController extends Controller
                 ->findOrFail($orderId);
        
         return view('orders.show', compact('order'));
+    }
+
+    public function resumePayment($orderId) {
+
+        // Vérifier que l'utilisateur a une commande statut pending
+
+        $order = Order::where('id', $orderId)
+                ->where('user_id', auth()->id())
+                ->where('status', 'pending')
+                ->with('items')
+                ->firstOrFail();
+
+        // Diriger vers la page de confirmation ou de paiement
+        return redirect()->route('orders.redirect', ['order' => $order->id]);
+
     }
 
 }

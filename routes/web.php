@@ -81,6 +81,7 @@ Route::controller(OrderController::class)->group(function() {
     Route::post('/orders', 'store')->name('orders.store');
     Route::get('/orders/confirmation/{order}', 'confirmation')->name('orders.confirmation');
     Route::get('orders/{order}', 'show')->name('orders.show');
+    Route::get('orders/{order}/resumepayment', 'resumePayment')->name('orders.resumePayment');
     // Route::patch('orders/{order}/cancel', 'cancel')->name('orders.cancel');
 });
 
