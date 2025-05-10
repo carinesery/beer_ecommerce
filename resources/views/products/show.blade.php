@@ -23,7 +23,7 @@
                 <p>{{ $product->brand->description }}</p>
                 <p>{{ $product->description }}</p>
             </div>
-            <form action="{{ route('orderItems.store') }}" method="POST" class="flex flex-col flex-wrap gap-4 py-4 container mx-auto">
+            <form action="{{ route('order-items.store') }}" method="POST" class="flex flex-col flex-wrap gap-4 py-4 container mx-auto">
                 @csrf
                 @method('Post')
                 <input type="hidden" name="product_variant_id" value="{{ $productVariant->id}}">

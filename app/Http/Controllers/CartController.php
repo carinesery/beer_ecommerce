@@ -12,15 +12,15 @@ class CartController extends Controller
 {
     public function show()
     {
-        $userId = auth()->user()->id;
+        $user = auth()->user();
 
         // Vérifiez si l'utilisateur est connecté
-        if (!$userId) {
-            return redirect()->route('login')->with('error', 'Vous devez être connecté pour accéder à votre panier.');
-        }
-        $user = User::findOrFail($userId);
+        // if (!$userId) {
+        //     return redirect()->route('login')->with('error', 'Vous devez être connecté pour accéder à votre panier.');
+        // }
+        // $user = User::findOrFail($userId);
 
-        $order = Order::where('user_id', $userId)
+        $order = Order::where('user_id', $user->id)
             ->where('status', 'cart')
             ->with('items.productVariant.product') // on charge les items + relations imbriquées
             ->first();
@@ -41,10 +41,10 @@ class CartController extends Controller
     public function checkout() 
     {
         
-        $user = Auth::user();
+        $user = auth()->user();
 
          // 1. Récupérer le panier actuel de l'utilisateur connecté
-        $order = Order::where('user_id', auth()->id())
+        $order = Order::where('user_id', $user->id)
             ->where('status', 'cart')
             ->with('items.productVariant.product')
             ->first();

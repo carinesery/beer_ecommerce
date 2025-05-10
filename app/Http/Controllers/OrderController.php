@@ -14,7 +14,7 @@ class OrderController extends Controller
     public function index() // Voir l'ensemble des commandes passées
     {
         $orders = Order::with('items')
-                ->where('user_id', Auth::id())
+                ->where('user_id', auth()->id()) // Auth::id()
                 ->whereIn('status', ['pending', 'completed', 'delivered', 'cancelled'])
                 ->get();
 
@@ -68,12 +68,24 @@ class OrderController extends Controller
         return redirect()->route('orders.redirect', ['order' => $order->id]);
 
     }
+    
+
+    public function redirectToStripe(Order $order)
+    {
+        if ($order->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        return view('orders.redirect', compact('order'));
+    }
+
 
     public function show($orderId) // Voir une commande passée 
     {
         $order = Order::where('id', $orderId)
+                ->where('user_id', auth()->id()) // Ajoute cette vérification
                 ->with('items.productVariant.product', 'user')
-                ->findOrFail($orderId);
+                ->firstOrFail(); // findOrFail($orderId);
        
         return view('orders.show', compact('order'));
     }

@@ -26,10 +26,10 @@ class OrderItemsController extends Controller
             'quantity' => 'required|integer|min:1',
         ]);
 
-        // Étape 1: Vérifier l'authentification
-        if (!auth()->check()) {
-            return redirect()->route('login')->with('error', 'Vous devez être connecté pour passer une commande.');
-        }
+        // // Étape 1: Vérifier l'authentification
+        // if (!auth()->check()) {
+        //     return redirect()->route('login')->with('error', 'Vous devez être connecté pour passer une commande.');
+        // }
 
         // Etape 2 : Récupérer ou créer une commande existante
         $order = Order::firstOrCreate(
