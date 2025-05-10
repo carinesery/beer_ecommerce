@@ -65,37 +65,37 @@ Route::get('/users/edit/{user}', [\App\Http\Controllers\UserController::class, '
 Route::put('/users/{user}', [\App\Http\Controllers\UserController::class, 'update'])->name('users.update');
 
 // CRUD des OrderItems
-Route::controller(OrderItemsController::class)->group(function() {
-    Route::get('/order-items/show', 'create')->name('orderItems.create');
-    Route::post('/order-items', 'store')->name('orderItems.store');
+Route::middleware('auth')->controller(OrderItemsController::class)->group(function() {
+    Route::get('/order-items/create', 'create')->name('order-items.create');
+    Route::post('/order-items', 'store')->name('order-items.store');
     Route::patch('/order-items/{order_item}', 'update')->name('order-items.update');
     Route::delete('order-items/{order_item}', 'destroy')->name('order-items.destroy');
 });
 
 // CRUD partiel du Cart
-Route::controller(CartController::class)->group(function() {
+Route::middleware('auth')->controller(CartController::class)->group(function() {
     Route::get('/cart/show', 'show')->name('cart');
     Route::get('/cart/checkout', 'checkout')->name('cart.checkout');
 });
 
 // CRUD des Orders
-Route::controller(OrderController::class)->group(function() {
+Route::middleware('auth')->controller(OrderController::class)->group(function() {
     Route::get('/orders', 'index')->name('orders.index');
     Route::post('/orders', 'store')->name('orders.store');
+    Route::get('/orders/redirect/{order}', 'redirectToStripe')->name('orders.redirect');
     Route::get('/orders/confirmation/{order}', 'confirmation')->name('orders.confirmation');
     Route::get('orders/{order}', 'show')->name('orders.show');
     Route::get('orders/{order}/resumepayment', 'resumePayment')->name('orders.resumePayment');
-    // Route::patch('orders/{order}/cancel', 'cancel')->name('orders.cancel');
 });
 
 
-// Route intermédiaire en GET pour rediriger vers Stripe via un POST automatique
-Route::get('/orders/redirect/{order}', function (\App\Models\Order $order) {
-    return view('orders.redirect', compact('order'));
-})->name('orders.redirect');
+// // Route intermédiaire en GET pour rediriger vers Stripe via un POST automatique
+// Route::get('/orders/redirect/{order}', function (\App\Models\Order $order) {
+//     return view('orders.redirect', compact('order'));
+// })->name('orders.redirect');
 
 /** Routes pour le paiement Stripe */
-Route::controller(StripeController::class)->group(function() {
+Route::middleware('auth')->controller(StripeController::class)->group(function() {
     Route::post('/checkout', 'checkout')->name('stripe.checkout');
     Route::get('/checkout/success', 'success')->name('stripe.success');
     Route::get('/checkout/cancel', 'cancel')->name('stripe.cancel');
