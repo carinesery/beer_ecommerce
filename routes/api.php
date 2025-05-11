@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\OrderItemsController;
+use App\Http\Controllers\OrderController;
 
  /** POur récupérer ke token d'identification */
 
@@ -35,16 +36,27 @@ Route::get('/test', function () {
     ]);
 });
 
+/** Route du AuthController */
 Route::post('login', [AuthController::class, 'login']);
+
+
+/** Routes du OrderController */
+Route::middleware('auth:sanctum')->prefix('orders')->controller(OrderController::class)->group(function() {
+    Route::get('/', 'index');
+    Route::post('/', 'store');
+    Route::get('/{order}/redirect', 'redirectToStripe');
+    Route::get('/confirmation/{order}', 'confirmation'); // ? Renvoie une vue ...
+    Route::get('/{order}', 'show');
+    Route::get('/{order}/resumepayment', 'resumePayment');
+});
 
 /** Routes du OrderItemsController */
 Route::middleware('auth:sanctum')->prefix('order-items')->controller(OrderItemsController::class)->group(function() {
-    Route::get('/create', 'create');
+    Route::get('/create', 'create'); // ? Renvoie une vue ...
     Route::post('/', 'store');
     Route::patch('/{order_item}', 'update');
     Route::delete('/{order_item}', 'destroy');
 });
-
 
 /** Routes du CartController */
 Route::middleware('auth:sanctum')->prefix('cart')->controller(CartController::class)->group(function() {

@@ -18,14 +18,19 @@ class OrderController extends Controller
                 ->whereIn('status', ['pending', 'completed', 'delivered', 'cancelled'])
                 ->get();
 
+        /** Pour un front React */
+        return response()->json([
+            'orders' => $orders
+        ], 200);
 
-        return view('orders.index', compact('orders'));
+        /** Pour un front Blade
+        * return view('orders.index', compact('orders'));
+        */
     }
 
     
     public function store(Request $request)
     {
-
         // 1. Validation
         $request->validate([
         // 'civility' => 'required|in:M.,Mme',
@@ -48,7 +53,8 @@ class OrderController extends Controller
         ->first();
 
         if (!$order || $order->items->isEmpty()) {
-        return redirect()->route('cart')->with('error', 'Votre panier est vide.');
+            return response()->json(['message' => 'Votre panier est vide'], 400);
+            /** Pour un front blade : return redirect()->route('cart')->with('error', 'Votre panier est vide.'); */ 
         }
 
         // 4. Mise à jour des infos de la commande
@@ -65,44 +71,82 @@ class OrderController extends Controller
         $order->save();
 
         // 5. Rediriger vers la page de confirmation ou de paiement
-        return redirect()->route('orders.redirect', ['order' => $order->id]);
+        /** Pour un front React */ 
+        return response()->json([
+            'message' => 'Commande validée',
+            'order' => $order,
+            'redirect_url' => route('orders.redirect', ['order' => $order->id])
+        ], 200);
 
+        /** Pour un front Blade : 
+        * return redirect()->route('orders.redirect', ['order' => $order->id]);
+        */
     }
     
 
     public function redirectToStripe(Order $order)
     {
         if ($order->user_id !== auth()->id()) {
-            abort(403);
+            return response()->json(['message' => 'Accès interdit'], 403);
+            /** Pour un front blade : abort(403); */
         }
 
-        return view('orders.redirect', compact('order'));
+        /** Pour un front React */
+        return response()->json([
+            'message' => 'Redirection vers Stripe',
+            'order' => $order
+        ], 200);
+
+        /** Pour un front blade : 
+        * return view('orders.redirect', compact('order'));
+        */
     }
 
 
-    public function show($orderId) // Voir une commande passée 
+    public function show($orderId)
     {
         $order = Order::where('id', $orderId)
-                ->where('user_id', auth()->id()) // Ajoute cette vérification
+                ->where('user_id', auth()->id())
                 ->with('items.productVariant.product', 'user')
-                ->firstOrFail(); // findOrFail($orderId);
+                ->firstOrFail();
+
+        if(!$order) {
+            return response()->json(['message' => 'Commande introuvable.'], 404);
+        }
        
-        return view('orders.show', compact('order'));
+        /** Pour un front React */
+        return response()->json(['order' => $order], 200);
+
+        /** Pour un front Blade : 
+        * return view('orders.show', compact('order'));
+        */
     }
 
     public function resumePayment($orderId) {
 
         // Vérifier que l'utilisateur a une commande statut pending
-
         $order = Order::where('id', $orderId)
                 ->where('user_id', auth()->id())
                 ->where('status', 'pending')
                 ->with('items')
                 ->firstOrFail();
 
-        // Diriger vers la page de confirmation ou de paiement
-        return redirect()->route('orders.redirect', ['order' => $order->id]);
+        if(!$order) {
+             return response()->json(['message' => 'Commande introuvable ou déjà payée.'], 404);
+        }
 
+        // Diriger vers la page de confirmation ou de paiement
+
+        /** Pour un front React */
+        return response()->json([
+            'message' => 'Redirection vers le paiement en cours ...',
+            'order' => $order,
+            'redirect_url' => route('orders.redirect', ['order' => $order->id])
+        ]);
+
+        /** Pour un front Blade
+        * return redirect()->route('orders.redirect', ['order' => $order->id]);
+         */
     }
 
 }

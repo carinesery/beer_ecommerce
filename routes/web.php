@@ -82,17 +82,11 @@ Route::middleware('auth')->controller(CartController::class)->group(function() {
 Route::middleware('auth')->controller(OrderController::class)->group(function() {
     Route::get('/orders', 'index')->name('orders.index');
     Route::post('/orders', 'store')->name('orders.store');
-    Route::get('/orders/redirect/{order}', 'redirectToStripe')->name('orders.redirect');
-    Route::get('/orders/confirmation/{order}', 'confirmation')->name('orders.confirmation');
+    Route::get('/orders/{order}/redirect', 'redirectToStripe')->name('orders.redirect');
+    Route::get('/orders/{order}/confirmation', 'confirmation')->name('orders.confirmation');
     Route::get('orders/{order}', 'show')->name('orders.show');
     Route::get('orders/{order}/resumepayment', 'resumePayment')->name('orders.resumePayment');
 });
-
-
-// // Route intermédiaire en GET pour rediriger vers Stripe via un POST automatique
-// Route::get('/orders/redirect/{order}', function (\App\Models\Order $order) {
-//     return view('orders.redirect', compact('order'));
-// })->name('orders.redirect');
 
 /** Routes pour le paiement Stripe */
 Route::middleware('auth')->controller(StripeController::class)->group(function() {
