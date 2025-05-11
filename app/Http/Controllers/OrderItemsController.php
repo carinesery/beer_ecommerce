@@ -31,10 +31,12 @@ class OrderItemsController extends Controller
         //     return redirect()->route('login')->with('error', 'Vous devez être connecté pour passer une commande.');
         // }
 
+        $user = $request->user(); 
+
         // Etape 2 : Récupérer ou créer une commande existante
         $order = Order::firstOrCreate(
             [
-            'user_id' => auth()->user()->id,
+            'user_id' => $user->id,
             'status' => 'cart'
             ],
             [ // valeurs par défaut SI AUCUN Order n'existe
@@ -59,14 +61,13 @@ class OrderItemsController extends Controller
             // Mettre à jour la quantité du produit 
             $orderItem->quantity += $validated['quantity'];
 
-            // Recalculer le prix HT
-            $priceWithoutTax = $productVariant->price_without_tax * $validated['quantity'];
-            $orderItem->price_without_tax = $priceWithoutTax;
+            // Mettre à jour le prix HT du produit
+            $orderItem->price_without_tax = $productVariant->price_without_tax * $orderItem->quantity;
 
-            $orderItem->tax_amount = $taxAmount;
-
+            $orderItem->tax_amount = $productVariant->tax_amount;
             $orderItem->price_with_tax = $orderItem->priceWithTax();
             $orderItem->save();
+            
         } else {
             // Créer un nouvel article
             $orderItem = $order->items()->create([
@@ -84,7 +85,15 @@ class OrderItemsController extends Controller
         $order->recalculateTotals();
 
 
-        return back()->with('success', 'Produit ajouté au panier !');
+        /** Pour un front React */
+        return response()->json([
+            'message' => 'Produit ajouté au panier',
+            'item' => $orderItem
+        ], 201);
+
+        /** Pour un front Blade 
+        * return back()->with('success', 'Produit ajouté au panier !');
+        */
 
     }
 
@@ -94,8 +103,10 @@ class OrderItemsController extends Controller
 
         // Vérifie que l'utilisateur a bien accès à cette commande
         if ($orderItem->order->user_id !== auth()->id() || $orderItem->order->status !== 'cart') {
-            abort(403);
+            return response()->json(['message' => 'Action non autorisée'], 403);
+            // au lieu de abort(403) pour un front Blade
         }
+        
 
         // Vérifie la quantité disponible
         $quantityAvailable = $orderItem->productVariant->stock_quantity;
@@ -120,8 +131,16 @@ class OrderItemsController extends Controller
         // Recalcul des totaux 
         $orderItem->order->recalculateTotals();
         
-        return redirect()->route('cart');
 
+        /** Pour un front React */
+         return response()->json([
+            'message' => 'Quantité mise à jour.',
+            'item' => $orderItem
+        ]);
+
+        /** Pour un front Blade 
+        * return redirect()->route('cart');
+        */
     }
 
     /**
@@ -130,8 +149,10 @@ class OrderItemsController extends Controller
     public function destroy(OrderItem $orderItem)
     {
         $order = $orderItem->order;
+        
         if($order->user_id !== auth()->id() || $order->status !== 'cart') {
-            abort(403, 'Action non autorisée');
+            return response()->json(['message' => 'Action non autorisée.'], 403);
+            // au lieu de abort(403) pour un front Blade
         }
 
         // Supprime l'item
@@ -140,6 +161,11 @@ class OrderItemsController extends Controller
         // Recalcul les totaux
         $order->recalculateTotals();
 
-        return redirect()->route('cart')->with('success', 'Article enlevé du panier');
+        /** Pour un front React */
+        return response()->json(['message' => 'Article supprimé du panier.']);
+
+        /** Pour un front Blade 
+        * return redirect()->route('cart')->with('success', 'Article enlevé du panier');
+        */
     }
 }

@@ -4,7 +4,10 @@ use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\CartController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController; /** POur récupérer ke token d'identification */
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\OrderItemsController;
+
+ /** POur récupérer ke token d'identification */
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -34,6 +37,18 @@ Route::get('/test', function () {
 
 Route::post('login', [AuthController::class, 'login']);
 
+/** Routes du OrderItemsController */
+Route::middleware('auth:sanctum')->prefix('order-items')->controller(OrderItemsController::class)->group(function() {
+    Route::get('/create', 'create');
+    Route::post('/', 'store');
+    Route::patch('/{order_item}', 'update');
+    Route::delete('/{order_item}', 'destroy');
+});
+
+
 /** Routes du CartController */
-Route::middleware('auth:sanctum')->get('cart/show', [CartController::class, 'show']);
-Route::middleware('auth:sanctum')->get('cart/checkout', [CartController::class, 'checkout']);
+Route::middleware('auth:sanctum')->prefix('cart')->controller(CartController::class)->group(function() {
+    Route::get('/show', 'show');
+    Route::get('/checkout', 'checkout');    
+});
+
