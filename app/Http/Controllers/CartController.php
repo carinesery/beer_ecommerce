@@ -14,27 +14,43 @@ class CartController extends Controller
     {
         $user = auth()->user();
 
-        // Vérifiez si l'utilisateur est connecté
-        // if (!$userId) {
-        //     return redirect()->route('login')->with('error', 'Vous devez être connecté pour accéder à votre panier.');
-        // }
-        // $user = User::findOrFail($userId);
+        /** Vérifiez si l'utilisateur est connecté sans middleware : 
+        * if (!$userId) {
+        *     return redirect()->route('login')->with('error', 'Vous devez être connecté pour accéder à votre panier.');
+        * }
+        * $user = User::findOrFail($userId);
+        */
 
         $order = Order::where('user_id', $user->id)
             ->where('status', 'cart')
             ->with('items.productVariant.product') // on charge les items + relations imbriquées
             ->first();
 
+        /** Pour un front React */
         if (!$order || $order->items->isEmpty()) {
-            return redirect()->route('homepage')->with('error', 'Votre panier est vide.');
+            return response()->json([
+                'message' => 'Votre panier est vide.',
+                'panier' => null
+            ], 200);
         }
 
-
-        return view('cart/show',[
-            'order' => $order,
-            'orderItems' => $order->items,
-            'user' => $user,
+        return response()->json([
+            'panier' => $order,
+            'user' => $user
         ]);
+
+        /** Pour un front Blade :
+        * if (!$order || $order->items->isEmpty()) {
+        *   return redirect()->route('homepage')->with('error', 'Votre panier est vide.');
+        * }
+
+        * return view('cart/show',[
+        *    'order' => $order,
+        *    'orderItems' => $order->items,
+        *    'user' => $user,
+        * ]);
+        */
+        
     }
 
 
