@@ -59,18 +59,42 @@ class CartController extends Controller
         
         $user = auth()->user();
 
-         // 1. Récupérer le panier actuel de l'utilisateur connecté
+        if(!$user){
+            return response()->json([
+                'message' => 'Utilisateur no authentifié'
+            ], 401);
+        }
+
+        /** 1. Récupérer le panier actuel de l'utilisateur connecté */ 
         $order = Order::where('user_id', $user->id)
             ->where('status', 'cart')
             ->with('items.productVariant.product')
             ->first();
 
-        // 2. Vérifier qu’il existe un panier
+
+        /** Pour un front React 
+        * 2. Vérifier qu’il existe un panier et le retourner */
         if (!$order || $order->items->isEmpty()) {
-            return redirect()->route('cart.show')->with('error', 'Votre panier est vide.');
+            return response()->json([
+                'message' => 'Votre panier est vide.',
+                'panier' => 'null'
+            ], 200);
         }
 
-        return view('cart/checkout', ['order' => $order, 'user' => $user]);
+        return response()->json([
+            'order' => $order,
+            'user' => $user
+        ]);
+
+
+        /** Pour un front Blade 
+        * 2. Vérifier qu’il existe un panier et le retourner
+        * if (!$order || $order->items->isEmpty()) {
+        *     return redirect()->route('cart.show')->with('error', 'Votre panier est vide.');
+        * }
+
+        * return view('cart/checkout', ['order' => $order, 'user' => $user]);
+        */
     }
 
 

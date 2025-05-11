@@ -36,3 +36,4 @@ Route::post('login', [AuthController::class, 'login']);
 
 /** Routes du CartController */
 Route::middleware('auth:sanctum')->get('cart/show', [CartController::class, 'show']);
+Route::middleware('auth:sanctum')->get('cart/checkout', [CartController::class, 'checkout']);
