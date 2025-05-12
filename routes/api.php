@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\OrderItemsController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\StripeController;
 
  /** POur récupérer ke token d'identification */
 
@@ -28,7 +29,7 @@ Route::get('/products/{id}', [ProductController::class, 'show']);
 // // http://127.0.0.1:8000/api/products/{id}
 
 
-/** Test d'une api */
+/** Test d'une route api :D */
 Route::get('/test', function () {
     return response()->json([
         'message' => 'Coucou depuis Laravel 🎉',
@@ -36,11 +37,11 @@ Route::get('/test', function () {
     ]);
 });
 
-/** Route du AuthController */
+/** Route api du AuthController */
 Route::post('login', [AuthController::class, 'login']);
 
 
-/** Routes du OrderController */
+/** Routes api du OrderController */
 Route::middleware('auth:sanctum')->prefix('orders')->controller(OrderController::class)->group(function() {
     Route::get('/', 'index');
     Route::post('/', 'store');
@@ -50,7 +51,7 @@ Route::middleware('auth:sanctum')->prefix('orders')->controller(OrderController:
     Route::get('/{order}/resumepayment', 'resumePayment');
 });
 
-/** Routes du OrderItemsController */
+/** Routes api du OrderItemsController */
 Route::middleware('auth:sanctum')->prefix('order-items')->controller(OrderItemsController::class)->group(function() {
     Route::get('/create', 'create'); // ? Renvoie une vue ...
     Route::post('/', 'store');
@@ -58,9 +59,18 @@ Route::middleware('auth:sanctum')->prefix('order-items')->controller(OrderItemsC
     Route::delete('/{order_item}', 'destroy');
 });
 
-/** Routes du CartController */
+/** Routes api du CartController */
 Route::middleware('auth:sanctum')->prefix('cart')->controller(CartController::class)->group(function() {
     Route::get('/show', 'show');
     Route::get('/checkout', 'checkout');    
 });
+
+
+/** Routes api pour le paiement Stripe */
+Route::middleware('auth:sanctum')->prefix('stripe-payment')->controller(StripeController::class)->group(function() {
+    Route::post('/checkout', 'checkout');
+    Route::get('/success', 'success');
+    Route::get('/cancel', 'cancel');
+});
+
 
