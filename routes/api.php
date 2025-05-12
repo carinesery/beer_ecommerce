@@ -45,7 +45,7 @@ Route::middleware('auth:sanctum')->prefix('orders')->controller(OrderController:
     Route::get('/', 'index');
     Route::post('/', 'store');
     Route::get('/{order}/redirect', 'redirectToStripe');
-    Route::get('/confirmation/{order}', 'confirmation'); // ? Renvoie une vue ...
+    Route::get('/{order}/confirmation', 'confirmation'); // ? Renvoie une vue ...
     Route::get('/{order}', 'show');
     Route::get('/{order}/resumepayment', 'resumePayment');
 });
