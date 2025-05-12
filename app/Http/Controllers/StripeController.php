@@ -45,11 +45,23 @@ class StripeController extends Controller
             'cancel_url' => route('stripe.cancel', ['order_id' => $order->id]),
         ]);
 
-        return redirect($session->url);
+        /** Pour un front React */
+        return response()->json([
+            'checkout_url' => $session->url
+        ]);
+
+        /** Pour un front Blade
+        * return redirect($session->url);
+         */
     }
 
     public function success(Request $request)
     {
+
+        $request->validate([
+            'order_id' => 'required|exists:orders,id'
+        ]);
+        
         // Récupère la commande
         $order = Order::where('user_id', auth()->id())
                         ->where('id', $request->order_id)
@@ -72,11 +84,27 @@ class StripeController extends Controller
 
         Mail::to($order->user->email)->send(new OrderConfirmationMail($order));
 
-        return view('orders.confirmation', ['order' => $order]);
+        /** Pour un front React */
+        return response()->json([
+            'message' => 'Le paiment de votre commande est confirmé.',
+            'order' => $order
+        ]);
+
+        /** Pour un front Blade
+        * return view('orders.confirmation', ['order' => $order]);
+        */
     }
 
     public function cancel()
     {
-        return redirect()->route('cart')->with('error', 'Paiement annulé.');
+
+        /** Pour un front React */
+        return response()->json([
+            'message' => 'Le paiment de votre commande a été annulé.'
+        ]);
+
+        /** Pour un front Blade
+        * return redirect()->route('cart')->with('error', 'Paiement annulé.');
+        */
     }
 }

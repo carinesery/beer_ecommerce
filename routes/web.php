@@ -90,9 +90,9 @@ Route::middleware('auth')->controller(OrderController::class)->group(function() 
 
 /** Routes pour le paiement Stripe */
 Route::middleware('auth')->controller(StripeController::class)->group(function() {
-    Route::post('/checkout', 'checkout')->name('stripe.checkout');
-    Route::get('/checkout/success', 'success')->name('stripe.success');
-    Route::get('/checkout/cancel', 'cancel')->name('stripe.cancel');
+    Route::post('/stripe-payment/checkout', 'checkout')->name('stripe.checkout');
+    Route::get('/stripe-payment/success', 'success')->name('stripe.success');
+    Route::get('/stripe-payment/cancel', 'cancel')->name('stripe.cancel');
 });
 
 // CRUD du UserAccount
