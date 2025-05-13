@@ -1,12 +1,19 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 
-/** Le AuthController permet l'authentification d'un utilisateur à partir d'un front React */
+/** Le AuthController permet l'authentification d'un utilisateur à partir du front React */
+/** Ce qu’il fait :
+* - Gère la connexion de l'utilisateur.
+* - Vérifie les identifiants (email + mot de passe).
+* - Retourne un token Sanctum si l'authentification réussit. 
+*/
+
 class AuthController extends Controller
 {
     public function login(Request $request) 
