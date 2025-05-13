@@ -1,13 +1,14 @@
 <?php
 
-use App\Http\Controllers\API\ProductController;
+use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\CartController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\OrderItemsController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\StripeController;
+
 
  /** POur récupérer ke token d'identification */
 
