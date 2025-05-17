@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\UserAccountController;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/',\App\Http\Controllers\HomeController::class)->name('homepage');
 
@@ -65,7 +66,8 @@ Route::get('auth/delete', [UserAccountController::class, 'todestroy'])->middlewa
 Route::delete('auth/delete', [UserAccountController::class, 'destroy'])->middleware('auth')->name('register.destroy');
 
 // Route pour vérification de l'email 
-Route::get('/email/verify', function () {
+Route::get('/email/verify', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
     return view('auth.verify-email');
 })->middleware('auth')->name('verification.notice');
 
@@ -73,7 +75,7 @@ Route::get('/email/verify', function () {
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill(); // Marque l'utilisateur comme "email_verified_at" rempli.
 
-    return redirect('/');
+    return redirect('http://localhost:5173/connexion')->with('message', 'Votre adresse email a été vérifiée avec succès !');
 })->middleware(['auth', 'signed'])->name('verification.verify');
 
 // 3. Renvoie un nouveau lien de vérification

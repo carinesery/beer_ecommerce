@@ -3,8 +3,10 @@
 use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\UserController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
@@ -13,6 +15,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [UserController::class, 'store']);
 // http://127.0.0.1:8000/api/register
+
+// Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+//     $request->fulfill();
+//     return response()->json(['message' => 'Email vérifié !']);
+// })->middleware(['auth:sanctum', 'signed'])->name('verification.verify');
+
 
 
 Route::post('/authenticate', [LoginController::class, 'authenticate']);

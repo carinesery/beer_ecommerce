@@ -41,7 +41,10 @@ class UserController extends Controller
              'birthdate' => $request->birthdate,
          ]);
      
-         return response()->json($user, 201);
+          // Envoyer l'email de vérification
+        $user->sendEmailVerificationNotification();
+
+        return response()->json(['message' => 'Inscription réussie. Vérifiez votre email pour confirmer votre compte.'], 201);
 
     }
 
