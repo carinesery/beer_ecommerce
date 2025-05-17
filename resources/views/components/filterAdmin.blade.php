@@ -25,9 +25,9 @@
                 <span>Livraison</span>
             </div>
         </a>
-        <a>
+        <a href="{{ route('admin-orders.index') }}">
             <div class="flex py-2 px-4 text-white hover:bg-gray-500">
-                <span>Commande</span>
+                <span>Commandes</span>
             </div>
         </a>
         <a>

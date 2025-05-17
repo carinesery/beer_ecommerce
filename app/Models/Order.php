@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-    /** @use HasFactory<\Database\Factories\OrderFactory> */
+  
     use HasFactory;
 
     public function items()
@@ -31,16 +31,28 @@ class Order extends Model
 
     protected $casts = [
         'address' => 'array',
+        'validated_at' => 'datetime',
+        'paid_at' => 'datetime',
+        'shipped_at' => 'datetime',
+        'cancelled_at' => 'datetime',
     ];
+    /**Le cast permet à Laravel de :
+        - Enregistrer automatiquement le champ address en JSON lors du save()/update()
+        - Et le récupérer comme un tableau associatif PHP
+    */
 
- //Quand le formulaire sera enregistré cacher les champs
-    //  /**
-    //  * The attributes that should be hidden for serialization.
-    //  *
-    //  * @var list<string>
-    //  */
-    // protected $hidden = [
-    //     'password',
-    //     'remember_token',
-    // ];
+    public function recalculateTotals()
+    {   
+        $this->total_price_without_tax = $this->items->sum(fn($item) => $item->price_without_tax);
+        $this->total_price_with_tax = $this->items->sum(fn($item) => $item->priceWithTax());
+        $this->tax_amount = $this->items->sum(fn($item) => $item->priceWithTax() - $item->price_without_tax);
+        $this->save();
+    }
+
+    /** Encapsulation propre pour la traduction des statuts des commandes */
+    public function getStatusLabel(): string
+    {
+        return __('orders.status.' . $this->status);
+    }
+
 }

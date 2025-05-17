@@ -176,44 +176,18 @@ class ProductController extends Controller
             'image' => $imagePath,// Mettre à jour l'image
         ]);
 
-         //Mise à jour des variantes associées au produit
-        if(isset($request->variants)) {
-            // Supprimer les anciennes variantes si nécessaire
-            $product->productVariants()->delete();
-
-            $variantsData = []; 
-            foreach ($request->variants as $variant) {
-             $variantsData[] = [
-                'slug' => Str::of($variant['slug'])->slug('-'),
-                'volume' => $variant['volume'],
-                'stock_quantity' => $variant['stock_quantity'],
-                'price_without_tax' => $variant['price_without_tax'],
-                'tax_amount' => $variant['tax_amount'],
-                'available' => $variant['available'],
-                'product_id' => $product->id,
-             ];
-            }
-
-            // Insérer ou mettre à jour les variantes
-            $product->productVariants()->createMany($variantsData);
-        }
-
          // Rediriger avec un message de succès sur la page Admin show
-         return redirect()->route('products.show', $product)->with('success', 'Produit et variantes mis à jour avec succès!');
+         return redirect()->route('products.show', $product)->with('success', 'Produit mis à jour avec succès !');
     }
 
 
     public function show(Product $product, ProductVariant $productVariant) 
     {   
         $productVariants = ProductVariant::where('product_id', $product->id)->get();
-        // $brands = Brand::where('product_id', $product->id)->get();
-        // dd($productVariants);
     
         foreach ($productVariants as $variant) {
             $productVariant = $variant;
-             //dd($productVariant);
         }
-        // dd($test);
     
         return view('products.show', [
         'product' => $product,
@@ -227,10 +201,14 @@ class ProductController extends Controller
     }
 
     public function delete(Product $product) 
-    {
+    {   
+        foreach ($product->productVariants as $variant) {
+            $variant->delete(); // suppression individuelle car delete ne supprimer pas des collections mais des objets un par un
+        }
+
         $product->delete();
         
-        return redirect()->route('admin.index')->with('success', 'Le produit a bien été supprimé');
+        return redirect()->route('admin.index')->with('success', 'Le produit et ses variantes ont bien été supprimés.');
     }
 
 }

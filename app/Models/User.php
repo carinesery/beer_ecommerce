@@ -8,12 +8,13 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Laravel\Sanctum\HasApiTokens; 
 
 
 class User extends Authenticatable implements MustVerifyEmail //Laravel gère automatiquement le champ email_verified_at.
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
+    use HasFactory, Notifiable, SoftDeletes, HasApiTokens;
 
      // Définir une constante pour les rôles autorisés
      public const ROLES = ['admin', 'customer'];

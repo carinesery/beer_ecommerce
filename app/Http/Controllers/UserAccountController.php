@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Http\Requests\RegisteredUserRequest;
+use App\Http\Requests\UserAccountUpdateRequest;
 use Illuminate\Support\Facades\Auth;
 
 class UserAccountController extends Controller
 {
     public function create() 
     {
-        return view('/auth/register');
+        return view('auth.register');
     }
 
     public function store (RegisteredUserRequest $registeredUserRequest)
@@ -33,7 +34,7 @@ class UserAccountController extends Controller
         if (Auth::check()) {
             // L'utilisateur est authentifié
             $user = Auth::user();  // Récupère l'utilisateur authentifié
-            return view('/auth/show', compact('user')); 
+            return view('auth.show', compact('user')); 
 
         } else {
 
@@ -45,17 +46,41 @@ class UserAccountController extends Controller
 
     public function edit()
     {
-        // Priorité donnée à fonctionnalité "Mot de passe oublié" si temps nécessaire
+        if(Auth::check()) {
+            $user = Auth::user(); 
+            return view('auth.edit', compact('user'));
+        } else {
+            return redirect()->route('login');
+        }
     }
 
-    public function update()
+    public function update(UserAccountUpdateRequest $useraccountupdaterequest)
     {
-        // Priorité donnée à fonctionnalité "Mot de passe oublié" si temps nécessaire
+        $user = auth()->user();
+
+        // Enregistrement 
+        $data = $useraccountupdaterequest->validated();
+
+        // (1) Enregistrement si l'email a été modifié
+        if(array_key_exists('email', $data) && $data['email'] !== $user->email) {
+            $user->email_verified_at = null;
+            $user->fill($data);
+            $user->save();
+            $user->sendEmailVerificationNotification();
+
+            return redirect()->route('verification.notice');
+        }
+
+        // (2) ENregistrement si l'email n'a pas été modifié 
+        $user->update($data);
+
+        // Redirection
+        return redirect()->route('account.show')->with('success', 'Votre compte a été mis à jour.');
     }
 
     public function todestroy() {
 
-        return view('auth/delete');
+        return view('auth.delete');
     }
 
     public function destroy()

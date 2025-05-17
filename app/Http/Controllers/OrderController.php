@@ -14,33 +14,23 @@ class OrderController extends Controller
     public function index() // Voir l'ensemble des commandes passées
     {
         $orders = Order::with('items')
-        ->where('user_id', Auth::id())
-        ->get();
+                ->where('user_id', auth()->id()) // Auth::id()
+                ->whereIn('status', ['pending', 'completed', 'delivered', 'cancelled'])
+                ->get();
 
+        /** Pour un front React */
+        return response()->json([
+            'orders' => $orders
+        ], 200);
 
-        return view('orders.index', compact('orders'));
+        /** Pour un front Blade
+        * return view('orders.index', compact('orders'));
+        */
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        // $user = Auth::user();
-
-        // $cart = $user->cart;
-
-        // dd($cart);
-
-        // return view('orders.checkout', compact('user', 'cart'));
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
+    
     public function store(Request $request)
     {
-
         // 1. Validation
         $request->validate([
         // 'civility' => 'required|in:M.,Mme',
@@ -63,99 +53,100 @@ class OrderController extends Controller
         ->first();
 
         if (!$order || $order->items->isEmpty()) {
-        return redirect()->route('cart')->with('error', 'Votre panier est vide.');
+            return response()->json(['message' => 'Votre panier est vide'], 400);
+            /** Pour un front blade : return redirect()->route('cart')->with('error', 'Votre panier est vide.'); */ 
         }
 
         // 4. Mise à jour des infos de la commande
-        $order->update([
-            'status' => 'pending',
-            'address' => json_encode([
-                // 'civility' => $request->civility,
-                'phone' => $request->phone,
-                'address' => $request->address,
-                'zipcode' => $request->zipcode,
-                'city' => $request->city,
-            ]),
-        ]);
+        $order->status = 'pending';
+        $order->validated_at = now();
+
+        $order->address = [
+            'phone' => $request->phone,
+            'address' => $request->address,
+            'zipcode' => $request->zipcode,
+            'city' => $request->city,
+        ];
+        
+        $order->save();
 
         // 5. Rediriger vers la page de confirmation ou de paiement
-        return redirect()->route('orders.redirect', ['order' => $order->id]);
-        // return redirect()->route('orders.confirmation', ['order' => $order->id]);
+        /** Pour un front React */ 
+        return response()->json([
+            'message' => 'Commande validée',
+            'order' => $order,
+            'redirect_url' => route('orders.redirect', ['order' => $order->id])
+        ], 200);
 
-
-        // // Validation
-        // $request->validate([
-        //     'civility' => 'required|in:M.,Mme',
-        //     // 'firstname' => 'required|string|max:255',
-        //     // 'lastname' => 'required|string|max:255',
-        //     'email' => 'required|email',
-        //     'phone' => 'nullable|string|max:20',
-        //     'address' => 'required|string|max:255',
-        //     'zipcode' => 'required|digits_between:4,10',
-        //     'city' => 'required|string|max:255',
-        //     'privacy-policy' => 'accepted',
-        //     'terms-of-sale' => 'accepted',
-        // ]);
-
-        // // Création 
-        // $user = Auth::user();
-
-        // $order = Order::create([
-        //     'user_id' => $user->id,
-        //     'status' => 'pending',
-        //     'total_price_with_tax' => 120,
-        //     'total_price_without_tax' => 100,
-        //     'tax_amount' => 20,
-        //     'address' => [
-        //         'civility' => $request->civility,
-        //         // 'firstname' => $request->firstname,
-        //         // 'lastname' => $request->lastname,
-        //         'phone' => $request->phone,
-        //         'address' => $request->address,
-        //         'zipcode' => $request->zipcode,
-        //         'city' => $request->city,
-        //     ]
-        // ]);
-
-        // // Redirection
-        // return redirect()->route('orders.confirmation', ['order' => $order->id]);
-
+        /** Pour un front Blade : 
+        * return redirect()->route('orders.redirect', ['order' => $order->id]);
+        */
     }
+    
 
-    public function confirmation(Order $order)
+    public function redirectToStripe(Order $order)
     {
-        return view('orders.confirmation', compact('order'));
+        if ($order->user_id !== auth()->id()) {
+            return response()->json(['message' => 'Accès interdit'], 403);
+            /** Pour un front blade : abort(403); */
+        }
+
+        /** Pour un front React */
+        return response()->json([
+            'message' => 'Redirection vers Stripe',
+            'order' => $order
+        ], 200);
+
+        /** Pour un front blade : 
+        * return view('orders.redirect', compact('order'));
+        */
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id) // Voir une commande passée 
+
+    public function show($orderId)
     {
-        //
+        $order = Order::where('id', $orderId)
+                ->where('user_id', auth()->id())
+                ->with('items.productVariant.product', 'user')
+                ->firstOrFail();
+
+        if(!$order) {
+            return response()->json(['message' => 'Commande introuvable.'], 404);
+        }
+       
+        /** Pour un front React */
+        return response()->json(['order' => $order], 200);
+
+        /** Pour un front Blade : 
+        * return view('orders.show', compact('order'));
+        */
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+    public function resumePayment($orderId) {
+
+        // Vérifier que l'utilisateur a une commande statut pending
+        $order = Order::where('id', $orderId)
+                ->where('user_id', auth()->id())
+                ->where('status', 'pending')
+                ->with('items')
+                ->firstOrFail();
+
+        if(!$order) {
+             return response()->json(['message' => 'Commande introuvable ou déjà payée.'], 404);
+        }
+
+        // Diriger vers la page de confirmation ou de paiement
+
+        /** Pour un front React */
+        return response()->json([
+            'message' => 'Redirection vers le paiement en cours ...',
+            'order' => $order,
+            'redirect_url' => route('orders.redirect', ['order' => $order->id])
+        ]);
+
+        /** Pour un front Blade
+        * return redirect()->route('orders.redirect', ['order' => $order->id]);
+         */
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 }

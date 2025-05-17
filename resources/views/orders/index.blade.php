@@ -9,26 +9,27 @@
 </style>
 
 <x-layout title="Toutes les commandes">
-    <h1>Toutes des commandes</h1>
+    <h1>Toutes les commandes</h1>
     <ul>
         @foreach($orders as $order)
-        <li><span>Commande du {{ $order->created_at->format('d/m/Y') }}</span>
+        <li><span>Commande</span>
+            <span>
+                    @if($order->status === 'pending')
+                    validée le {{ $order->validated_at ? $order->validated_at->format('d-m-Y à H:i') : '(date inconnue)' }} (en attente de paiement)
+                    @elseif($order->status === 'completed')
+                    payée le {{ $order->paid_at ? $order->paid_at->format('d-m-Y à H:i') : '(date inconnue)' }}
+                    @elseif($order->status === 'delivered')
+                    envoyée le {{ $order->shipped_at ? $order->shipped_at->format('d-m-Y à H:i') : '(date inconnue)' }}
+                    @elseif($order->status === 'cancelled')
+                    annulée le {{ $order->cancelled_at ? $order->cancelled_at->format('d-m-Y à H:i') : '(date inconnue)' }}
+                    @endif
+            </span>
             <div>
                 <div class="resume">
-                    <span>Montant total : {{ $order->total_price_with_tax }} €</span>
-                    <span>Statut :
-                        @if($order->status === 'pending')
-                        Validée
-                        @elseif($order->status === 'completed')
-                        Payée
-                        @elseif($order->status === 'delivered')
-                        Livrée
-                        @elseif($order->status === 'cancelled')
-                        Annulée
-                        @endif
-                    </span>
+                    <span>Montant total : {{ number_format($order->total_price_with_tax/100, 2, ',', '') }} €</span>
+                    
                 </div>
-                <a href="">Voir la commande</a>
+                <a href="{{ route('orders.show', $order) }}">Voir la commande</a>
             </div>
         </li>
         @endforeach

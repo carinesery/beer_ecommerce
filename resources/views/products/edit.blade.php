@@ -151,7 +151,7 @@
         </div>
 
         <!-- Variantes -->
-        <h2>Variante(s)</h2>
+        <!-- <h2>Variante(s)</h2>
         <div id="variants">
             @foreach($product->productVariants as $index => $variant)
             <div class="variant">
@@ -180,7 +180,7 @@
                 </div>
 
                 <div>
-                    <label for="variant_price_without_tax">Prix HT</label>
+                    <label for="variant_price_without_tax">Prix HT (en centimes)</label>
                     <input type="number" name="variants[{{ $index }}][price_without_tax]" id="variant_price_without_tax" value="{{ old('variants.' . $index . '.price_without_tax', $variant->price_without_tax) }}" required>
                     @error('variants.0.price_without_tax')
                         <p style="color: red;">{{ $message }}</p>
@@ -206,7 +206,7 @@
             @endforeach
         </div>
         
-        <button type="button" id="add_variant">Ajouter une variante</button>
+        <button type="button" id="add_variant">Ajouter une variante</button> -->
         <button type="submit">Mettre à jour le produit</button>
     </form>
 

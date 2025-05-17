@@ -56,8 +56,8 @@ class ProductStoreRequest extends FormRequest
             ],
 
             // Règles pour la validation des variantes
-            'variants.*.slug' => ['required', 'string'], // Ok ????
-            'variants.*.volume'=> ['required', 'string'], // Mettre un min et un max ?
+            'variants.*.slug' => ['required', 'string', 'max:255'], // Ok ????
+            'variants.*.volume'=> ['required', 'string', 'max:50'], // Mettre un min et un max ?
             'variants.*.stock_quantity' => ['required', 'integer', 'min:0'],
             'variants.*.price_without_tax' => ['required', 'numeric'],
             'variants.*.tax_amount' => ['required', 'numeric'],
