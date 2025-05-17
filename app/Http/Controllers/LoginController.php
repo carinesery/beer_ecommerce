@@ -5,7 +5,9 @@ use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use PHPUnit\Framework\Constraint\IsTrue;
 
+use function PHPUnit\Framework\isTrue;
 
 // Ce code est le LoginController qui gère 
 // l'authentification des utilisateurs (connexion et déconnexion). Voici une explication détaillée :
@@ -42,8 +44,11 @@ class LoginController extends Controller
 
             if (is_null($user->email_verified_at)) { // Normalement la méthode hasVerifiedEmail aurait dû fonctionner mais non ... cela la remplace
                 // Redirige l'utilisateur s'il n'a pas vérifié son email Auth::logout();
-                
                 return redirect()->route('verification.notice')->with('message', 'Veuillez vérifier votre email pour vous connecter.');
+            }
+
+            if (isTrue($user->email_verified_at) || $user->role === 'customer') { 
+                return redirect()->intended('http://localhost:5173/connexion');
             }
  
             return redirect()->intended('/');

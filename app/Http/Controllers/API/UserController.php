@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
@@ -13,6 +12,10 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+
+    public function create(){
+
+    }
     public function store(Request $request){
 
         // Validation des données
@@ -37,7 +40,10 @@ class UserController extends Controller
              'birthdate' => $request->birthdate,
          ]);
      
-         return response()->json($user, 201);
+          // Envoyer l'email de vérification
+        $user->sendEmailVerificationNotification();
+
+        return response()->json(['message' => 'Inscription réussie. Vérifiez votre email pour confirmer votre compte.'], 201);
 
     }
 

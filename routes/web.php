@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\UserAccountController;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Auth;
 use App\Mail\OrderConfirmationMail;
 use Illuminate\Support\Facades\Mail;
 
@@ -106,6 +107,22 @@ Route::controller(UserAccountController::class)->group(function() {
     Route::delete('/auth/delete', 'destroy')->name('account.destroy');
 });
 
+/** Routes pour le paiement Stripe */
+Route::post('/checkout', [\App\Http\Controllers\StripeController::class, 'checkout'])->name('stripe.checkout');
+Route::get('/checkout/success', [\App\Http\Controllers\StripeController::class, 'success'])->name('stripe.success');
+Route::get('/checkout/cancel', [\App\Http\Controllers\StripeController::class, 'cancel'])->name('stripe.cancel');
+
+// Route intermédiaire en GET pour rediriger vers Stripe via un POST automatique
+Route::get('/orders/redirect/{order}', function (\App\Models\Order $order) {
+    return view('orders.redirect', compact('order'));
+})->name('orders.redirect');
+
+Route::get('/auth/register', [userAccountController::class, 'create'])->name('register.create');
+Route::post('/auth/register', [UserAccountController::class, 'store'])->name('register.store');
+Route::get('auth/show', [UserAccountController::class, 'show'])->name('account.show');
+Route::get('auth/delete', [UserAccountController::class, 'todestroy'])->middleware('auth')->name('register.todestroy');
+Route::delete('auth/delete', [UserAccountController::class, 'destroy'])->middleware('auth')->name('register.destroy');
+
 // A faire : 
 Route::controller(PasswordController::class)->group(function() {
     Route::get('password/edit', 'edit')->name('password.edit');
@@ -114,9 +131,9 @@ Route::controller(PasswordController::class)->group(function() {
 });
 
 
-
-// 1. Route pour vérification de l'email 
-Route::get('/email/verify', function () {
+// Route pour vérification de l'email 
+Route::get('/email/verify', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
     return view('auth.verify-email');
 })->middleware('auth')->name('verification.notice');
 
@@ -124,7 +141,7 @@ Route::get('/email/verify', function () {
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill(); // Marque l'utilisateur comme "email_verified_at" rempli.
 
-    return redirect('/');
+    return redirect('http://localhost:5173/connexion')->with('message', 'Votre adresse email a été vérifiée avec succès !');
 })->middleware(['auth', 'signed'])->name('verification.verify');
 
 // 3. Renvoie un nouveau lien de vérification
