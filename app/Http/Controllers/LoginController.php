@@ -47,10 +47,11 @@ class LoginController extends Controller
                 return redirect()->route('verification.notice')->with('message', 'Veuillez vérifier votre email pour vous connecter.');
             }
 
-            if (isTrue($user->email_verified_at) || $user->role === 'customer') { 
-                return redirect()->intended('http://localhost:5173/connexion');
+            if (isTrue($user->email_verified_at) && $user->role === 'customer') { //Si la connection est une connexion client
+                // Redirige l'utilisateur vers la page de connexion du site trink
+                return redirect()->intended('http://localhost:5173/connexion'); 
             }
- 
+
             return redirect()->intended('/');
         }
         
