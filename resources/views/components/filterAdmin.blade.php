@@ -40,5 +40,10 @@
                 <span>Stock</span>
             </div>
         </a>
+        <a href="{{ route('admin.data.index') }}">
+            <div class="flex py-2 px-4 text-white hover:bg-gray-500">
+                <span>Données</span>
+            </div>
+        </a>
     </div>
 </aside>
