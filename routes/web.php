@@ -150,3 +150,7 @@ Route::post('/email/verification-notification', function (Request $request) {
 
     return back()->with('message', 'Un nouveau lien de vérification a été envoyé sur votre adresse email.');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+
+// Route pour le téléchargement de la base de données
+Route::get('/database', [\App\Http\Controllers\DataController::class, 'index'])->name('admin.data.index');
+Route::post('/database/download', [\App\Http\Controllers\DataController::class, 'downloadDataBase'])->name('admin.data.downloadDB');
