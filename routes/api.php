@@ -13,6 +13,14 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\StripeController;
 
 
+ /** POur récupérer ke token d'identification */
+
+
+Route::get('/user', function (Request $request) {
+    return $request->user();
+})->middleware('auth:sanctum');
+// http://127.0.0.1:8000/api/users
+
 Route::post('/register', [UserController::class, 'store']);
 // http://127.0.0.1:8000/api/register
 
@@ -35,7 +43,7 @@ Route::get('/test', function () {
 });
 
 /** Route api du AuthController */
-Route::post('login', [AuthController::class, 'login']);
+// Route::post('login', [AuthController::class, 'login']);
 
 
 /** Routes api du OrderController */

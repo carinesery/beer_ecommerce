@@ -14,6 +14,10 @@ class StripeController extends Controller
     public function checkout(Request $request)
     {
 
+        $request->validate([
+            'order_id' => 'required|exists:orders,id'
+        ]);
+        
         $order = Order::where('user_id', auth()->id())
                         ->where('id', $request->order_id)
                         ->where('status', 'pending')
@@ -61,7 +65,7 @@ class StripeController extends Controller
         $request->validate([
             'order_id' => 'required|exists:orders,id'
         ]);
-        
+
         // Récupère la commande
         $order = Order::where('user_id', auth()->id())
                         ->where('id', $request->order_id)

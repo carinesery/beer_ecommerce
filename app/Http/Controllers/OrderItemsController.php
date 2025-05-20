@@ -6,6 +6,7 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\ProductVariant;
 use Illuminate\Http\Request;
+use App\Http\Resources\OrderItemResource;
 
 class OrderItemsController extends Controller
 {
@@ -88,7 +89,7 @@ class OrderItemsController extends Controller
         /** Pour un front React */
         return response()->json([
             'message' => 'Produit ajouté au panier',
-            'item' => $orderItem
+            'item' => new OrderItemResource($orderItem)
         ], 201);
 
         /** Pour un front Blade 
@@ -135,7 +136,7 @@ class OrderItemsController extends Controller
         /** Pour un front React */
          return response()->json([
             'message' => 'Quantité mise à jour.',
-            'item' => $orderItem
+            'item' => new OrderItemResource($orderItem)
         ]);
 
         /** Pour un front Blade 
