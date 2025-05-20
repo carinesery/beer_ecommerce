@@ -89,7 +89,7 @@ class OrderItemsController extends Controller
         /** Pour un front React */
         return response()->json([
             'message' => 'Produit ajouté au panier',
-            'item' => new OrderItemResource($orderItem)
+            'item' => $orderItem
         ], 201);
 
         /** Pour un front Blade 

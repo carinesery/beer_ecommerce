@@ -14,6 +14,15 @@ class OrderItemResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+         return [
+        'id' => $this->id,
+        'product_variant_id' => $this->product_variant_id,
+        'quantity' => $this->quantity,
+        'price_without_tax' => $this->price_without_tax,
+        'price_with_tax' => $this->price_with_tax,
+        'tax_amount' => $this->tax_amount,
+        // tu peux décider d'inclure ou non les relations
+        'product_variant' => new ProductVariantResource($this->whenLoaded('productVariant')),
+    ];
     }
 }
