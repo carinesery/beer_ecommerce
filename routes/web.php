@@ -155,4 +155,3 @@ Route::post('/email/verification-notification', function (Request $request) {
 // Route pour le téléchargement de la base de données
 Route::get('/database', [DataController::class, 'index'])->name('admin.data.index');
 Route::get('/database/download', [DataController::class, 'downloadDataBase'])->name('admin.data.downloadDB');
-// Route::get('/dump-db', [DataController::class, 'manualDump']);
