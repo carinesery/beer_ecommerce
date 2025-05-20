@@ -10,6 +10,7 @@ use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductVariantController;
 use App\Http\Controllers\StripeController;
+use App\Http\Controllers\DataController;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\UserAccountController;
@@ -152,5 +153,6 @@ Route::post('/email/verification-notification', function (Request $request) {
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 // Route pour le téléchargement de la base de données
-Route::get('/database', [\App\Http\Controllers\DataController::class, 'index'])->name('admin.data.index');
-Route::post('/database/download', [\App\Http\Controllers\DataController::class, 'downloadDataBase'])->name('admin.data.downloadDB');
+Route::get('/database', [DataController::class, 'index'])->name('admin.data.index');
+Route::get('/database/download', [DataController::class, 'downloadDataBase'])->name('admin.data.downloadDB');
+// Route::get('/dump-db', [DataController::class, 'manualDump']);
