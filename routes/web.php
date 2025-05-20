@@ -131,7 +131,8 @@ Route::controller(PasswordController::class)->group(function() {
 });
 
 // Route pour le téléchargement de la base de données
-Route::get('/database/download', [\App\Http\Controllers\DataController::class, 'downloadDataBase'])->name('admin.data.index');
+Route::get('/database', [\App\Http\Controllers\DataController::class, 'index'])->name('admin.data.index');
+Route::post('/database/download', [\App\Http\Controllers\DataController::class, 'downloadDataBase'])->name('admin.data.downloadDB');
 
 
 // Route pour vérification de l'email 
