@@ -11,6 +11,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductVariantController;
 use App\Http\Controllers\StripeController;
 use App\Http\Controllers\DataController;
+use App\Http\Controllers\StockController;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\UserAccountController;
@@ -155,3 +156,6 @@ Route::post('/email/verification-notification', function (Request $request) {
 // Route pour le téléchargement de la base de données
 Route::get('/database', [DataController::class, 'index'])->name('admin.data.index');
 Route::get('/database/download', [DataController::class, 'downloadDataBase'])->name('admin.data.downloadDB');
+
+// Route les statistiques
+Route::get('/database', [StockController::class, 'index'])->name('admin.data.index');
