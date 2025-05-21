@@ -8,6 +8,7 @@ use App\Http\Controllers\CartController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\ChipCartController;
 use App\Http\Controllers\OrderItemsController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\StripeController;
@@ -70,4 +71,8 @@ Route::middleware('auth:sanctum')->prefix('stripe-payment')->controller(StripeCo
     Route::get('/cancel', 'cancel');
 });
 
+Route::get('/chipcart', [ChipCartController::class, 'chipCart']);
+// http://127.0.0.1:8000/api/chipcart
 
+Route::get('/products', [ProductController::class, 'index']);
+// http://127.0.0.1:8000/api/products

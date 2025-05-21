@@ -92,9 +92,9 @@
             <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Télécharger les statistiques</button>
         </form>
         <h2 class="text-2xl font-bold mb-4">Statistiques de vente</h2>
-        <div class="flex flex-row gap-10">
-            <img src="{{ asset('images/tableau-statistique.png') }}" alt="Statistiques" class="border w-200">
-            <img src="{{ asset('images/1323845.png') }}" alt="Statistiques" class="border w-200">
+        <div class="flex flex-row justify-center gap-10">
+            <img src="{{ asset('images/tableau-statistique.png') }}" alt="Statistiques" class="border w-150">
+            <img src="{{ asset('images/1323845.png') }}" alt="Statistiques" class="border w-150">
         </div>
         
     </div>
