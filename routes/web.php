@@ -51,9 +51,9 @@ Route::get('/login', [\App\Http\Controllers\LoginController::class, 'login'])->n
 Route::post('/login', [\App\Http\Controllers\LoginController::class, 'authenticate'])->name('login.authenticate');
 Route::post('/logout', [\App\Http\Controllers\LoginController::class, 'logout'])->name('logout');
 
-Route::get('/admin/product', [\App\Http\Controllers\AdminController::class, 'index'])->name('admin.index');
 
 // CRUD partiel des AdminOrders
+Route::get('/admin/product', [\App\Http\Controllers\AdminController::class, 'index'])->name('admin.index');
 Route::controller(AdminOrderController::class)->group(function() {
     Route::get('/admin-orders', 'index')->name('admin-orders.index');
     Route::patch('/admin-orders/{order}/cancel', 'cancel')->name('admin-orders.cancel');
