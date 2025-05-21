@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\UserAccountController;
 use App\Http\Controllers\UserController;
+use App\Http\Middleware\Role;
 use Illuminate\Support\Facades\Auth;
 use App\Mail\OrderConfirmationMail;
 use Illuminate\Support\Facades\Mail;
@@ -33,7 +34,7 @@ Route::controller(ProductController::class)->group(function() {
     Route::put('/products/{product}', 'update')->name('products.update');
     Route::get('/products/delete/{product:slug}', 'todelete')->name('products.todelete');
     Route::delete('products/delete/{product:slug}', 'delete')->name('products.delete');
-});
+})->middleware([Role::class.':admin']);
 
 
 // CRUD des ProductVariants
@@ -44,7 +45,7 @@ Route::controller(ProductVariantController::class)->group(function() {
     Route::patch('/products/{productvariant}', 'update')->name('productvariants.update');
     Route::get('/products/{productvariant}/delete', 'todestroy')->name('productvariants.todestroy');
     Route::delete('/products/{productvariant}/delete', 'destroy')->name('productvariants.destroy');
-});
+})->middleware([Role::class.':admin']);
 
 
 Route::get('/login', [\App\Http\Controllers\LoginController::class, 'login'])->name('login');
@@ -53,7 +54,7 @@ Route::post('/logout', [\App\Http\Controllers\LoginController::class, 'logout'])
 
 
 // CRUD partiel des AdminOrders
-Route::get('/admin/product', [\App\Http\Controllers\AdminController::class, 'index'])->name('admin.index');
+Route::get('/admin/product', [\App\Http\Controllers\AdminController::class, 'index'])->name('admin.index')->middleware([Role::class.':admin']);
 Route::controller(AdminOrderController::class)->group(function() {
     Route::get('/admin-orders', 'index')->name('admin-orders.index');
     Route::patch('/admin-orders/{order}/cancel', 'cancel')->name('admin-orders.cancel');
