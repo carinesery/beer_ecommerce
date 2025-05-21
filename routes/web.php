@@ -27,25 +27,25 @@ Route::get('/',\App\Http\Controllers\HomeController::class)->name('homepage');
 
 // CRUD des Products
 Route::controller(ProductController::class)->group(function() {
-    Route::get('/products/create', 'create')->name('products.create');
-    Route::post('/products', 'store')->name('products.store');
-    Route::get('/products/{product:slug}', 'show')->name('products.show');
-    Route::get('/products/edit/{product}', 'edit')->name('products.edit');
-    Route::put('/products/{product}', 'update')->name('products.update');
-    Route::get('/products/delete/{product:slug}', 'todelete')->name('products.todelete');
-    Route::delete('products/delete/{product:slug}', 'delete')->name('products.delete');
-})->middleware([Role::class.':admin']);
+    Route::get('/products/create', 'create')->name('products.create')->middleware([Role::class.':admin']);;
+    Route::post('/products', 'store')->name('products.store')->middleware([Role::class.':admin']);;
+    Route::get('/products/{product:slug}', 'show')->name('products.show')->middleware([Role::class.':admin']);;
+    Route::get('/products/edit/{product}', 'edit')->name('products.edit')->middleware([Role::class.':admin']);;
+    Route::put('/products/{product}', 'update')->name('products.update')->middleware([Role::class.':admin']);;
+    Route::get('/products/delete/{product:slug}', 'todelete')->name('products.todelete')->middleware([Role::class.':admin']);;
+    Route::delete('products/delete/{product:slug}', 'delete')->name('products.delete')->middleware([Role::class.':admin']);;
+});
 
 
 // CRUD des ProductVariants
 Route::controller(ProductVariantController::class)->group(function() {
-    Route::get('products/{product}/productvariants/create', 'create')->name('productvariants.create');
-    Route::post('products/{product}/productvariants','store')->name('productvariants.store');
-    Route::get('/products/{productvariant}/edit', 'edit')->name('productvariants.edit');
-    Route::patch('/products/{productvariant}', 'update')->name('productvariants.update');
-    Route::get('/products/{productvariant}/delete', 'todestroy')->name('productvariants.todestroy');
-    Route::delete('/products/{productvariant}/delete', 'destroy')->name('productvariants.destroy');
-})->middleware([Role::class.':admin']);
+    Route::get('products/{product}/productvariants/create', 'create')->name('productvariants.create')->middleware([Role::class.':admin']);
+    Route::post('products/{product}/productvariants','store')->name('productvariants.store')->middleware([Role::class.':admin']);
+    Route::get('/products/{productvariant}/edit', 'edit')->name('productvariants.edit')->middleware([Role::class.':admin']);
+    Route::patch('/products/{productvariant}', 'update')->name('productvariants.update')->middleware([Role::class.':admin']);
+    Route::get('/products/{productvariant}/delete', 'todestroy')->name('productvariants.todestroy')->middleware([Role::class.':admin']);
+    Route::delete('/products/{productvariant}/delete', 'destroy')->name('productvariants.destroy')->middleware([Role::class.':admin']);
+});
 
 
 Route::get('/login', [\App\Http\Controllers\LoginController::class, 'login'])->name('login');
@@ -56,24 +56,24 @@ Route::post('/logout', [\App\Http\Controllers\LoginController::class, 'logout'])
 // CRUD partiel des AdminOrders
 Route::get('/admin/product', [\App\Http\Controllers\AdminController::class, 'index'])->name('admin.index')->middleware([Role::class.':admin']);
 Route::controller(AdminOrderController::class)->group(function() {
-    Route::get('/admin-orders', 'index')->name('admin-orders.index');
-    Route::patch('/admin-orders/{order}/cancel', 'cancel')->name('admin-orders.cancel');
+    Route::get('/admin-orders', 'index')->name('admin-orders.index')->middleware([Role::class.':admin']);
+    Route::patch('/admin-orders/{order}/cancel', 'cancel')->name('admin-orders.cancel')->middleware([Role::class.':admin']);
 });
 
-Route::get('/users/registration', [\App\Http\Controllers\UserController::class, 'create'])->name('users.create');
-Route::post('/users', [\App\Http\Controllers\UserController::class, 'store'])->name('users.store');
-Route::get('/admin/users', [\App\Http\Controllers\UserController::class, 'index'])->name('users');
-Route::delete('/users/{user}', [\App\Http\Controllers\UserController::class, 'destroy'])->name('users.destroy');
-Route::get('/users/{user}', [\App\Http\Controllers\UserController::class, 'show'])->name('users.show');
-Route::get('/users/edit/{user}', [\App\Http\Controllers\UserController::class, 'edit'])->name('users.edit');
-Route::put('/users/{user}', [\App\Http\Controllers\UserController::class, 'update'])->name('users.update');
+Route::get('/users/registration', [\App\Http\Controllers\UserController::class, 'create'])->name('users.create')->middleware([Role::class.':admin']);
+Route::post('/users', [\App\Http\Controllers\UserController::class, 'store'])->name('users.store')->middleware([Role::class.':admin']);
+Route::get('/admin/users', [\App\Http\Controllers\UserController::class, 'index'])->name('users')->middleware([Role::class.':admin']);
+Route::delete('/users/{user}', [\App\Http\Controllers\UserController::class, 'destroy'])->name('users.destroy')->middleware([Role::class.':admin']);
+Route::get('/users/{user}', [\App\Http\Controllers\UserController::class, 'show'])->name('users.show')->middleware([Role::class.':admin']);
+Route::get('/users/edit/{user}', [\App\Http\Controllers\UserController::class, 'edit'])->name('users.edit')->middleware([Role::class.':admin']);
+Route::put('/users/{user}', [\App\Http\Controllers\UserController::class, 'update'])->name('users.update')->middleware([Role::class.':admin']);
 
 // CRUD des OrderItems
 Route::middleware('auth')->controller(OrderItemsController::class)->group(function() {
-    Route::get('/order-items/create', 'create')->name('order-items.create');
-    Route::post('/order-items', 'store')->name('order-items.store');
-    Route::patch('/order-items/{order_item}', 'update')->name('order-items.update');
-    Route::delete('order-items/{order_item}', 'destroy')->name('order-items.destroy');
+    Route::get('/order-items/create', 'create')->name('order-items.create')->middleware([Role::class.':admin']);
+    Route::post('/order-items', 'store')->name('order-items.store')->middleware([Role::class.':admin']);
+    Route::patch('/order-items/{order_item}', 'update')->name('order-items.update')->middleware([Role::class.':admin']);
+    Route::delete('order-items/{order_item}', 'destroy')->name('order-items.destroy')->middleware([Role::class.':admin']);
 });
 
 // CRUD partiel du Cart
@@ -155,8 +155,8 @@ Route::post('/email/verification-notification', function (Request $request) {
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 // Route pour le téléchargement de la base de données
-Route::get('/database', [DataController::class, 'index'])->name('admin.data.index');
-Route::get('/database/download', [DataController::class, 'downloadDataBase'])->name('admin.data.downloadDB');
+Route::get('/database', [DataController::class, 'index'])->name('admin.data.index')->middleware([Role::class.':admin']);
+Route::get('/database/download', [DataController::class, 'downloadDataBase'])->name('admin.data.downloadDB')->middleware([Role::class.':admin']);
 
 // Route les statistiques
-Route::get('/database', [StockController::class, 'index'])->name('admin.data.index');
+Route::get('/database', [StockController::class, 'index'])->name('admin.data.index')->middleware([Role::class.':admin']);
