@@ -22,7 +22,6 @@ class CartController extends Controller
         * $user = User::findOrFail($userId);
         */
 
-
         $order = Order::where('user_id', $user->id)
             ->where('status', 'cart')
             ->with('items.productVariant.product') // on charge les items + relations imbriquées

@@ -13,9 +13,10 @@ class OrderController extends Controller
      */
     public function index() // Voir l'ensemble des commandes passées
     {
-        $orders = Order::with('items')
+        $orders = Order::with('items.productVariant.product')
                 ->where('user_id', auth()->id()) // Auth::id()
                 ->whereIn('status', ['pending', 'completed', 'delivered', 'cancelled'])
+                ->orderByDesc('created_at')
                 ->get();
 
         /** Pour un front React */
@@ -39,7 +40,6 @@ class OrderController extends Controller
         'address' => 'required|string|max:255',
         'zipcode' => 'required|digits_between:4,10',
         'city' => 'required|string|max:255',
-        'privacy-policy' => 'accepted',
         'terms-of-sale' => 'accepted',
         ]);
 
