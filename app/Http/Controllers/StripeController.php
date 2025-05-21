@@ -8,18 +8,22 @@ use Illuminate\Http\Request;
 use Stripe\Stripe;
 use Stripe\Checkout\Session;
 use App\Models\Order;
+use Stripe\Webhook;
 
 class StripeController extends Controller
 {
     public function checkout(Request $request)
     {
-
+        $request->validate([
+            'order_id' => 'required|exists:orders,id'
+        ]);
+        
         $order = Order::where('user_id', auth()->id())
                         ->where('id', $request->order_id)
                         ->where('status', 'pending')
                         ->with('items.productVariant.product')
                         ->firstOrFail();
-             
+
         Stripe::setApiKey(config('services.stripe.secret'));
 
         $lineItems = $order->items->map(function ($item) {
@@ -38,12 +42,22 @@ class StripeController extends Controller
         // dd($lineItems); // <-- ici pour vérifier les montants en centimes
 
         $session = Session::create([
-            'payment_method_types' => ['card'],
+            'payment_method_types' => ['card', 'paypal'],
             'line_items' => $lineItems,
             'mode' => 'payment',
-            'success_url' => route('stripe.success', ['order_id' => $order->id]),
-            'cancel_url' => route('stripe.cancel', ['order_id' => $order->id]),
+            'success_url' => config('app.frontend_url') . "/paiement-reussi?order_id={$order->id}",
+            'cancel_url' => config('app.frontend_url') . "/paiement-echoue",
         ]);
+        // $session = Session::create([
+        //     'payment_method_types' => ['card', 'paypal'],
+        //     'line_items' => $lineItems,
+        //     'mode' => 'payment',
+        //     'success_url' => config('app.frontend_url') . "/paiement-reussi?order_id={$order->id}",
+        //     'cancel_url' => config('app.frontend_url') . "/paiement-echoue",
+        //     'metadata' => [
+        //         'order_id' => $order->id,
+        //     ],
+        // ]);
 
         /** Pour un front React */
         return response()->json([
@@ -55,13 +69,59 @@ class StripeController extends Controller
          */
     }
 
+    // public function webhook(Request $request)
+    // {
+    //     $endpointSecret = config('services.stripe.webhook_secret');
+
+    //     $payload = $request->getContent();
+    //     $sigHeader = $request->header('Stripe-Signature');
+
+    //     try {
+    //         $event = Webhook::constructEvent($payload, $sigHeader, $endpointSecret);
+    //     } catch (\UnexpectedValueException $e) {
+    //         return response()->json(['error' => 'Invalid payload'], 400);
+    //     } catch (\Stripe\Exception\SignatureVerificationException $e) {
+    //         dd($e);
+    //         return response()->json(['error' => 'Invalid signature'], 400);
+    //     }
+
+    //     // Traitement du paiement réussi
+    //     if ($event->type === 'checkout.session.completed') {
+    //         $session = $event->data->object;
+
+    //         $orderId = $session->metadata->order_id ?? null;
+
+    //         if ($orderId) {
+    //             $order = Order::where('id', $orderId)
+    //                         ->where('status', 'pending')
+    //                         ->with('items.productVariant')
+    //                         ->first();
+
+    //             if ($order) {
+    //                 $order->status = 'completed';
+    //                 $order->paid_at = now();
+    //                 $order->save();
+
+    //                 foreach ($order->items as $item) {
+    //                     $variant = $item->productVariant;
+    //                     $variant->stock_quantity = max(0, $variant->stock_quantity - $item->quantity);
+    //                     $variant->save();
+    //                 }
+
+    //                 Mail::to($order->user->email)->send(new OrderConfirmationMail($order));
+    //             }
+    //         }
+    //     }
+
+    //     return response()->json(['status' => 'success']);
+    // }
+
     public function success(Request $request)
     {
-
         $request->validate([
             'order_id' => 'required|exists:orders,id'
         ]);
-        
+
         // Récupère la commande
         $order = Order::where('user_id', auth()->id())
                         ->where('id', $request->order_id)

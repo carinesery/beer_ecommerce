@@ -31,7 +31,6 @@ class LoginController extends Controller
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
- 
 
         // Si la connexion réussit :
         //         La session est régénérée ($request->session()->regenerate();) pour éviter les attaques de fixation de session.
