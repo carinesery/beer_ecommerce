@@ -38,71 +38,79 @@
                 <div class="add-product">
                     <a href="{{ route('products.create') }}" class="border rounded bg-blue-700 py-1 px-3 text-white hover:bg-blue-500">Créer un nouveau produit</a>
                 </div>
-                <div class="flex flex-wrap justify-between gap-3 border rounded p-4"> <!-- flex-row  -->
+                <div class="flex flex-wrap justify-between gap-3 p-4">
                     @foreach ($products as $product)
-                        <div class="flex flex-col  w-full justify-between gap-3 border rounded p-4">
-                            <div> <!-- class="w-80" -->
-                                <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"><br>    
-                                <h2 class="font-bold">{{ $product->name }}</h2> 
-                                <span>
-                                    {{ $product->brand ? $product->brand->name : 'Aucune marque' }}
-                                </span><br>
-                                <span class="inline-block bg-amber-100 rounded-xl px-3 py-1 text-sm">
-                                    {{ $product->category ? $product->category->name : 'Aucune catégorie'}}
-                                </span><br>
-                                <div class="mt-4">
-                                    <h3 class="font-medium text-lg">Variantes :</h3>
-                                    @if ($product->productVariants->isEmpty())
-                                        <p class="text-gray-500">Aucune variante.</p>
-                                    @else
-                                        <table class="w-full">
-                                            <thead>
-                                                <tr>
-                                                    <th>Contenance</th>
-                                                    <th>Stock</th>
-                                                    <th>Prix HT</th>
-                                                    <th>Taxe (%)</th>
-                                                    <th>Prix TTC</th>
-                                                    <th>Actions</th>
-                                                </tr>    
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($product->productVariants as $productvariant)
-                                                <tr>
-                                                    <td>{{ $productvariant->volume }}</td>
-                                                    <td>{{ $productvariant->stock_quantity }}</td>
-                                                    <td>{{ number_format($productvariant->price_without_tax/100, 2, ',', '') }}</td>
-                                                    <td>{{ $productvariant->tax_amount }}</td>
-                                                    <td>{{ number_format($productvariant->productVariantPriceWithTax()/100, 2, ',','') }}</td>
-                                                    <td><!-- Actions -->
-                                                        <a href="{{ route('productvariants.edit', $productvariant) }}">Modifier la variante</a>
-                                                        <a href="{{ route('productvariants.todestroy', $productvariant) }}">Supprimer la variante</a>
-                                                    </td>
-                                                        <!-- <p>Contenance : {{ $productvariant->volume }} – Stock : {{ $productvariant->stock_quantity }}</p>
-                                                    </li> -->
-                                                </tr>
-                                                @endforeach
-                                            </tbody>  
-                                            <tfoot>
-                                                <th>
-                                                    <a href="{{ route('productvariants.create', $product) }}">Ajouter une variante</a>
-                                                </th>
-                                            </tfoot> 
-                                        </table>
-                                    @endif
+                    <div class="flex flex-col  w-full justify-between gap-3 border rounded p-4">
+                        <div>
+                            <div class="flex gap-3 p-4 justify-between">
+                                <div class="flex gap-3">
+                                    <div class="flex justify-center flex-col">
+                                        <h2 class="font-bold text-4xl">{{ $product->name }}</h2>
+                                        <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-32 h-32 object-cover"><br>   
+                                    </div>
+                                    <span class="inline-block">
+                                       <b>Marque :</b>
+                                        {{ $product->brand ? $product->brand->name : 'Aucune marque' }}
+                                    </span><br>
+                                    <span class="inline-block rounded-xl px-3 py-1 text-sm">
+                                        <b>Type :</b>
+                                        {{ $product->category ? $product->category->name : 'Aucune catégorie'}}
+                                    </span>
                                 </div>
-                               
-                                <div class="flex gap-1">
-                                    <a href="{{ route('products.show', ['product' => $product->slug]) }}" class="border rounded bg-blue-700 py-1 px-3 text-white hover:bg-blue-500">
-                                        👁️ Voir le produit
-                                    </a>
-                                    <a href="{{ route('products.edit', ['product' => $product]) }}" class="border rounded bg-blue-700 py-1 px-3 text-white hover:bg-blue-500">
-                                        🖊️ Modifier le produit
-                                    </a>
-                                    <a href="{{ route('products.delete', $product) }}" class="border rounded bg-red-700 py-1 px-3 text-white hover:bg-red-500">🗑️ Supprimer</a>
-                                </div>
+                                <a href="{{ route('productvariants.create', $product) }}" class="border rounded bg-blue-700 py-1 px-3 text-white hover:bg-blue-500 self-start">Ajouter une variante</a>
                             </div>
-                        </div>        
+                            
+                            <div class="mt-4">
+                                @if ($product->productVariants->isEmpty())
+                                    <p class="text-gray-500">Aucune variante.</p>
+                                @else
+                                <table class="w-full border-collapse">
+                                        <caption class="text-center text-lg font-bold mb-2">Liste des variantes</caption>
+                                        <thead class="bg-gray-200">
+                                            <tr>
+                                                <th class="p-2 text-center">Contenance</th>
+                                                <th class="p-2 text-center">Stock</th>
+                                                <th class="p-2 text-center">Prix HT</th>
+                                                <th class="p-2 text-center">Taxe (%)</th>
+                                                <th class="p-2 text-center">Prix TTC</th>
+                                                <th class="p-2 text-center">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($product->productVariants as $productvariant)
+                                            <tr class="border-b">
+                                                <td class="p-2 text-center">{{ $productvariant->volume }}</td>
+                                                <td class="p-2 text-center">{{ $productvariant->stock_quantity }}</td>
+                                                <td class="p-2 text-center">{{ number_format($productvariant->price_without_tax/100, 2, ',', '') }}</td>
+                                                <td class="p-2 text-center">{{ $productvariant->tax_amount }}</td>
+                                                <td class="p-2 text-center">{{ number_format($productvariant->productVariantPriceWithTax()/100, 2, ',','') }}</td>
+                                                <td><!-- Actions -->
+                                                    <a href="{{ route('productvariants.edit', $productvariant) }}" class="border rounded bg-blue-700 py-1 px-3 text-white hover:bg-blue-500">Modifier la variante</a>
+                                                    <a href="{{ route('productvariants.todestroy', $productvariant) }}" class="border rounded bg-red-700 py-1 px-3 text-white hover:bg-red-500">Supprimer la variante</a>
+                                                </td>
+                                                    <!-- <p>Contenance : {{ $productvariant->volume }} – Stock : {{ $productvariant->stock_quantity }}</p>
+                                                </li> -->
+                                            </tr>
+                                            @endforeach
+                                        </tbody>  
+                                        <tfoot>
+                                            <th>
+                                            </th>
+                                        </tfoot> 
+                                    </table>
+                                @endif
+                            </div>
+                            <div class="flex gap-1">
+                                <a href="{{ route('products.show', ['product' => $product->slug]) }}" class="border rounded bg-blue-700 py-1 px-3 text-white hover:bg-blue-500">
+                                    👁️ Voir le produit
+                                </a>
+                                <a href="{{ route('products.edit', ['product' => $product]) }}" class="border rounded bg-blue-700 py-1 px-3 text-white hover:bg-blue-500">
+                                    🖊️ Modifier le produit
+                                </a>
+                                <a href="{{ route('products.delete', $product) }}" class="border rounded bg-red-700 py-1 px-3 text-white hover:bg-red-500">🗑️ Supprimer</a>
+                            </div>
+                        </div>
+                    </div>
                     @endforeach
                 </div>
                     
