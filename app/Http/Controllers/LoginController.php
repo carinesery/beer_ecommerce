@@ -42,7 +42,7 @@ class LoginController extends Controller
             // Vérifie si l'utilisateur a vérifié son email
             $user = Auth::user();
 
-            if (is_null($user->email_verified_at)) { // Normalement la méthode hasVerifiedEmail aurait dû fonctionner mais non ... cela la remplace
+            if (is_null($user->email_verified_at)) {
                 // Redirige l'utilisateur s'il n'a pas vérifié son email Auth::logout();
                 return redirect()->route('verification.notice')->with('message', 'Veuillez vérifier votre email pour vous connecter.');
             }
@@ -52,7 +52,7 @@ class LoginController extends Controller
                 return redirect()->intended('http://localhost:5173/connexion'); 
             }
 
-            return redirect()->intended('/');
+            return redirect()->intended('/admin/product'); // Redirige vers la page d'accueil de l'administrateur
         }
         
         // Si l'authentification échoue :
