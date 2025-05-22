@@ -93,8 +93,8 @@
         </form>
         <h2 class="text-2xl font-bold mb-4">Statistiques de vente</h2>
         <div class="flex flex-row gap-10">
-            <img src="{{ asset('images/tableau-statistique.png') }}" alt="Statistiques" class="border w-200">
-            <img src="{{ asset('images/1323845.png') }}" alt="Statistiques" class="border w-200">
+            <img src="{{ asset('images/tableau-statistique.png') }}" alt="Statistiques" class="border w-100">
+            <img src="{{ asset('images/1323845.png') }}" alt="Statistiques" class="border w-100">
         </div>
         
     </div>
