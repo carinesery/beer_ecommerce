@@ -25,8 +25,6 @@
             @if($salesMonth->isEmpty())
             <p class="text-red-600">Aucune vente n'a été effectuée ce mois-ci.</p>
             @else
-            <p class="text-lg">Mois : {{ $salesMonth->first()->mois ?: '0' }}</p>
-            <p class="text-lg">Total des ventes par mois : {{ $salesMonth->sum('total') ?: '0' }} €</p>
             @foreach($salesMonth as $item)
             <p>Mois : {{ $item->mois ?: '' }} — Total : {{ $item->total ?: '0' }} €</p>
             @endforeach
@@ -45,7 +43,7 @@
             @else
             <ul>
                 @foreach($topProducts as $produit)
-                <li>{{ $produit->name }} - {{ $produit->total_vendus }} ventes</li>
+                <li> <span class="font-bold">{{ $produit->product_name }}</span> - {{ $produit->total_vendus }} ventes</li>
                 @endforeach
             </ul>
             @endif
