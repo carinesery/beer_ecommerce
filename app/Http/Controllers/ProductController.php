@@ -81,7 +81,7 @@ class ProductController extends Controller
             'alcohol_degree' => $request->alcohol_degree,
             'category_id' => $request->category_id,
             'brand_id' => $brand_id, // Utiliser l'id de la marque (existante ou nouvelle)
-            'image' => $imagePath,// A la base c'était : $request->image
+            'image' => $imagePath,// A la base c'était : $request->image +
         ]);
 
          // Créer les variantes associées au produit
