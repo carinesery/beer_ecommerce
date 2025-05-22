@@ -74,7 +74,6 @@ Route::middleware('auth:sanctum')->prefix('cart')->controller(CartController::cl
 /** Routes api pour le paiement Stripe */
 Route::middleware('auth:sanctum')->prefix('stripe-payment')->controller(StripeController::class)->group(function() {
     Route::post('/checkout', 'checkout');
-   
     Route::get('/success', 'success');
     Route::get('/cancel', 'cancel');
 });
