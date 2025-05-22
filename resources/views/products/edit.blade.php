@@ -113,7 +113,7 @@
                 <p class="text-sm text-gray-500">Si vous téléchargez une nouvelle image, l'ancienne sera remplacée.</p>
             </div>
             @endif
-            <input type="file" name="image" id="image" accept="image/*" 
+            <input type="text" name="image" id="image" required 
             class="border-2 border-gray-300 rounded w-100 p-2 ">
             @error('image')
                 <p style="color: red;">{{ $message }}</p>

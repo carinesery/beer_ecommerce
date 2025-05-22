@@ -98,7 +98,7 @@
 
         <div class="flex flex-col gap-4">
             <label for="image" class="font-semibold">Image :</label>
-            <input type="file" name="image" id="image" accept="image/*" class="border-2 border-gray-300 rounded w-100">
+            <input type="text" name="image" id="image" required class="border-2 border-gray-300 rounded w-100">
             @error('image')
                 <p style="color: red;">{{ $message }}</p>
             @enderror

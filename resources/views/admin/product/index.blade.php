@@ -41,7 +41,7 @@
                                 <div class="flex gap-3">
                                     <div class="flex justify-center flex-col">
                                         <h2 class="font-bold text-4xl">{{ $product->name }}</h2>
-                                        <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-32 h-32 object-cover border border-gray-300 rounded"><br>   
+                                        <img src="{{ $product->image }}" alt="{{ $product->name }}" class="w-32 h-32 object-cover border border-gray-300 rounded"><br>   
                                     </div>
                                     <span class="inline-block">
                                        <b>Marque :</b>

@@ -8,7 +8,7 @@
         <div class="flex flex-wrap gap-4 py-4 container mx-auto my-10 p-6 bg-white">
         <!-- Message d'ajout au panier -->
         <div>
-            <img src="{{ asset('storage/app/public/images/' . $product->image) }}" alt="Image du produit" class="w-100 h-100 border border-gray-400">
+            <img src="{{ $product->image }}" alt="Image du produit" class="w-100 h-100 border border-gray-400">
         </div>
         <div class="flex flex-col gap-4">
             <div>
