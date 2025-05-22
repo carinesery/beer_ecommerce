@@ -10,7 +10,7 @@
 
         <div class="grid grid-cols-[10%_90%] ">
             <x-filterAdmin></x-filterAdmin>
-                <div>
+                <div >
                     <div class="flex justify-between gap-0 bg-gray-700">
                         <div class="flex gap-0">
                             <button class="border-r-1 border-gray-400 py-1 px-3 text-white hover:bg-gray-500">Nom</button>
@@ -30,25 +30,25 @@
                             <button class="border-r-1 border-gray-400 py-1 px-3 text-white hover:bg-gray-500">🗑️ Corbeille</button>
                         </div>
                     </div>
-                    <h2>Liste des commandes</h2>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Utilisateur</th>
-                                    <th>Statut</th>
-                                    <th>Total</th>
-                                    <th>Actions</th>
+                    <h2 class="font-bold text-xl mb-4 text-center p-10">Liste des commandes</h2>
+                        <table class="table-auto w-full border-collapse border border-gray-300">
+                            <thead class="bg-gray-200 text-gray-700 font-bold">
+                                <tr class="bg-gray-200">
+                                    <th class="border border-gray-300 px-4 py-2">ID</th>
+                                    <th class="border border-gray-300 px-4 py-2">Utilisateur</th>
+                                    <th class="border border-gray-300 px-4 py-2">Statut</th>
+                                    <th class="border border-gray-300 px-4 py-2">Total</th>
+                                    <th class="border border-gray-300 px-4 py-2">Actions</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                            @foreach($orders as $order)
-                                <tr>
-                                    <td>#{{ $order->id }}</td>
-                                    <td>{{ $order->user->firstname }} {{ $order->user->lastname }}</td>
-                                    <td>{{ $order->getStatusLabel() }}</td>
-                                    <td>{{ number_format($order->total_price_with_tax / 100, 2, ',', '') }} €</td>
-                                    <td>
+                            <tbody class="bg-white text-gray-700">
+                                @foreach($orders as $order)
+                                <tr class="border-b border-gray-300">
+                                    <td class="border border-gray-300 px-4 py-2">#{{ $order->id }}</td>
+                                    <td class="border border-gray-300 px-4 py-2">{{ $order->user->firstname }} {{ $order->user->lastname }}</td>
+                                    <td class="border border-gray-300 px-4 py-2">{{ $order->getStatusLabel() }}</td>
+                                    <td class="border border-gray-300 px-4 py-2">{{ number_format($order->total_price_with_tax / 100, 2, ',', '') }} €</td>
+                                    <td class="border border-gray-300 px-4 py-2">
                                         @if($order->status !== 'cancelled')
                                         <form method="POST" action="{{ route('admin-orders.cancel', $order->id) }}">
                                             @csrf

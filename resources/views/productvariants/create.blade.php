@@ -1,90 +1,54 @@
-<style> 
-    h1 {
-        font-size: 2.5rem;
-        text-align: center;
-        margin: 1rem auto;
-    }
-
-    h2 {
-        font-size: 1.6rem;
-    }
-
-    input, textarea {
-        border: 1px solid grey;
-    }
-
-    form {
-        width: 70%;
-        margin: 1rem auto;
-    }
-
-    button {
-        width: fit-content;
-        padding: .5rem 1rem;
-        border-radius: .5rem;
-        display: block;
-    }
-
-    button[type=submit] {
-        border: 2px solid blue;
-        background-color: blue;
-        color: white;
-        margin: 1rem auto;
-    }
-
-    button[type=submit]:hover {
-        background-color:rgb(0, 0, 255, .8);
-    }
-
-    button[type=button] {
-        border: 2px solid blue;
-        margin: 1rem;
-    }
-</style>
 <x-layout title="Ajouter une variante">
-    <h1>Ajouter une variante au produit {{ $product->name }}</h1>
-    <form action="{{ route('productvariants.store', $product) }}" method="POST">
+    <h1 class="text-4xl text-center my-10 font-semibold mb-4">Ajouter une variante au produit <span class="text-blue-600">{{ $product->name }}</span></h1>
+    <a href="{{ url()->previous() }}" class="inline-block mb-4 text-blue-600 hover:bg-blue-100 border border-blue-600 p-2 m-2 rounded">Retour</a>
+    <form action="{{ route('productvariants.store', $product) }}" method="POST" 
+    class="mx-auto my-10 border rounded-lg shadow-lg p-6 bg-white flex flex-col gap-4 w-150">
         @csrf 
-        <div>
-            <label for="variant_slug">Slug de la variante</label>
-            <input type="text" name="slug" id="variant_slug" value="{{ old('slug') }}" required>
+        <div class="flex flex-col gap-4">
+            <label for="variant_slug">Slug de la variante :</label>
+            <input type="text" name="slug" id="variant_slug" value="{{ old('slug') }}" required 
+            class="border-2 border-gray-300 rounded w-100">
             @error('slug')
                 <p style="color: red;">{{ $message }}</p>
             @enderror
         </div>
-        <div>
-            <label for="variant_volume">Volume</label>
-            <input type="text" name="volume" id="variant_volume" value="{{ old('volume') }}" required>
+        <div class="flex flex-col gap-4">
+            <label for="variant_volume">Volume :</label>
+            <input type="text" name="volume" id="variant_volume" value="{{ old('volume') }}" required 
+            class="border-2 border-gray-300 rounded w-100">
             @error('volume')
                 <p style="color: red;">{{ $message }}</p>
             @enderror
         </div>
 
-        <div>
-            <label for="variant_stock_quantity">Quantité en stock</label>
-            <input type="number" name="stock_quantity" id="variant_stock_quantity" value="{{ old('stock_quantity') }}" required>
+        <div class="flex flex-col gap-4">
+            <label for="variant_stock_quantity">Quantité en stock :</label>
+            <input type="number" name="stock_quantity" id="variant_stock_quantity" value="{{ old('stock_quantity') }}" required
+            class="border-2 border-gray-300 rounded w-100">
             @error('stock_quantity')
                 <p style="color: red;">{{ $message }}</p>
             @enderror
         </div>
 
-        <div>
-            <label for="variant_price_without_tax">Prix HT</label>
-            <input type="number" name="price_without_tax" id="variant_price_without_tax" value="{{ old('price_without_tax') }}" required>
+        <div class="flex flex-col gap-4">
+            <label for="variant_price_without_tax">Prix HT :</label>
+            <input type="number" name="price_without_tax" id="variant_price_without_tax" value="{{ old('price_without_tax') }}" required
+            class="border-2 border-gray-300 rounded w-100">
             @error('price_without_tax')
                 <p style="color: red;">{{ $message }}</p>
             @enderror
         </div>
 
-        <div>
-            <label for="variant_tax_amount">Montant de la taxe</label>
-            <input type="number" name="tax_amount" id="variant_tax_amount" value="{{ old('tax_amount') }}" required>
+        <div class="flex flex-col gap-4">
+            <label for="variant_tax_amount">Montant de la taxe :</label>
+            <input type="number" name="tax_amount" id="variant_tax_amount" value="{{ old('tax_amount') }}" required
+            class="border-2 border-gray-300 rounded w-100">
             @error('tax_amount')
                 <p style="color: red;">{{ $message }}</p>
             @enderror
         </div>
 
-        <div>
+        <div class="flex gap-4">
             <label for="variant_available">Disponible</label>
             <input type="hidden" name="available" value="0"> <!-- Si la checkbox n’est pas cochée, la valeur 0 est quand même envoyée -->
             <input type="checkbox" name="available" id="variant_available" value="1" {{ old('available') ? 'checked' : '' }}>
@@ -92,7 +56,7 @@
                 <p style="color: red;">{{ $message }}</p>
             @enderror
         </div>
-        
-        <button type="submit">Créer la variante</button>
+
+        <button type="submit" class="border rounded bg-blue-700 py-1 px-3 text-white hover:bg-blue-500 self-start">Créer la variante</button>
     </form>
 </x-layout>

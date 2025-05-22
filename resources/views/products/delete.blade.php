@@ -1,56 +1,17 @@
-<style>
-    .cancel-or-destroy {
-        display: flex;
-        column-gap: 2rem;
-        width: 100%;
-        align-items: center;
-    }
-
-    form {
-        margin: 0;
-    }
-    
-    .destroy-product,
-    .cancel-destroy {
-        padding: .75rem 1.5rem;
-        border: 2px solid red;
-        border-radius: .75rem;
-        background-color: red;
-        color: white;
-        font-weight: 500;
-    }
-
-    .cancel-destroy {
-        display: inline-block;
-        width: fit-content;
-        background-color: transparent;
-        color: black;
-        text-decoration: none;
-        border-color: black;
-    }
-
-    .cancel-destroy:visited {
-        color: black;
-    }
-
-    .destroy-product:hover {
-        cursor: pointer;
-    }
-
-    h1 {
-        font-weight: 600;
-        font-size: 2rem;
-    }
-</style>
 <x-layout title="Suppression du produit">
-    <h1>Suppression du produit {{ $product->name }}</h1>
-    <p>Etes-vous sûr(e) de vouloir supprimer ce produit ? Cette action entraînera également la suppression des variations du produit et <b>est définitive</b>.</p>  
-    <div class="cancel-or-destroy"> 
-        <a href="{{ route('admin.index') }}" class="cancel-destroy">Annuler</a>
-        <form action="{{ route('products.delete', $product) }}" method="POST">
-            @csrf 
-            @method('DELETE')
-        <button type="submit" class="destroy-product">Supprimer le produit</button>
-    </form>
+    <h1 class="text-4xl text-center my-10 font-bold mb-4">Suppression du produit <span class="text-blue-800">{{ $product->name }}</span></h1>
+    <div class="flex flex-col gap-4 mx-auto my-10 border rounded-lg shadow-lg p-6 bg-white w-150">
+        <p>Le produit <span class="text-blue-800">{{ $product->name }}</span> sera supprimé de la base de données.
+            <br> 
+            Cette action est définitive et entraînera la suppression de toutes les variantes associées à ce produit.
+        </p>
+        <div class="flex gap-4"> 
+            <a href="{{ route('admin.index') }}" class="text-blue-600 hover:bg-blue-100 border border-blue-600 py-1 px-3 rounded">Annuler</a>
+            <form action="{{ route('products.delete', $product) }}" method="POST">
+                @csrf 
+                @method('DELETE')
+                <button type="submit" class="border rounded bg-red-600 py-1 px-3 text-white hover:bg-red-500 font-semibold">Supprimer le produit</button>
+            </form>
+        </div>
     </div>
 </x-layout>

@@ -1,48 +1,6 @@
 <x-layout title="Ajouter un produit">
-<style>
-    /* h1 {
-        font-size: 2.5rem;
-        text-align: center;
-        margin: 1rem auto;
-    }
-
-    h2 {
-        font-size: 1.6rem;
-    }
-
-    input, textarea {
-        border: 1px solid grey;
-    }
-
-    form {
-        width: 70%;
-        margin: 1rem auto;
-    }
-
-    button {
-        width: fit-content;
-        padding: .5rem 1rem;
-        border-radius: .5rem;
-        display: block;
-    }
-
-    button[type=submit] {
-        border: 2px solid blue;
-        background-color: blue;
-        color: white;
-        margin: 1rem auto;
-    }
-
-    button[type=submit]:hover {
-        background-color:rgb(0, 0, 255, .8);
-    }
-
-    button[type=button] {
-        border: 2px solid blue;
-        margin: 1rem;
-    } */
-</style>
-    <form action="{{ route('products.store') }}" enctype="multipart/form-data" method="post" class="m-20 border rounded-lg shadow-lg p-6 bg-white flex flex-col gap-4">
+    <a href="{{ url()->previous() }}" class="inline-block mb-4 text-blue-600 hover:bg-blue-100 border border-blue-600 p-2 m-2 rounded">Retour</a>
+    <form action="{{ route('products.store') }}" enctype="multipart/form-data" method="post" class="mx-auto my-10 border rounded-lg shadow-lg p-6 bg-white flex flex-col gap-4 w-200">
         <!-- En-tête de la page -->
         <h1 class="text-4xl text-center my-10 font-bold mb-4">Ajouter un produit</h1>
         
@@ -204,8 +162,8 @@
         </div>
 
         <div class="flex gap-4 mt-4">
-            <button type="button" id="add_variant" class="border-2 border-gray-300 rounded px-4 py-2">Ajouter une variante</button>
-            <button type="submit" class="border-2 border-gray-300 rounded px-4 py-2">Créer le produit</button>
+            <button type="button" id="add_variant" class="border-2 border-gray-300 rounded px-4 py-2 bg-gray-200">Ajouter une variante</button>
+            <button type="submit" class="border-2 border-gray-300 rounded px-4 py-2 bg-gray-200">Créer le produit</button>
         </div>
     </form>
     <a href="{{ route('admin.index') }}">Retour</a>

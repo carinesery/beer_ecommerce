@@ -1,8 +1,3 @@
-<style>
-    .add-product {
-       padding: .5rem 1rem;
-    }
-</style>
 <x-layout title="Admin">
     <div class="container mx-auto">
         <h1>Tableau de bord administrateur</h1>
@@ -15,7 +10,7 @@
 
         <div class="grid grid-cols-[10%_90%] ">
             <x-filterAdmin></x-filterAdmin>
-            <div>
+            <div class="flex flex-col gap-3">
                 <div class="flex justify-between gap-0 bg-gray-700">
                     <div class="flex gap-0">
                         <button class="border-r-1 border-gray-400 py-1 px-3 text-white hover:bg-gray-500">Nom</button>
@@ -35,18 +30,18 @@
                         <button class="border-r-1 border-gray-400 py-1 px-3 text-white hover:bg-gray-500">🗑️ Corbeille</button>
                     </div>
                 </div>
-                <div class="add-product">
-                    <a href="{{ route('products.create') }}" class="border rounded bg-blue-700 py-1 px-3 text-white hover:bg-blue-500">Créer un nouveau produit</a>
-                </div>
+                <a href="{{ route('products.create') }}" class="border rounded bg-blue-700 py-1 px-3 text-center text-white hover:bg-blue-500 m-4 w-55">
+                    Créer un nouveau produit
+                </a>
                 <div class="flex flex-wrap justify-between gap-3 p-4">
                     @foreach ($products as $product)
                     <div class="flex flex-col  w-full justify-between gap-3 border rounded p-4">
                         <div>
-                            <div class="flex gap-3 p-4 justify-between">
+                            <div class="flex gap-3 justify-between">
                                 <div class="flex gap-3">
                                     <div class="flex justify-center flex-col">
                                         <h2 class="font-bold text-4xl">{{ $product->name }}</h2>
-                                        <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-32 h-32 object-cover"><br>   
+                                        <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-32 h-32 object-cover border border-gray-300 rounded"><br>   
                                     </div>
                                     <span class="inline-block">
                                        <b>Marque :</b>
@@ -64,7 +59,7 @@
                                 @if ($product->productVariants->isEmpty())
                                     <p class="text-gray-500">Aucune variante.</p>
                                 @else
-                                <table class="w-full border-collapse">
+                                <table class="w-full border-collapse border border-gray-300 my-4">
                                         <caption class="text-center text-lg font-bold mb-2">Liste des variantes</caption>
                                         <thead class="bg-gray-200">
                                             <tr>

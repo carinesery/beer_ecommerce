@@ -4,9 +4,10 @@
                 {{ session('success') }}
             </div>
         @endif
-    <div class="flex flex-wrap gap-4 py-4 container mx-auto">
+        <a href="{{ url()->previous() }}" class="inline-block mb-4 text-blue-600 hover:bg-blue-100 border border-blue-600 p-2 m-2 rounded">Retour</a>
+        <div class="flex flex-wrap gap-4 py-4 container mx-auto my-10 p-6 bg-white">
         <!-- Message d'ajout au panier -->
-        <div> 
+        <div>
             <img src="{{ asset('storage/app/public/images/' . $product->image) }}" alt="Image du produit" class="w-100 h-100 border border-gray-400">
         </div>
         <div class="flex flex-col gap-4">
@@ -42,10 +43,6 @@
                 @error('tax_amount')                
                     <p>Error tax amout</p>
                 @enderror
-                <div>
-                    <input type="number" name="quantity" id="quantity" min="0" max="{{ $productVariant->stock_quantity}}" value="0" class="px-2 py-1 border border-r-1 border-gray-400">
-                    <button type="submit" class="border border-r-1 border-gray-400 py-1 px-3 text-white bg-orange-500 hover:bg-gray-500">Ajouter au panier !</button>
-                </div>
             </form>
         </div >
     </div >
