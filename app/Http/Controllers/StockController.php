@@ -13,7 +13,7 @@ class StockController extends Controller
      public function index()
     {
         // Récupérer les total des ventes
-        $totalSales = Order::where('status', 'pending')->sum('total_price_without_tax');
+        $totalSales = Order::where('status', 'completed')->sum('total_price_without_tax');
 
         //Récupérer les ventes par mois
         $salesMonth = Order::where('status', 'completed')
