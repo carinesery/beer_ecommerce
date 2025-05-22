@@ -17,8 +17,8 @@ class StockController extends Controller
 
         //Récupérer les ventes par mois
         $salesMonth = Order::where('status', 'completed')
-        ->selectRaw('MONTH(created_at) as mois, SUM(total_price_without_tax) as total')
-        ->groupByRaw('MONTH(created_at)')
+        ->selectRaw('DATE_FORMAT(created_at, "%m-%Y") as mois, SUM(total_price_without_tax) as total')
+        ->groupByRaw('DATE_FORMAT(created_at, "%m-%Y")')
         ->get();
 
         //Récupérer les top 10 produits les plus vendus
@@ -32,11 +32,17 @@ class StockController extends Controller
 
         // Si méthode ci-dessus ne fonction pas, essayer celle-ci
         $topProducts = DB::table('order_items')
-         ->select('product_variant_id', DB::raw('SUM(quantity) as total_vendus'))
-         ->groupBy('product_variant_id')
-         ->orderByDesc('total_vendus')
-         ->take(10)
-         ->get();
+            ->join('product_variants', 'order_items.product_variant_id', '=', 'product_variants.id')
+            ->join('products', 'product_variants.product_id', '=', 'products.id')
+            ->select(
+            'order_items.product_variant_id',
+            'products.name as product_name',
+            DB::raw('SUM(order_items.quantity) as total_vendus')
+            )
+            ->groupBy('order_items.product_variant_id', 'products.name')
+            ->orderByDesc('total_vendus')
+            ->take(10)
+            ->get();
 
         // $stocksFaibles = ProductVariant::where('stock_quantity', '<', 10)->get();
         $lowStocks = ProductVariant::with('product')->where('stock_quantity', '<', 10)->get();

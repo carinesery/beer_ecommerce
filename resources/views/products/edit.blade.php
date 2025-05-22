@@ -108,12 +108,12 @@
             @if($product->image)
             <div class="flex flex-col gap-4 border-2 border-gray-300 pb-4 rounded w-100 p-4">
                 <p class="font-semibold">Image actuelle</p>
-                <img src="{{ asset('storage/' . $product->image) }}" alt="Image actuelle" style="max-width: 200px;"
+                <img src="{{ $product->image }}" alt="Image actuelle" style="max-width: 200px;"
                 class="border-2 border-gray-300 p-2 rounded w-30 h-32">
                 <p class="text-sm text-gray-500">Si vous téléchargez une nouvelle image, l'ancienne sera remplacée.</p>
             </div>
             @endif
-            <input type="text" name="image" id="image" required 
+            <input type="text" name="image" id="image" value="{{ old('image', $product->image) }}" required
             class="border-2 border-gray-300 rounded w-100 p-2 ">
             @error('image')
                 <p style="color: red;">{{ $message }}</p>
