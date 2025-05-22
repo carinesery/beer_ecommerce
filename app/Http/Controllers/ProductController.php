@@ -102,7 +102,7 @@ class ProductController extends Controller
          $product->productVariants()->createMany($variantsData);
  
          // Rediriger avec un message de succès sur la page Admin show
-         return redirect()->route('admin.show')->with('success', 'Produit et variantes créés avec succès!');
+         return redirect()->route('admin.index')->with('success', 'Produit et variantes créés avec succès!');
     }
 
     public function edit(Product $product) 
