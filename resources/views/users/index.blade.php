@@ -40,7 +40,7 @@
                             </div>
                             <span>Prénom : {{ $user->firstname }}</span><br>
                             <span>Nom : {{ $user->lastname }}</span><br>
-                            <span> Email : {{ $user->firstname }}</span><br>
+                            <span> Email : {{ $user->email }}</span><br>
                             <span>Date d'anniversaire : {{ $user->birthdate }}</span>
                         </div>
                         <div class="flex gap-1">
