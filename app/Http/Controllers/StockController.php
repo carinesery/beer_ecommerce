@@ -13,10 +13,10 @@ class StockController extends Controller
      public function index()
     {
         // Récupérer les total des ventes
-        $totalSales = Order::where('status', 'pending')->sum('total_price_without_tax');
+        $totalSales = Order::where('status', 'completed')->sum('total_price_without_tax');
 
         //Récupérer les ventes par mois
-        $salesMonth = Order::where('status', 'pending')
+        $salesMonth = Order::where('status', 'completed')
         ->selectRaw('DATE_FORMAT(created_at, "%m-%Y") as mois, SUM(total_price_without_tax) as total')
         ->groupByRaw('DATE_FORMAT(created_at, "%m-%Y")')
         ->get();

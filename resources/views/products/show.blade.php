@@ -5,6 +5,7 @@
             </div>
         @endif
         <a href="{{ url()->previous() }}" class="inline-block mb-4 text-blue-600 hover:bg-blue-100 border border-blue-600 p-2 m-2 rounded">Retour</a>
+        <a href="{{ route('admin.index', $product) }}" class="inline-block mb-4 text-green-600 hover:bg-green-100 border border-green-600 p-2 m-2 rounded">Retour à la liste des produits</a>
         <div class="flex flex-wrap gap-4 py-4 container mx-auto my-10 p-6 bg-white">
         <!-- Message d'ajout au panier -->
         <div>
