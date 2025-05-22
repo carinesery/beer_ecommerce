@@ -60,18 +60,6 @@ class ProductController extends Controller
             // Par exemple, tu peux rediriger avec un message d'erreur
             return back()->withErrors(['brand_id' => 'Veuillez sélectionner une marque ou en ajouter une nouvelle.']);
         }
-
-        // Initialiser $imagePath avec une valeur par défaut
-        $imagePath = null;
-
-        // Gestion de l'image (si un fichier est téléchargé)
-        if ($request->hasFile('image')) {
-            $validatedImage = $request->file('image')->isValid(); // Vérifie si l'upload est valide
-
-            if($validatedImage) {
-                $imagePath = $request->file('image')->store('images', 'public'); // Stocke l'image dans le dossier 'public/products'
-            }
-        }
         
          // Créer le produit principal
          $product = Product::create([
@@ -81,7 +69,9 @@ class ProductController extends Controller
             'alcohol_degree' => $request->alcohol_degree,
             'category_id' => $request->category_id,
             'brand_id' => $brand_id, // Utiliser l'id de la marque (existante ou nouvelle)
-            'image' => $imagePath,// A la base c'était : $request->image
+            'image' => $request->image
+
+            // 'image' => $imagePath,// A la base c'était : $request->image
         ]);
 
          // Créer les variantes associées au produit
@@ -148,22 +138,6 @@ class ProductController extends Controller
             return back()->withErrors(['brand_id' => 'Veuillez sélectionner une marque ou en ajouter une nouvelle.']);
         }
 
-        // Garde l'image actuelle par défaut
-        $imagePath = $product->image;
-
-        // Gestion de l'image (si un fichier est téléchargé)
-        if ($request->hasFile('image')) {
-            $validatedImage = $request->file('image')->isValid(); // Vérifie si l'upload est valide
-
-            if($validatedImage) {
-                // Supprimer l'ancienne image, si elle existe
-                if($product->image && file_exists(public_path('storage/' . $product->image))) {
-                    unlink(public_path('storage/' . $product->image));
-                }
-                // Stocke la nouvelle image dans le dossier 'public/products'
-                $imagePath = $request->file('image')->store('images', 'public');
-            }
-        }
         
          // Mise à jour du produit principal
          $product->update([
@@ -173,7 +147,7 @@ class ProductController extends Controller
             'alcohol_degree' => $request->alcohol_degree,
             'category_id' => $request->category_id,
             'brand_id' => $brand_id, // Utiliser l'id de la marque (existante ou nouvelle)
-            'image' => $imagePath,// Mettre à jour l'image
+            'image' => $request->image
         ]);
 
          // Rediriger avec un message de succès sur la page Admin show

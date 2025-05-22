@@ -28,7 +28,7 @@ class ProductStoreRequest extends FormRequest
             'description'=> ['required', 'string'],
             'alcohol_degree' => ['required', 'numeric', 'min:0', 'max:100'],
             'category_id' => ['required', 'exists:categories,id'],
-            'image' => ['nullable', 'file', 'mimes:jpeg,png,jpg,gif,webp', 'max:2048'],
+            'image' => ['required', 'url', 'max:255'], // Vérifie que l'image est une chaîne de caractères
 
             // Validation de la marque
             'brand_id' => [

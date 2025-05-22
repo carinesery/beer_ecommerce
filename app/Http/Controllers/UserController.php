@@ -61,7 +61,7 @@ class UserController extends Controller
         ]);
 
         // Redirection vers la liste des utilisateurs ou autre page souhaitée avec un message de succès
-        return redirect()->route('login')->with('success', 'Utilisateur créé avec succès !');
+        return redirect()->route('admin.index')->with('success', 'Utilisateur créé avec succès !');
 
     }
 

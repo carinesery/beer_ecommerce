@@ -6,7 +6,8 @@
         </div>
 
         
-        <form action="{{ route('users.update', $user) }}" method="POST" class="w-100">        
+        <form action="{{ route('users.update', $user) }}" method="POST" class="w-100">
+            @method('PUT')        
             @csrf      
             <div class="flex flex-col">
                 <label for="firstname">Prénom :</label>
